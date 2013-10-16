@@ -51,6 +51,7 @@
   <ItemGroup>
     <Reference Include="Microsoft.Expression.Interactions" />
     <Reference Include="Microsoft.Phone" />
+    <Reference Include="Microsoft.Phone.Controls, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Controls.Toolkit">
       <HintPath>..\packages\WPtoolkit.4.2013.08.16\lib\sl4-windowsphone71\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
@@ -74,15 +75,16 @@
       <DependentUpon>BadgeElement.xaml</DependentUpon>
     </Compile>
     <Compile Include="Blah.cs" />
+    <Compile Include="BlahDetails.xaml.cs">
+      <DependentUpon>BlahDetails.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BlahguaBL.cs" />
     <Compile Include="BlahguaRESTservice.cs" />
     <Compile Include="BlahRollItem.xaml.cs">
       <DependentUpon>BlahRollItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BlahViewer.xaml.cs">
-      <DependentUpon>BlahViewer.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Channel.cs" />
+    <Compile Include="Comment.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -93,6 +95,7 @@
     <Compile Include="SigninPage.xaml.cs">
       <DependentUpon>SigninPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TiltEffect.cs" />
     <Compile Include="User.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -104,11 +107,11 @@
       <Generator>MSBuild:MarkupCompilePass1</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="BlahRollItem.xaml">
-      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    <Page Include="BlahDetails.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="BlahViewer.xaml">
+    <Page Include="BlahRollItem.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -129,10 +132,17 @@
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml" />
-    <Resource Include="badge_standalone_30x31.png" />
-    <Resource Include="Large_CloseGreen.png" />
-    <Resource Include="Resources\FontAwesome.otf" />
-    <Resource Include="unknown-user.png" />
+    <Content Include="Images\Icons\comment.png" />
+    <Content Include="Images\Icons\demote.png" />
+    <Content Include="Images\Icons\share.png" />
+    <Content Include="Images\Icons\promote.png" />
+    <Content Include="Images\The Now Network.png" />
+    <Content Include="Resources\fontawesome-webfont.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Images\badge_standalone_30x31.png" />
+    <Resource Include="Images\Large_CloseGreen.png" />
+    <Resource Include="Images\unknown-user.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ApplicationIcon.png">
@@ -149,7 +159,11 @@
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <DesignData Include="SampleData\BlahguaAPIObjectSampleData.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </DesignData>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

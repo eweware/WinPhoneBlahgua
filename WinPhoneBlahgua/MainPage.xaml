@@ -8,6 +8,8 @@
     xmlns:local="clr-namespace:WinPhoneBlahgua" 
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     x:Class="WinPhoneBlahgua.MainPage"
+    d:DataContext="{d:DesignData SampleData/BlahguaAPIObjectSampleData.xaml}"
+    local:TiltEffect.IsTiltEnabled="True"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -17,9 +19,12 @@
 
     <phone:PhoneApplicationPage.Resources>
         <DataTemplate x:Name="ChannelItemTemplate">
-            <StackPanel Orientation="Horizontal" Background="Transparent">
-                <TextBlock Foreground="White" Text="{Binding N}"/>
-                <TextBlock Foreground="White" Text="&#xf0d7;" FontFamily="/WinPhoneBlahgua;component/Resources/FontAwesome.otf#FontAwesome"/>
+            <StackPanel Orientation="Horizontal" Background="Transparent" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
+                <StackPanel.RenderTransform>
+                    <CompositeTransform TranslateY="-5"/>
+                </StackPanel.RenderTransform>
+                <TextBlock Foreground="White" Text="{Binding ChannelName}" Margin="0" Padding="0"/>
+                <TextBlock Foreground="White" Text="&#xf0d7;" Margin="12 4 0 0" FontFamily="/Resources/fontawesome-webfont.ttf#FontAwesome"/>
             </StackPanel>
         </DataTemplate>
         <DataTemplate x:Name="ChannelFullModeItemTemplate">
@@ -34,18 +39,103 @@
                     <TextBlock FontSize="18" TextWrapping="Wrap" Text="{Binding D}"/>
                 </StackPanel>
             </Grid>
-
         </DataTemplate>
+        <DataTemplate x:Name="EmptyTemplate">
+            <Grid Height="0" />
+        </DataTemplate>
+        <ControlTemplate x:Key="ListPickerNoHeader" TargetType="toolkit:ListPicker">
+            <StackPanel>
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="PickerStates">
+                        <VisualState x:Name="Normal"/>
+                        <VisualState x:Name="Highlighted">
+                            <Storyboard>
+                                <ObjectAnimationUsingKeyFrames
+        							Storyboard.TargetName="Border"
+        							Storyboard.TargetProperty="Background"
+        							Duration="0">
+                                    <DiscreteObjectKeyFrame
+        								Value="{StaticResource PhoneTextBoxEditBackgroundColor}"
+        								KeyTime="0"/>
+                                </ObjectAnimationUsingKeyFrames>
+                                <ObjectAnimationUsingKeyFrames
+        							Storyboard.TargetName="Border"
+        							Storyboard.TargetProperty="BorderBrush"
+        							Duration="0">
+                                    <DiscreteObjectKeyFrame
+        								Value="{StaticResource PhoneTextBoxEditBorderBrush}"
+        								KeyTime="0"/>
+                                </ObjectAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </VisualState>
+                        <VisualState x:Name="Disabled">
+                            <Storyboard>
+                                <ObjectAnimationUsingKeyFrames
+        							Storyboard.TargetName="Border"
+        							Storyboard.TargetProperty="Background"
+        							Duration="0">
+                                    <DiscreteObjectKeyFrame
+        								Value="{StaticResource TransparentBrush}"
+        								KeyTime="0"/>
+                                </ObjectAnimationUsingKeyFrames>
+                                <ObjectAnimationUsingKeyFrames
+        							Storyboard.TargetName="Border"
+        							Storyboard.TargetProperty="BorderBrush"
+        							Duration="0">
+                                    <DiscreteObjectKeyFrame
+        								Value="{StaticResource PhoneDisabledBrush}"
+        								KeyTime="0"/>
+                                </ObjectAnimationUsingKeyFrames>
+                                <ObjectAnimationUsingKeyFrames
+        							Storyboard.TargetName="UserControl"
+        							Storyboard.TargetProperty="Foreground"
+        							Duration="0">
+                                    <DiscreteObjectKeyFrame
+        								Value="{StaticResource PhoneDisabledBrush}"
+        								KeyTime="0"/>
+                                </ObjectAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+                <ContentControl
+        			Content="{TemplateBinding Header}"
+        			ContentTemplate="{TemplateBinding HeaderTemplate}"
+        			Foreground="{StaticResource PhoneSubtleBrush}"
+        			FontSize="{StaticResource PhoneFontSizeNormal}"
+        			HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+        			Margin="0 0 0 0"/>
+                <Grid>
+                    <Border x:Name="Border"
+        				Background="{TemplateBinding Background}"
+        				BorderBrush="{TemplateBinding BorderBrush}"
+        				BorderThickness="{TemplateBinding BorderThickness}">
+                        <UserControl x:Name="UserControl" Foreground="{TemplateBinding Foreground}">
+                            <StackPanel>
+                                <TextBlock x:Name="MultipleSelectionModeSummary" Margin="0 0 0 0" />
+                                <Canvas x:Name="ItemsPresenterHost" MinHeight="46">
+                                    <ItemsPresenter x:Name="ItemsPresenter">
+                                        <ItemsPresenter.RenderTransform>
+                                            <TranslateTransform x:Name="ItemsPresenterTranslateTransform"/>
+                                        </ItemsPresenter.RenderTransform>
+                                    </ItemsPresenter>
+                                </Canvas>
+                            </StackPanel>
+                        </UserControl>
+                    </Border>
+                </Grid>
+            </StackPanel>
+        </ControlTemplate>
 
 
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Rectangle Canvas.ZIndex="1" Height="8" Margin="0,60,0,0" VerticalAlignment="Top">
+        <Rectangle Canvas.ZIndex="1" Height="8" Margin="0,56,0,0" VerticalAlignment="Top">
             <Rectangle.Fill>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="#20000000" Offset="1"/>
@@ -53,17 +143,26 @@
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <Grid  Background="Blue" Height="48" VerticalAlignment="Top" Margin="0,12,0,0" Canvas.ZIndex="2">
+        <Grid Height="48" VerticalAlignment="Top" Margin="0,8,0,0" Canvas.ZIndex="2">
+            <Grid.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF7DBFE3" Offset="0.55"/>
+                    <GradientStop Color="#FF7AD000" Offset="0.734"/>
+                </LinearGradientBrush>
+            </Grid.Background>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="48"/>
                 <ColumnDefinition Width="48"/>
             </Grid.ColumnDefinitions>
-            <toolkit:ListPicker x:Name="ChannelTitleBar" VerticalAlignment="Top" FontSize="24" ExpansionMode="FullScreenOnly"
+            <toolkit:ListPicker x:Name="ChannelTitleBar" VerticalAlignment="Top" FontSize="29.333" ExpansionMode="FullScreenOnly"
                                  ItemTemplate="{StaticResource ChannelItemTemplate}"  Background="Transparent"
                                 BorderThickness="0"
+                                HeaderTemplate="{StaticResource EmptyTemplate}"
                                 FullModeItemTemplate="{StaticResource ChannelFullModeItemTemplate}"  
-                                FullModeHeader="Choose a channel:" Margin="0" Padding="0" >
+                                FullModeHeader="Choose a channel:" Margin="0" Padding="0"
+                                ItemsSource="{Binding CurrentChannelList}"
+                                SelectedItem="{Binding CurrentChannel, Mode=TwoWay}" Template="{StaticResource ListPickerNoHeader}" FontFamily="Segoe WP Semibold">
             </toolkit:ListPicker>
             <Button Grid.Column="1" BorderThickness="0" Grid.ColumnSpan="2" Style="{StaticResource SquareBtn}" Background="#FF9E9E9E" Foreground="White" FontSize="20" Content="Sign In"/>
             <Button Grid.Column="1" BorderThickness="0" Visibility="Collapsed" Style="{StaticResource SquareBtn}"/>
@@ -74,8 +173,6 @@
             <Canvas x:Name="BlahContainer">
             </Canvas>
         </ScrollViewer>
-        <Rectangle x:Name="Mask" Fill="#80000000" Canvas.ZIndex="5" Visibility="Collapsed" StrokeThickness="0"></Rectangle>
-       
     </Grid>
 
 </phone:PhoneApplicationPage>

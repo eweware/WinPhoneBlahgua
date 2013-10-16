@@ -22,8 +22,8 @@ namespace WinPhoneBlahgua
         /// </summary>
         /// <returns>The root frame of the Phone Application.</returns>
         public TransitionFrame RootFrame { get; private set; }
-        public static BlahguaRESTservice BlahguaRest = null;
-        public static BlahguaBL BlahguaAPI = null;
+        
+        public static BlahguaAPIObject BlahguaAPI = null;
 
 
         /// <summary>
@@ -48,8 +48,8 @@ namespace WinPhoneBlahgua
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
 
-            BlahguaRest = new BlahguaRESTservice();
-            BlahguaAPI = new BlahguaBL();
+            
+            BlahguaAPI = new BlahguaAPIObject();
            
 
         }
