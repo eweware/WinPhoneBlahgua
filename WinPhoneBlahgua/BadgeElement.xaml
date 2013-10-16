@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="WinPhoneBlahgua.BadgeElement"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    d:DesignHeight="16" d:DesignWidth="400">
+    
+    <StackPanel x:Name="LayoutRoot" Orientation="Horizontal"	>
+		<Image x:Name="BadgeImage" Source="badge_standalone_30x31.png" Width="15" Height="15" />
+    	<TextBlock Foreground="Black" Text="Verified" FontSize="12" Margin="8,0" FontWeight="Bold"/>
+		<TextBlock Foreground="Black" Text="Blahgua User" FontSize="12"/>
+    </StackPanel>
+</UserControl>

@@ -1,0 +1,26 @@
+﻿<UserControl x:Class="WinPhoneBlahgua.BlahRollItem"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    d:DesignHeight="128" d:DesignWidth="128">
+    
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+        <Border x:Name="TopBorder" CornerRadius="8,8,0,0" BorderThickness="0,8,0,0" BorderBrush="#FF930000">
+             <Rectangle x:Name="Background"  Fill="Red"/>
+        </Border>
+        <TextBlock x:Name="TextArea" Padding="4" TextWrapping="Wrap" FontFamily="Segoe WP SemiLight">This is a  test.  This is only</TextBlock>
+
+ 
+    </Grid>
+</UserControl>
