@@ -28,7 +28,7 @@ namespace WinPhoneBlahgua
         double smallBlahSize, mediumBlahSize, largeBlahSize;
         bool AtScrollEnd = false;
         Channel CurrentChannel = null;
-        int FramesPerSecond = 30;
+        int FramesPerSecond = 60;
         BlahViewer blahPage = null;
      
         
