@@ -53,6 +53,14 @@ namespace WinPhoneBlahgua
                 return App.BlahguaAPI.CurrentChannelTypeList.ChannelTypeName(Y);
             }
         }
+
+        public string ChannelImageUrl
+        {
+            get 
+            {
+                return "Images\\The Now Network.png";
+            }
+        }
     }
 
     public class ChannelList : List<Channel>

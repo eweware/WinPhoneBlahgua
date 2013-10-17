@@ -9,7 +9,7 @@ namespace WinPhoneBlahgua
     public class InboxBlah
     {
         public string I { get; set; }
-        public object c { get; set; }
+        public long c { get; set; }
         public string T { get; set; }
         public string Y { get; set; }
         public string G { get; set; }
@@ -35,6 +35,15 @@ namespace WinPhoneBlahgua
             B = otherBlah.B;
             S = otherBlah.S;
             displaySize = otherBlah.displaySize;
+        }
+
+        public DateTime Created
+        {
+            get
+            {
+                DateTime newTime = new DateTime(c);
+                return newTime;
+            }
         }
 
         public string ImageSize
@@ -156,17 +165,48 @@ namespace WinPhoneBlahgua
         public int V { get; set; }
         public string Y { get; set; }
         public string _id { get; set; }
-        public string c { get; set; }
-        public string u { get; set; }
+        public DateTime c { get; set; }
+        public DateTime u { get; set; }
         public List<string> B { get; set; }
         public List<string> M { get; set; }
         public UserDescription Description {get; set;}
+        public CommentList Comments { get; set; }
+
+
 
         public Blah()
         {
 
         }
 
+        public CommentList TopComments
+        {
+            get
+            {
+                if (Comments != null)
+                {
+                    if (Comments.Count > 5)
+                        return (CommentList)Comments.Take(5);
+                    else
+                        return Comments;
+                }
+                else
+                    return null;
+
+            }
+        }
+
+        
+
+        public string ElapsedTimeString
+        {
+            get
+            {
+                return c.ToShortTimeString();
+            }
+        }
+
+        
   
         public string UserName
         {
@@ -195,9 +235,9 @@ namespace WinPhoneBlahgua
             get
             {
                 if ((Description != null) && (Description.m != null))
-                    return App.BlahguaRest.GetImageURL(Description.m, "A");
+                    return App.BlahguaAPI.GetImageURL(Description.m, "A");
                 else
-                    return "unknown-user.png";
+                    return "Images\\unknown-user.png";
             }
         }
 
@@ -208,7 +248,7 @@ namespace WinPhoneBlahgua
                 if (M != null)
                 {
                     string imageName = M[0];
-                    return App.BlahguaRest.GetImageURL(M[0], "D");
+                    return App.BlahguaAPI.GetImageURL(M[0], "D");
                 }
                 else
                     return null;

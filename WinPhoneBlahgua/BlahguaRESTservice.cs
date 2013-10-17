@@ -10,12 +10,18 @@ using RestSharp;
 
 namespace WinPhoneBlahgua
 {
+    public delegate void ChannelList_callback(ChannelList theList);
+    public delegate void ChannelTypeList_callback(ChannelTypeList theList);
+    public delegate void Inbox_callback(Inbox theList);
+    public delegate void BlahTypes_callback(BlahTypeList theList);
+    public delegate void Blah_callback(Blah theBlah);
+    public delegate void UserDescription_callback(UserDescription theDesc);
+
     public class BlahguaRESTservice
     {
         public Dictionary<string, string> groupNames = null;
         public Dictionary<string, string> userGroupNames = null;
         public Dictionary<string, string> blahTypes = null;
-        private CookieContainer sessionCookie = null;
         private bool usingQA = false;
         private RestClient apiClient;
         private string imageBaseURL = "";
@@ -35,13 +41,12 @@ namespace WinPhoneBlahgua
             }
         }
 
-        public delegate void ChannelList_callback(ChannelList theList);
-        public delegate void ChannelTypeList_callback(ChannelTypeList theList);
-        public delegate void Inbox_callback(Inbox theList);
-        public delegate void BlahTypes_callback(BlahTypeList theList);
-        public delegate void Blah_callback(Blah theBlah);
-        public delegate void UserDescription_callback(UserDescription theDesc);
 
+
+        public string ImageBaseURL
+        {
+            get { return imageBaseURL; }
+        }
 
         public void GetPublicChannels(ChannelList_callback callback)
         {
@@ -94,21 +99,7 @@ namespace WinPhoneBlahgua
             });
         }
 
-        public string GetImageURL(string baseURL, string size)
-        {
-            string fullURL;
-            fullURL = imageBaseURL + baseURL + "-" + size + ".jpg";
-
-            return fullURL;
-        }
-
-        public string GetImageURL(string baseURL)
-        {
-            string fullURL;
-            fullURL = imageBaseURL + baseURL + ".jpg";
-
-            return fullURL;
-        }
+       
 
         public void GetChannelTypes(ChannelTypeList_callback callback)
         {
@@ -140,6 +131,8 @@ namespace WinPhoneBlahgua
             });
 
         }
+
+       
 
 
 

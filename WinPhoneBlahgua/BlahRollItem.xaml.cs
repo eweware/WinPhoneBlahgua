@@ -37,14 +37,14 @@ namespace WinPhoneBlahgua
         public void Initialize(InboxBlah theBlah)
         {
             BlahData = theBlah;
-            Background.Fill = GetBlahBrush(BlahData);
+            BlahBackground.Fill = GetBlahBrush(BlahData);
             TopBorder.BorderBrush = GetBlahFrameBrush(BlahData);
             if (BlahData.M != null)
             {
                 string imageBase = BlahData.M[0];
                 string imageSize = BlahData.ImageSize;
-                string imageURL = App.BlahguaRest.GetImageURL(imageBase, imageSize);
-                Background.Fill = new ImageBrush { ImageSource = new BitmapImage(new Uri(imageURL, UriKind.Absolute)) };
+                string imageURL = App.BlahguaAPI.GetImageURL(imageBase, imageSize);
+                BlahBackground.Fill = new ImageBrush { ImageSource = new BitmapImage(new Uri(imageURL, UriKind.Absolute)) };
                 if ((BlahData.T != null) && (BlahData.T != ""))
                 {
                     // Put the text on a grey background...

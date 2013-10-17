@@ -12,6 +12,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using System.Windows.Threading;
+using System.ComponentModel;
 
 
 namespace WinPhoneBlahgua
@@ -21,25 +22,25 @@ namespace WinPhoneBlahgua
          Inbox   blahList;
         DispatcherTimer scrollTimer = new DispatcherTimer();
 
-        private string curGroupId = "";
         int[] rowSequence = new int[]{4,32,31,4,1,33,4,2,4,32,1,4,31,32,33,31,4,33,1,31,4,32,33,1,4,2};
         int screenMargin = 4;
         int blahMargin = 8;
         double smallBlahSize, mediumBlahSize, largeBlahSize;
         bool AtScrollEnd = false;
+
         Channel CurrentChannel = null;
         int FramesPerSecond = 60;
-        BlahViewer blahPage = null;
+
      
-        
- 
         // Constructor
         public MainPage()
         {
             Loaded += new RoutedEventHandler(MainPage_Loaded); 
             InitializeComponent();
+            this.DataContext = null;
             
         }
+
 
         void BlahScroller_MouseMove(object sender, MouseEventArgs e)
         {
@@ -78,7 +79,7 @@ namespace WinPhoneBlahgua
 
         private void FetchInitialBlahList()
         {
-            App.BlahguaRest.GetInbox(curGroupId, (newBlahList) =>
+            App.BlahguaAPI.GetInbox((newBlahList) =>
                 {
                     blahList = newBlahList;
                     blahList.PrepareBlahs();
@@ -91,7 +92,7 @@ namespace WinPhoneBlahgua
 
         private void FetchNextBlahList()
         {
-            App.BlahguaRest.GetInbox(curGroupId, (newBlahList) =>
+            App.BlahguaAPI.GetInbox((newBlahList) =>
             {
                 blahList = newBlahList;
                 blahList.PrepareBlahs();
@@ -170,6 +171,7 @@ namespace WinPhoneBlahgua
 
         void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
+            TiltEffect.TiltableItems.Add(typeof(BlahRollItem));
             if (alreadyHookedScrollEvents)
                 return;
 
@@ -191,9 +193,22 @@ namespace WinPhoneBlahgua
             BlahScroller.MouseMove += BlahScroller_MouseMove;
 
             BlahContainer.Tap += BlahContainer_Tap;
+            App.BlahguaAPI.PropertyChanged += new PropertyChangedEventHandler(On_API_PropertyChanged);
 
             InitService();
+            
+        }
 
+
+
+        void On_API_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "CurrentChannel":
+                    OnChannelChanged();
+                    break;
+            }
         }
 
         void BlahContainer_Tap(object sender, System.Windows.Input.GestureEventArgs e)
@@ -215,37 +230,37 @@ namespace WinPhoneBlahgua
         void OpenBlahItem(BlahRollItem curBlah)
         {
             scrollTimer.Stop();
-            Mask.Visibility = Visibility.Visible ;
-            App.BlahguaRest.FetchFullBlah(curBlah.BlahData.I, (theBlah) =>
-                {
-                    App.BlahguaRest.GetUserDescription(theBlah.A, (theDesc) =>
-                        {
-                            theBlah.Description = theDesc;
-                            OpenFullBlah(theBlah);
-                        });
-                });
+            App.BlahguaAPI.SetCurrentBlahFromId(curBlah.BlahData.I, OpenFullBlah);
+            
 
         }
+
+        protected override void OnNavigatingFrom(System.Windows.Navigation.NavigatingCancelEventArgs e)
+        {
+            scrollTimer.Stop();
+            base.OnNavigatingFrom(e);
+        }
+
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            scrollTimer.Start();
+        }
+
 
         void OpenFullBlah(Blah theBlah)
         {
             if (theBlah != null)
             {
+                NavigationService.Navigate(new Uri("/BlahDetails.xaml", UriKind.Relative));
+
                 // openthe page
+                /*
                 if (blahPage == null)
                     blahPage = new BlahViewer();
-                LayoutRoot.Children.Add(blahPage);
-                Canvas.SetZIndex(blahPage, 10);
                 blahPage.CurrentBlah = theBlah;
-
-                SlideTransition trans = new SlideTransition { Mode = SlideTransitionMode.SlideUpFadeIn };
-                ITransition transition = trans.GetTransition(blahPage);
-                transition.Completed += delegate
-                {
-                    transition.Stop();
-
-                };
-                transition.Begin();
+                OpenPage(blahPage);
+                 * */
                
             }
             else
@@ -254,31 +269,15 @@ namespace WinPhoneBlahgua
             }
         }
 
-        public void ClosePage()
-        {
-            SlideTransition trans = new SlideTransition { Mode = SlideTransitionMode.SlideDownFadeOut };
-            ITransition transition = trans.GetTransition(blahPage);
-            transition.Completed += delegate
-            {
-                transition.Stop();
-                LayoutRoot.Children.Remove(blahPage);
-                Mask.Visibility = Visibility.Collapsed;
-                scrollTimer.Start();
-            };
-            transition.Begin();
-           
-        }
+       
 
         void DoServiceInited(bool didIt)
         {
-            ChannelTitleBar.SelectionChanged += ChannelTitleBar_SelectionChanged;
-            ChannelTitleBar.ItemsSource = App.BlahguaAPI.CurrentChannelList;
+            this.DataContext = App.BlahguaAPI;
         }
 
-        void ChannelTitleBar_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        void OnChannelChanged()
         {
-            CurrentChannel = (Channel)e.AddedItems[0];
-            curGroupId = CurrentChannel._id;
             ClearBlahs();
             FetchInitialBlahList();
 
