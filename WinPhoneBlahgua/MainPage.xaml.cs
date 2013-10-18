@@ -35,6 +35,8 @@ namespace WinPhoneBlahgua
             Loaded += new RoutedEventHandler(MainPage_Loaded); 
             InitializeComponent();
             this.DataContext = null;
+
+
             
         }
 
@@ -201,6 +203,11 @@ namespace WinPhoneBlahgua
                     App.BlahguaAPI.GoPrevChannel();
 
             }
+            else
+            {
+                if (!scrollTimer.IsEnabled)
+                    scrollTimer.Start();
+            }
         }
 
 
@@ -250,6 +257,20 @@ namespace WinPhoneBlahgua
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+
+            if (App.BlahguaAPI.CurrentUser != null)
+            {
+                UserInfoBtn.Visibility = Visibility.Visible;
+                NewBlahBtn.Visibility = Visibility.Visible;
+                SignInBtn.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                UserInfoBtn.Visibility = Visibility.Collapsed;
+                NewBlahBtn.Visibility = Visibility.Collapsed;
+                SignInBtn.Visibility = Visibility.Visible;
+            }   
+
             scrollTimer.Start();
         }
 
@@ -279,18 +300,7 @@ namespace WinPhoneBlahgua
 
         void DoServiceInited(bool didIt)
         {
-            if (App.BlahguaAPI.CurrentUser != null)
-            {
-                UserInfoBtn.Visibility = Visibility.Visible;
-                NewBlahBtn.Visibility = Visibility.Visible;
-                SignInBtn.Visibility = Visibility.Collapsed;    
-            }
-            else
-            {
-                UserInfoBtn.Visibility = Visibility.Collapsed;
-                NewBlahBtn.Visibility = Visibility.Collapsed;
-                SignInBtn.Visibility = Visibility.Visible;    
-            }
+            
             this.DataContext = App.BlahguaAPI;
         }
 
@@ -488,6 +498,21 @@ namespace WinPhoneBlahgua
         private void DoSignIn(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Signin.xaml", UriKind.Relative));    
+        }
+
+        private void NewBlahBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void UserInfoBtn_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
+        }
+
+        private void NewBlahBtn_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+
         }
 
    

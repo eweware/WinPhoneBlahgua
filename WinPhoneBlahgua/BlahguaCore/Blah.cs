@@ -149,7 +149,7 @@ namespace WinPhoneBlahgua
     {
         public string GetTypeName(string typeId)
         {
-            return this.Where(i => i._id == typeId).FirstOrDefault().N;
+            return this.First(i => i._id == typeId).N;
         }
     }
 

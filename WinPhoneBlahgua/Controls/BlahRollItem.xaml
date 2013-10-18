@@ -6,7 +6,7 @@
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="#202020"
+    Foreground="{StaticResource BrushBlahguaBlack}"
     d:DesignHeight="128" d:DesignWidth="128">
     
     <Grid x:Name="LayoutRoot" Background="Transparent">
@@ -17,7 +17,10 @@
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
         <Border x:Name="TopBorder" CornerRadius="8,8,0,0" BorderThickness="0,8,0,0" BorderBrush="#FF930000">
-             <Rectangle x:Name="BlahBackground"  Fill="Red"/>
+            <Grid> 
+                <Image x:Name="BlahImage" Stretch="UniformToFill"/>
+                <Rectangle x:Name="BlahBackground"  Fill="Red"/>
+            </Grid>
         </Border>
         <TextBlock x:Name="TextArea" Padding="4" TextWrapping="Wrap" FontFamily="Segoe WP SemiLight">This is a  test.  This is only</TextBlock>
 

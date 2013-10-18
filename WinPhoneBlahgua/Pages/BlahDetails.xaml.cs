@@ -31,8 +31,10 @@ namespace WinPhoneBlahgua
             InitializeComponent();
             this.DataContext = App.BlahguaAPI;
             this.ApplicationBar = new ApplicationBar();
+            SetBlahBackground();
             ApplicationBar.IsMenuEnabled = true;
             ApplicationBar.IsVisible = true;
+            ApplicationBar.Opacity = .8;
 
             promoteBtn = new ApplicationBarIconButton(new Uri("/Images/Icons/promote.png", UriKind.Relative));
             promoteBtn.Text = "promote";
@@ -66,6 +68,34 @@ namespace WinPhoneBlahgua
                     TopCommentList.ItemsSource = App.BlahguaAPI.CurrentBlah.TopComments;
                 }
             );
+        }
+
+        void SetBlahBackground()
+        {
+            Brush newBrush;
+
+
+            switch (App.BlahguaAPI.CurrentBlah.TypeName)
+            {
+                case "leaks":
+                    newBrush = (Brush)App.Current.Resources["BaseBrushLeaks"];
+                    break;
+                case "polls":
+                    newBrush = (Brush)App.Current.Resources["BaseBrushPolls"]; ;
+                    break;
+                case "asks":
+                    newBrush = (Brush)App.Current.Resources["BaseBrushAsks"]; ;
+                    break;
+                case "predicts":
+                    newBrush = (Brush)App.Current.Resources["BaseBrushPredicts"]; ;
+                    break;
+                default:
+                    newBrush = (Brush)App.Current.Resources["BaseBrushSays"]; ;
+                    break;
+            }
+
+            BackgroundScreen.Fill = newBrush;
+
         }
 
         private void HandlePromoteBlah(object target, EventArgs theArgs)

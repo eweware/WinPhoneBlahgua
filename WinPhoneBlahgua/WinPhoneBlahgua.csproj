@@ -68,69 +68,96 @@
     <Reference Include="mscorlib.extensions" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Pages\AddBadge.xaml.cs">
+      <DependentUpon>AddBadge.xaml</DependentUpon>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BadgeElement.xaml.cs">
+    <Compile Include="Controls\BadgeElement.xaml.cs">
       <DependentUpon>BadgeElement.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Blah.cs" />
-    <Compile Include="BlahDetails.xaml.cs">
+    <Compile Include="BlahguaCore\Blah.cs" />
+    <Compile Include="Pages\BlahDetails.xaml.cs">
       <DependentUpon>BlahDetails.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BlahguaBL.cs" />
-    <Compile Include="BlahguaRESTservice.cs" />
-    <Compile Include="BlahRollItem.xaml.cs">
+    <Compile Include="BlahguaCore\BlahguaBL.cs" />
+    <Compile Include="BlahguaCore\BlahguaRESTservice.cs" />
+    <Compile Include="Controls\BlahRollItem.xaml.cs">
       <DependentUpon>BlahRollItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Channel.cs" />
-    <Compile Include="Comment.cs" />
+    <Compile Include="BlahguaCore\Channel.cs" />
+    <Compile Include="BlahguaCore\Comment.cs" />
+    <Compile Include="Pages\CreateBlah.xaml.cs">
+      <DependentUpon>CreateBlah.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\CreateComment.xaml.cs">
+      <DependentUpon>CreateComment.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ProfileViewer.xaml.cs">
+    <Compile Include="Pages\ProfileViewer.xaml.cs">
       <DependentUpon>ProfileViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Signin.xaml.cs">
+    <Compile Include="Resources\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Shared.cs" />
+    <Compile Include="Pages\Signin.xaml.cs">
       <DependentUpon>Signin.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SigninPage.xaml.cs">
-      <DependentUpon>SigninPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="TiltEffect.cs" />
-    <Compile Include="User.cs" />
+    <Compile Include="BlahguaCore\User.cs" />
+    <Compile Include="Pages\UserProfile.xaml.cs">
+      <DependentUpon>UserProfile.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Page Include="BadgeElement.xaml">
-      <Generator>MSBuild:MarkupCompilePass1</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="BlahDetails.xaml">
+    <Page Include="Pages\AddBadge.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="BlahRollItem.xaml">
+    <Page Include="Controls\BadgeElement.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\BlahDetails.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BlahRollItem.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\CreateBlah.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\CreateComment.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ProfileViewer.xaml">
+    <Page Include="Pages\ProfileViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Signin.xaml">
+    <Page Include="Pages\Signin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SigninPage.xaml">
+    <Page Include="Pages\UserProfile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -175,6 +202,13 @@
       <Generator>MSBuild:MarkupCompilePass1</Generator>
     </DesignData>
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

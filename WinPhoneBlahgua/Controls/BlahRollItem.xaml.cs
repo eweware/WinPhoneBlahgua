@@ -17,16 +17,6 @@ namespace WinPhoneBlahgua
         private static float minTextSize = 12;
         private static float maxTextSize = 72;
         public InboxBlah BlahData {get; set;}
-        private static SolidColorBrush saysBrush = new SolidColorBrush(Color.FromArgb(102, 125, 181, 227));
-        private static SolidColorBrush leaksBrush = new SolidColorBrush(Color.FromArgb(102, 248, 120, 88));
-        private static SolidColorBrush pollsBrush = new SolidColorBrush(Color.FromArgb(102, 248, 184, 0));
-        private static SolidColorBrush predictsBrush = new SolidColorBrush(Color.FromArgb(102, 250, 250, 100));
-        private static SolidColorBrush asksBrush = new SolidColorBrush(Color.FromArgb(102, 122, 208, 0));
-        private static SolidColorBrush saysFrameBrush = new SolidColorBrush(Color.FromArgb(255, 125, 181, 227));
-        private static SolidColorBrush leaksFrameBrush = new SolidColorBrush(Color.FromArgb(255, 248, 120, 88));
-        private static SolidColorBrush pollsFrameBrush = new SolidColorBrush(Color.FromArgb(255, 248, 184, 0));
-        private static SolidColorBrush predictsFrameBrush = new SolidColorBrush(Color.FromArgb(255, 250, 250, 100));
-        private static SolidColorBrush asksFrameBrush = new SolidColorBrush(Color.FromArgb(255, 122, 208, 0));
 
         public BlahRollItem()
         {
@@ -37,18 +27,30 @@ namespace WinPhoneBlahgua
         public void Initialize(InboxBlah theBlah)
         {
             BlahData = theBlah;
-            BlahBackground.Fill = GetBlahBrush(BlahData);
+            BlahBackground.Fill = GetBlahFrameBrush(BlahData);
             TopBorder.BorderBrush = GetBlahFrameBrush(BlahData);
             if (BlahData.M != null)
             {
                 string imageBase = BlahData.M[0];
                 string imageSize = BlahData.ImageSize;
                 string imageURL = App.BlahguaAPI.GetImageURL(imageBase, imageSize);
-                BlahBackground.Fill = new ImageBrush { ImageSource = new BitmapImage(new Uri(imageURL, UriKind.Absolute)) };
+                BlahImage.Source = new BitmapImage(new Uri(imageURL, UriKind.Absolute));
                 if ((BlahData.T != null) && (BlahData.T != ""))
                 {
                     // Put the text on a grey background...
+                    BlahBackground.Opacity = .8;
+                    TextArea.Foreground = (Brush)App.Current.Resources["BrushBlahguaWhite"];
                 }
+                else
+                {
+                    BlahBackground.Visibility = Visibility.Collapsed;
+                    TextArea.Visibility = Visibility.Collapsed;
+                }
+            }
+            else
+            {
+                BlahBackground.Opacity = .4;
+                BlahImage.Visibility = Visibility.Collapsed;
             }
 
             TextArea.Text = BlahData.T;
@@ -62,19 +64,19 @@ namespace WinPhoneBlahgua
             switch (App.BlahguaAPI.CurrentBlahTypes.GetTypeName(theBlah.Y))
             {
                 case "leaks":
-                    newBrush = leaksBrush;
+                    newBrush = (Brush)App.Current.Resources["BaseBrushLeaks"];
                     break;
                 case "polls":
-                    newBrush = pollsBrush;
+                    newBrush =  (Brush)App.Current.Resources["BaseBrushPolls"];
                     break;
                 case "asks":
-                    newBrush = asksBrush;
+                    newBrush =  (Brush)App.Current.Resources["BaseBrushAsks"];
                     break;
                 case "predicts":
-                    newBrush = predictsBrush;
+                    newBrush =  (Brush)App.Current.Resources["BaseBrushPredicts"];
                     break;
                 default:
-                    newBrush = saysBrush;
+                    newBrush =  (Brush)App.Current.Resources["BaseBrushSays"];
                     break;
             }
 
@@ -90,19 +92,19 @@ namespace WinPhoneBlahgua
             switch (App.BlahguaAPI.CurrentBlahTypes.GetTypeName(theBlah.Y))
             {
                 case "leaks":
-                    newBrush = leaksFrameBrush;
+                    newBrush =  (Brush)App.Current.Resources["HighlightBrushLeaks"];
                     break;
                 case "polls":
-                    newBrush = pollsFrameBrush;
+                    newBrush =  (Brush)App.Current.Resources["HighlightBrushPolls"];
                     break;
                 case "asks":
-                    newBrush = asksFrameBrush;
+                    newBrush =  (Brush)App.Current.Resources["HighlightBrushAsks"];
                     break;
                 case "predicts":
-                    newBrush = predictsFrameBrush;
+                    newBrush =  (Brush)App.Current.Resources["HighlightBrushPredicts"];
                     break;
                 default:
-                    newBrush = saysFrameBrush;
+                    newBrush =  (Brush)App.Current.Resources["HighlightBrushSays"];
                     break;
             }
 

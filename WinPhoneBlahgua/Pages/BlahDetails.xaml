@@ -49,19 +49,25 @@
 
         <DataTemplate x:Name="CommentTemplate">
             <Border BorderBrush="{StaticResource PhoneBorderBrush}" BorderThickness="0,0,0,1" Margin="0,0,0,8">
-            <Grid Margin="0 0 0 8">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="0" >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Image Source="{Binding AuthorImage}" Width="48" Height="48" VerticalAlignment="Top" />
-                        <StackPanel Orientation="Vertical" Margin="8,0,0,0" Grid.Column="1">
-                            <Grid >
+                <Grid Margin="0 0 0 8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Image Source="{Binding AuthorImage}" Width="48" Height="48" VerticalAlignment="Top" />
+                        <Grid  Margin="8,0,0,0" Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"></RowDefinition>
+                                <RowDefinition Height="auto"></RowDefinition>
+                                <RowDefinition Height="auto"></RowDefinition>
+                                <RowDefinition Height="auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="auto" />
                                     <ColumnDefinition Width="*" />
@@ -79,13 +85,13 @@
                                     <TextBlock Text="{Binding DownVoteCount}"></TextBlock>
                                 </StackPanel>
                             </Grid>
-                            <TextBlock Text="{Binding UserDescriptionString}"  Foreground="#FF8D8D8D" FontStyle="Italic" FontSize="16" />
-                            <TextBlock Text="{Binding T}" TextWrapping="Wrap" />
-                            <Image Margin="9" Source="{Binding ImageURL}" >
+                            <TextBlock Grid.Row="1" Text="{Binding UserDescriptionString}"  Foreground="#FF8D8D8D" FontStyle="Italic" FontSize="16" />
+                            <TextBlock Grid.Row="2" Text="{Binding T}" TextWrapping="Wrap" />
+                            <Image Grid.Row="3" Margin="9" Source="{Binding ImageURL}" >
                             </Image>
-                        </StackPanel>
+                        </Grid>
                     </Grid>
-                    <Grid Margin="0 12 0 0">
+                    <Grid Grid.Row="1" Margin="0 12 0 0">
                         <ListBox x:Name="SubComments"></ListBox>   
                     </Grid>
                 </Grid>
@@ -96,12 +102,13 @@
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <Canvas Width="480" Height="800" Opacity=".5"  VerticalAlignment="Top" IsHitTestVisible="False">
+        <Grid Width="480" Height="800" VerticalAlignment="Top" IsHitTestVisible="False">
             <Image  Width="800" Height="800"  x:Name="BackgroundImage" Canvas.Top="0"  Canvas.Left="0"  Source="{Binding CurrentBlah.ImageURL}" Stretch="UniformToFill" >
 
             </Image>
+            <Rectangle x:Name="BackgroundScreen"></Rectangle>
 
-        </Canvas>
+        </Grid>
         <!--Pivot Control-->
         <controls:Pivot x:Name="BlahDetailsPivot" TitleTemplate="{StaticResource HeaderTemplate}" LoadingPivotItem="OnPivotLoading" LoadedPivotItem="HandlePivotLoaded" UnloadedPivotItem="HandlePivotUnloaded" >
             <!--Pivot item one-->

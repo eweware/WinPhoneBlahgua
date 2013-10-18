@@ -60,6 +60,41 @@
     			</Setter.Value>
     		</Setter>
     	</Style>
+        
+        <!-- colors -->
+        <Color x:Key="BaseColorSays"    >#667DB5E3</Color>
+        <Color x:Key="BaseColorLeaks"   >#66F87858</Color>
+        <Color x:Key="BaseColorPolls"   >#66F8B800</Color>
+        <Color x:Key="BaseColorPredicts">#66FAFA64</Color>
+        <Color x:Key="BaseColorAsks"    >#667AD000</Color>
+
+        <Color x:Key="HighlightColorSays"     >#ff7DB5E3</Color>
+        <Color x:Key="HighlightColorLeaks"    >#ffF87858</Color>
+        <Color x:Key="HighlightColorPolls"    >#FFF8B800</Color>
+        <Color x:Key="HighlightColorPredicts" >#ffFAFA64</Color>
+        <Color x:Key="HighlightColorAsks"     >#ff7AD000</Color>
+
+        <Color x:Key="ColorBlahguaWhite">#ffF5F4F0</Color>
+        <Color x:Key="ColorBlahguaBlack">#ff202020</Color>
+        
+        <SolidColorBrush x:Key="BaseBrushSays" Color="{StaticResource BaseColorSays}" />
+        <SolidColorBrush x:Key="BaseBrushLeaks" Color="{StaticResource BaseColorLeaks}" />
+        <SolidColorBrush x:Key="BaseBrushPolls" Color="{StaticResource BaseColorPolls}" />
+        <SolidColorBrush x:Key="BaseBrushPredicts" Color="{StaticResource BaseColorPredicts}" />
+        <SolidColorBrush x:Key="BaseBrushAsks" Color="{StaticResource BaseColorAsks}" />
+
+        <SolidColorBrush x:Key="HighlightBrushSays" Color="{StaticResource HighlightColorSays}" />
+        <SolidColorBrush x:Key="HighlightBrushLeaks" Color="{StaticResource HighlightColorLeaks}" />
+        <SolidColorBrush x:Key="HighlightBrushPolls" Color="{StaticResource HighlightColorPolls}" />
+        <SolidColorBrush x:Key="HighlightBrushPredicts" Color="{StaticResource HighlightColorPredicts}" />
+        <SolidColorBrush x:Key="HighlightBrushAsks" Color="{StaticResource HighlightColorAsks}" />
+
+        <SolidColorBrush x:Key="BrushBlahguaWhite" Color="{StaticResource ColorBlahguaWhite}" />
+        <SolidColorBrush x:Key="BrushBlahguaBlack" Color="{StaticResource ColorBlahguaBlack}" />
+
+
+
+
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>

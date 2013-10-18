@@ -113,6 +113,11 @@ namespace WinPhoneBlahgua
         public User CurrentUser
         {
             get { return currentUser; }
+            set
+            {
+                currentUser = value;
+                OnPropertyChanged("CurrentUser");
+            }
         }
 
         public Channel CurrentChannel
@@ -279,7 +284,7 @@ namespace WinPhoneBlahgua
                     CurrentChannelList = chanList;
                     BlahguaRest.GetUserInfo((newUser) =>
                         {
-                            currentUser = newUser;
+                            CurrentUser = newUser;
                             callBack(null);
                         }
                     );
