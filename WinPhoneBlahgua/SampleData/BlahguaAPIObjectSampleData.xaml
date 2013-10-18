@@ -3,7 +3,7 @@
 		<WinPhoneBlahgua:Blah A="Vestibulum cras class curabitur aenean" 
                               ChannelName="The Testing Channel" 
                               F="One girlfriend became a sex worker a while after we broke up and though we had a bit of ex sex, our friendship was affectionate but generally nonsexual during her sex work period. I got to know a lot about sex work by talking to her and saw it in a more complex way than I had before. She stopped a few years ago but is considering starting again for the money. This is in a US state where it is illegal. " G="Conubia eros" 
-                              ImageURL="Images\unknown-user.png" 
+                              ImageURL="Images\Large_Green.png" 
                               O="85" S="897.18" 
                               TypeName="Mumbles" T="This is the headline of the test blah!" 
                               UserDescriptionString="A cool guy from a cool place" 
@@ -32,7 +32,14 @@
             <WinPhoneBlahgua:Blah.Comments>
                 <WinPhoneBlahgua:CommentList>
                     <WinPhoneBlahgua:Comment
-                        T="This is a comment"
+                        AuthorImage="Images\unknown-user.png"
+                        AuthorName="Comment Author"
+                        ElapsedTimeString="47 days ago"
+                        UpVoteCount="10"
+                        DownVoteCount="4"
+                        UserDescriptionString="A helpful test user from CA"
+                        T="This is a comment.  It is not the world's most exciting comment, but it is the only comment I know...  Bare with me and I will try to make it more cool."
+                        ImageURL="Images\unknown-user.png"
                         />
                     <WinPhoneBlahgua:Comment
                         T="This is a comment"
@@ -60,8 +67,12 @@
 		</WinPhoneBlahgua:Blah>
 	</WinPhoneBlahgua:BlahguaAPIObject.CurrentBlah>
 	<WinPhoneBlahgua:BlahguaAPIObject.CurrentUser>
-		<WinPhoneBlahgua:User/>
-	</WinPhoneBlahgua:BlahguaAPIObject.CurrentUser>
+        <WinPhoneBlahgua:User
+            UserImage="Images\unknown-user.png"
+            >
+   
+        </WinPhoneBlahgua:User>
+    </WinPhoneBlahgua:BlahguaAPIObject.CurrentUser>
 	<WinPhoneBlahgua:BlahguaAPIObject.CurrentBlahTypes>
 		<WinPhoneBlahgua:BlahTypeList Capacity="89">
 			<WinPhoneBlahgua:BlahType C="47" N="Felis himenaeos" _id="Vestibulum natoque magnis adipiscing per" c="Mattis ipsum imperdiet"/>

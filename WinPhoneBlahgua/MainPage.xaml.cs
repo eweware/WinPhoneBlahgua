@@ -27,10 +27,7 @@ namespace WinPhoneBlahgua
         int blahMargin = 8;
         double smallBlahSize, mediumBlahSize, largeBlahSize;
         bool AtScrollEnd = false;
-
-        Channel CurrentChannel = null;
         int FramesPerSecond = 60;
-
      
         // Constructor
         public MainPage()
@@ -53,7 +50,6 @@ namespace WinPhoneBlahgua
             {
                 if (!AtScrollEnd)
                 {
-                    BlahContainer.Background = new SolidColorBrush(Color.FromArgb(255, 20, 20, 20));
                     AtScrollEnd = true;
                     FetchNextBlahList();
                 }
@@ -69,13 +65,6 @@ namespace WinPhoneBlahgua
             
         }
 
-   
-
-        private void SetCurrentChannel(int curChannel)
-        {
-            ChannelTitleBar.SelectedIndex = curChannel;
-            
-        }
 
         private void FetchInitialBlahList()
         {
@@ -97,8 +86,6 @@ namespace WinPhoneBlahgua
                 blahList = newBlahList;
                 blahList.PrepareBlahs();
                 InsertAdditionalBlahs();
-
-                BlahContainer.Background = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
                 AtScrollEnd = false;
 
             });
@@ -193,10 +180,27 @@ namespace WinPhoneBlahgua
             BlahScroller.MouseMove += BlahScroller_MouseMove;
 
             BlahContainer.Tap += BlahContainer_Tap;
+            BlahContainer.ManipulationCompleted += BlahContainer_ManipulationCompleted;
             App.BlahguaAPI.PropertyChanged += new PropertyChangedEventHandler(On_API_PropertyChanged);
 
             InitService();
             
+        }
+
+        void BlahContainer_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
+        {
+            Point finalVel = e.FinalVelocities.LinearVelocity;
+            Point finalDelta = e.TotalManipulation.Translation;
+
+            if ((Math.Abs(finalDelta.X) > Math.Abs(finalDelta.Y)) &&
+                (Math.Abs(finalVel.X) > Math.Abs(finalVel.Y)))
+            {
+                if (finalDelta.X < 0)
+                    App.BlahguaAPI.GoNextChannel();
+                else
+                    App.BlahguaAPI.GoPrevChannel();
+
+            }
         }
 
 
@@ -225,6 +229,8 @@ namespace WinPhoneBlahgua
                 BlahRollItem curBlah = (BlahRollItem)curEl;
                 OpenBlahItem(curBlah);
             }
+            if (!scrollTimer.IsEnabled)
+                scrollTimer.Start();
         }
 
         void OpenBlahItem(BlahRollItem curBlah)
@@ -273,6 +279,18 @@ namespace WinPhoneBlahgua
 
         void DoServiceInited(bool didIt)
         {
+            if (App.BlahguaAPI.CurrentUser != null)
+            {
+                UserInfoBtn.Visibility = Visibility.Visible;
+                NewBlahBtn.Visibility = Visibility.Visible;
+                SignInBtn.Visibility = Visibility.Collapsed;    
+            }
+            else
+            {
+                UserInfoBtn.Visibility = Visibility.Collapsed;
+                NewBlahBtn.Visibility = Visibility.Collapsed;
+                SignInBtn.Visibility = Visibility.Visible;    
+            }
             this.DataContext = App.BlahguaAPI;
         }
 
@@ -465,6 +483,11 @@ namespace WinPhoneBlahgua
             newTop += smallBlahSize;
 
             return newTop;
+        }
+
+        private void DoSignIn(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Signin.xaml", UriKind.Relative));    
         }
 
    

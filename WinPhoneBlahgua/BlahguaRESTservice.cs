@@ -16,6 +16,10 @@ namespace WinPhoneBlahgua
     public delegate void BlahTypes_callback(BlahTypeList theList);
     public delegate void Blah_callback(Blah theBlah);
     public delegate void UserDescription_callback(UserDescription theDesc);
+    public delegate void Comments_callback(CommentList theList);
+    public delegate void CommentAuthorDescriptionList_callback(CommentAuthorDescriptionList theList);
+    public delegate void string_callback(String theResult);
+    public delegate void User_callback(User theResult);  
 
     public class BlahguaRESTservice
     {
@@ -39,6 +43,8 @@ namespace WinPhoneBlahgua
                 apiClient = new RestClient("https://beta.blahgua.com/v2");
                 imageBaseURL = "https://s3-us-west-2.amazonaws.com/blahguaimages/image/";
             }
+
+            apiClient.CookieContainer = new CookieContainer();
         }
 
 
@@ -48,23 +54,54 @@ namespace WinPhoneBlahgua
             get { return imageBaseURL; }
         }
 
+        public void GetBlahComments(string blahId, Comments_callback callback)
+        {
+            RestRequest request = new RestRequest("comments", Method.GET);
+            request.AddParameter("blahId", blahId);
+            apiClient.ExecuteAsync<CommentList>(request, (response) =>
+            {
+                callback(response.Data);
+            });
+        }
+
         public void GetPublicChannels(ChannelList_callback callback)
         {
             RestRequest request = new RestRequest("groups/featured", Method.GET);
             apiClient.ExecuteAsync<ChannelList>(request, (response) =>
+            {
+                if (response.Data != null)
+                {
+                    ChannelList newList = new ChannelList();
+                    foreach (Channel curChan in response.Data)
+                    {
+                        if (curChan.R > 0)
+                            newList.Add(curChan);
+                    }
+
+                    newList.Sort((obj1, obj2) =>
+                    {
+                        return obj1.R.CompareTo(obj2.R);
+                    });
+
+                    callback(newList);
+                }
+                else
+                    callback(null);
+            });
+
+        }
+
+        public void GetUserChannels(ChannelList_callback callback)
+        {
+            RestRequest request = new RestRequest("userGroups", Method.GET);
+            apiClient.ExecuteAsync<ChannelList>(request, (response) =>
                 {
                     if (response.Data != null)
                     {
-                        ChannelList newList = new ChannelList();
-                        foreach (Channel curChan in response.Data)
-                        {
-                            if (curChan.R > 0)
-                                newList.Add(curChan);
-                        }
-
+                        ChannelList newList = response.Data;
                         newList.Sort((obj1, obj2) =>
                         {
-                            return obj1.R.CompareTo(obj2.R);
+                            return Math.Abs(obj1.R).CompareTo(Math.Abs(obj2.R));
                         });
 
                         callback(newList);
@@ -75,16 +112,73 @@ namespace WinPhoneBlahgua
 
         }
 
+        public void SignIn(string userName, string passWord, string_callback callback)
+        {
+            RestRequest request = new RestRequest("users/login", Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(new { N = userName, pwd = passWord });
+
+            apiClient.ExecuteAsync(request, (response) =>
+            {
+                callback(response.Content);
+            });
+
+        }
+
+        public void SignOut(string_callback callback)
+        {
+            RestRequest request = new RestRequest("users/logout", Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            apiClient.ExecuteAsync(request, (response) =>
+            {
+                callback(response.Content);
+            });
+
+        }
+
+        public void Register(string userName, string passWord, string_callback callback)
+        {
+            RestRequest request = new RestRequest("users", Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(new { N = userName, pwd = passWord });
+            apiClient.ExecuteAsync(request, (response) =>
+            {
+                callback(response.Content);
+            });
+
+        }
+
+        public void GetUserInfo(User_callback callback)
+        {
+            RestRequest request = new RestRequest("users/info", Method.GET);
+            apiClient.ExecuteAsync<User>(request, (response) =>
+            {
+                callback(response.Data);
+            });
+        }
+
+
         public void GetUserDescription(string userId, UserDescription_callback callback)
         {
             RestRequest request = new RestRequest("users/descriptor", Method.POST);
             request.RequestFormat = DataFormat.Json;
-            //request.AddParameter("I", userId);
             request.AddBody(new { I = userId });
             apiClient.ExecuteAsync<UserDescription>(request, (response) =>
                 {
                     callback(response.Data);
                 });
+
+        }
+
+        public void GetCommentAuthorDescriptions(List<string> userIds, CommentAuthorDescriptionList_callback callback)
+        {
+            RestRequest request = new RestRequest("users/descriptors", Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(new { IDS = userIds });
+            apiClient.ExecuteAsync<CommentAuthorDescriptionList>(request, (response) =>
+            {
+                callback(response.Data);
+            });
 
         }
 
@@ -131,10 +225,6 @@ namespace WinPhoneBlahgua
             });
 
         }
-
-       
-
-
 
         /*
 

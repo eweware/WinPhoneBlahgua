@@ -13,10 +13,32 @@
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="{StaticResource PhoneForegroundBrush}"
+    Foreground="#202020"
     SupportedOrientations="Portrait" Orientation="Portrait"
     shell:SystemTray.IsVisible="False">
 
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardIn"/>
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardIn"/>
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut"/>
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut"/>
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
+    
     <phone:PhoneApplicationPage.Resources>
         <DataTemplate x:Name="ChannelItemTemplate">
             <StackPanel Orientation="Horizontal" Background="Transparent" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
@@ -131,7 +153,7 @@
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot">
+    <Grid x:Name="LayoutRoot" Background="#FFEEEEEE">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -164,9 +186,14 @@
                                 ItemsSource="{Binding CurrentChannelList}"
                                 SelectedItem="{Binding CurrentChannel, Mode=TwoWay}" Template="{StaticResource ListPickerNoHeader}" FontFamily="Segoe WP Semibold">
             </toolkit:ListPicker>
-            <Button Grid.Column="1" BorderThickness="0" Grid.ColumnSpan="2" Style="{StaticResource SquareBtn}" Background="#FF9E9E9E" Foreground="White" FontSize="20" Content="Sign In"/>
-            <Button Grid.Column="1" BorderThickness="0" Visibility="Collapsed" Style="{StaticResource SquareBtn}"/>
-            <Button Grid.Column="2" BorderThickness="0" Visibility="Collapsed" Style="{StaticResource SquareBtn}"/>
+            <Button x:Name="SignInBtn"  Grid.Column="1" Visibility="Collapsed" BorderThickness="0" Grid.ColumnSpan="2" Style="{StaticResource SquareBtn}" Background="#FF9E9E9E" Foreground="White" FontSize="20" Content="Sign In" Click="DoSignIn"/>
+            <Image x:Name="NewBlahBtn" Grid.Column="1"  Visibility="Visible"  Width="48" Height="48" >
+
+            </Image>
+            <Image x:Name="UserInfoBtn" Width="48" Height="48" Grid.Column="2"  Visibility="Visible" Source="{Binding CurrentUser.UserImage}">
+          
+            </Image>
+
 
         </Grid>
         <ScrollViewer x:Name="BlahScroller" ManipulationStarted="HandleScrollStart">

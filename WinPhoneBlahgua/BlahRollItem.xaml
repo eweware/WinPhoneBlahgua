@@ -6,7 +6,7 @@
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="{StaticResource PhoneForegroundBrush}"
+    Foreground="#202020"
     d:DesignHeight="128" d:DesignWidth="128">
     
     <Grid x:Name="LayoutRoot" Background="Transparent">

@@ -8,7 +8,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:WinPhoneBlahgua" 
     x:Class="WinPhoneBlahgua.BlahDetails"
+    local:TiltEffect.IsTiltEnabled="True"
     d:DataContext="{d:DesignData SampleData/BlahguaAPIObjectSampleData.xaml}"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
 
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
@@ -16,16 +18,92 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="False">
-	<phone:PhoneApplicationPage.Resources>
+
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardIn"/>
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardIn"/>
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut"/>
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut"/>
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
+    
+    
+    <phone:PhoneApplicationPage.Resources>
 		<DataTemplate x:Key="HeaderTemplate">
 			<Grid/>
 		</DataTemplate>
-	</phone:PhoneApplicationPage.Resources>
+
+        <DataTemplate x:Name="CommentTemplate">
+            <Border BorderBrush="{StaticResource PhoneBorderBrush}" BorderThickness="0,0,0,1" Margin="0,0,0,8">
+            <Grid Margin="0 0 0 8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image Source="{Binding AuthorImage}" Width="48" Height="48" VerticalAlignment="Top" />
+                        <StackPanel Orientation="Vertical" Margin="8,0,0,0" Grid.Column="1">
+                            <Grid >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding AuthorName}">
+                                    <TextBlock.Foreground>
+                                        <SolidColorBrush Color="{StaticResource PhoneAccentColor}"/>
+                                    </TextBlock.Foreground></TextBlock>
+                                <TextBlock Grid.Column="1" Margin="8 0 0 0" HorizontalAlignment="Left" Text="{Binding ElapsedTimeString}" Foreground="#FF8D8D8D" FontStyle="Italic" FontSize="16" VerticalAlignment="Bottom"></TextBlock>
+                                <StackPanel Margin="8 0 0 0" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Image Source="Images\Icons\promote.png" Width="24" Height="24" VerticalAlignment="Top"></Image>
+                                    <TextBlock Text="{Binding UpVoteCount}" Margin="0 0 8 0"></TextBlock>
+                                    <Image Source="Images\Icons\demote.png" Width="24" Height="24" VerticalAlignment="Top"></Image>
+                                    <TextBlock Text="{Binding DownVoteCount}"></TextBlock>
+                                </StackPanel>
+                            </Grid>
+                            <TextBlock Text="{Binding UserDescriptionString}"  Foreground="#FF8D8D8D" FontStyle="Italic" FontSize="16" />
+                            <TextBlock Text="{Binding T}" TextWrapping="Wrap" />
+                            <Image Margin="9" Source="{Binding ImageURL}" >
+                            </Image>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Margin="0 12 0 0">
+                        <ListBox x:Name="SubComments"></ListBox>   
+                    </Grid>
+                </Grid>
+            </Border>
+        </DataTemplate>
+        
+        </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Canvas Width="480" Height="800" Opacity=".5"  VerticalAlignment="Top" IsHitTestVisible="False">
+            <Image  Width="800" Height="800"  x:Name="BackgroundImage" Canvas.Top="0"  Canvas.Left="0"  Source="{Binding CurrentBlah.ImageURL}" Stretch="UniformToFill" >
+
+            </Image>
+
+        </Canvas>
         <!--Pivot Control-->
-        <controls:Pivot TitleTemplate="{StaticResource HeaderTemplate}">
+        <controls:Pivot x:Name="BlahDetailsPivot" TitleTemplate="{StaticResource HeaderTemplate}" LoadingPivotItem="OnPivotLoading" LoadedPivotItem="HandlePivotLoaded" UnloadedPivotItem="HandlePivotUnloaded" >
             <!--Pivot item one-->
             <controls:PivotItem Header="summary">
                 <ScrollViewer>
@@ -54,7 +132,18 @@
                         <Grid  x:Name="ExtraInfoArea" Margin="8"></Grid>
                         <TextBlock Text="Top Comments"></TextBlock>
                         <ListBox  x:Name="TopCommentList"
+                             ItemTemplate="{StaticResource CommentTemplate}"
                              ItemsSource="{Binding CurrentBlah.TopComments}">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                            <ListBox.Template>
+                                <ControlTemplate>
+                                    <ItemsPresenter />
+                                </ControlTemplate>
+                            </ListBox.Template>
                         </ListBox>
                     </StackPanel>
                 </ScrollViewer>
@@ -62,11 +151,17 @@
 
             <!--Pivot item two-->
             <controls:PivotItem Header="comments">
-                <ScrollViewer>
-                    <ListBox  x:Name="CommentList"
-                        ItemsSource="{Binding CurrentBlah.Comments}">
+
+                    <ListBox  x:Name="AllCommentList" 
+                        ItemTemplate="{StaticResource CommentTemplate}"
+                        ItemsSource="{Binding CurrentBlah.Comments}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+
                     </ListBox>
-                </ScrollViewer>
             </controls:PivotItem>
 
             <!--Pivot item two-->
@@ -75,5 +170,7 @@
             </controls:PivotItem>
         </controls:Pivot>
     </Grid>
+
+
 
 </phone:PhoneApplicationPage>

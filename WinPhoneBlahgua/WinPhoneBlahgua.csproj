@@ -92,6 +92,9 @@
       <DependentUpon>ProfileViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Signin.xaml.cs">
+      <DependentUpon>Signin.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SigninPage.xaml.cs">
       <DependentUpon>SigninPage.xaml</DependentUpon>
     </Compile>
@@ -123,6 +126,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Signin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SigninPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -132,6 +139,10 @@
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml" />
+    <Content Include="Images\Icons\black_demote.png" />
+    <Content Include="Images\Icons\black_demote_disabled.png" />
+    <Content Include="Images\Icons\black_promote.png" />
+    <Content Include="Images\Icons\black_promote_disabled.png" />
     <Content Include="Images\Icons\comment.png" />
     <Content Include="Images\Icons\demote.png" />
     <Content Include="Images\Icons\share.png" />

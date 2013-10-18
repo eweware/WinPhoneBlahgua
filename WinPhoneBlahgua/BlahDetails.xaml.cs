@@ -17,7 +17,6 @@ namespace WinPhoneBlahgua
 {
     public partial class BlahDetails : PhoneApplicationPage
     {
-        ApplicationBar appBar = null;
         ApplicationBarIconButton promoteBtn;
         ApplicationBarIconButton demoteBtn;
         ApplicationBarIconButton shareBtn;
@@ -26,35 +25,47 @@ namespace WinPhoneBlahgua
         ApplicationBarMenuItem deleteItem;
 
 
+
         public BlahDetails()
         {
             InitializeComponent();
-            appBar = new ApplicationBar();
             this.DataContext = App.BlahguaAPI;
+            this.ApplicationBar = new ApplicationBar();
+            ApplicationBar.IsMenuEnabled = true;
+            ApplicationBar.IsVisible = true;
 
-            appBar.IsVisible = true;
-            appBar.IsMenuEnabled = true;
-
-            promoteBtn = new ApplicationBarIconButton(new Uri("Images\\Icons\\promote.png", UriKind.Relative));
+            promoteBtn = new ApplicationBarIconButton(new Uri("/Images/Icons/promote.png", UriKind.Relative));
             promoteBtn.Text = "promote";
-            promoteBtn.Click += new EventHandler(HandlePromoteBlah);
+            promoteBtn.Click += HandlePromoteBlah;
 
-            demoteBtn = new ApplicationBarIconButton(new Uri("Images\\Icons\\demote.png", UriKind.Relative));
+            demoteBtn = new ApplicationBarIconButton(new Uri("/Images/Icons/demote.png", UriKind.Relative));
             demoteBtn.Text = "demote";
-            demoteBtn.Click += new EventHandler(HandleDemoteBlah);
+            demoteBtn.Click += HandleDemoteBlah;
 
-            shareBtn = new ApplicationBarIconButton(new Uri("Images\\Icons\\share.png", UriKind.Relative));
+
+            shareBtn = new ApplicationBarIconButton(new Uri("/Images/Icons/share.png", UriKind.Relative));
             shareBtn.Text = "share";
-            shareBtn.Click += new EventHandler(HandlePromoteBlah);
+            shareBtn.Click += HandleShareBlah;
 
-            commentBtn = new ApplicationBarIconButton(new Uri("Images\\Icons\\comment.png", UriKind.Relative));
-            commentBtn.Text = "add comment";
-            commentBtn.Click += new EventHandler(HandlePromoteBlah);
 
-            appBar.Buttons.Add(promoteBtn);
-            appBar.Buttons.Add(demoteBtn);
-            appBar.Buttons.Add(shareBtn);
-            appBar.Buttons.Add(commentBtn);
+            commentBtn = new ApplicationBarIconButton(new Uri("/Images/Icons/comment.png", UriKind.Relative));
+            commentBtn.Text = "comment";
+            commentBtn.Click += HandleAddComment;
+
+            reportItem = new ApplicationBarMenuItem("flag post as inappropriate");
+            reportItem.Click += HandleReportItem;
+
+            deleteItem = new ApplicationBarMenuItem("remove post");
+            deleteItem.Click += HandleDeleteItem;
+
+
+
+            App.BlahguaAPI.LoadBlahComments((allComments) =>
+                {
+                    AllCommentList.ItemsSource = allComments;
+                    TopCommentList.ItemsSource = App.BlahguaAPI.CurrentBlah.TopComments;
+                }
+            );
         }
 
         private void HandlePromoteBlah(object target, EventArgs theArgs)
@@ -77,12 +88,91 @@ namespace WinPhoneBlahgua
 
         }
 
+        private void HandleReportItem(object target, EventArgs theArgs)
+        {
+
+        }
+
+        private void HandleDeleteItem(object target, EventArgs theArgs)
+        {
+
+        }
+
         private void HandleImageOpened(object sender, RoutedEventArgs e)
         {
             BlahImage.MaxHeight = ((BitmapImage)BlahImage.Source).PixelHeight;
             BlahImage.MaxWidth = ((BitmapImage)BlahImage.Source).PixelWidth;
         }
-     
+
+        private void OnPivotLoading(object sender, PivotItemEventArgs e)
+        {
+            // do the background
+            Storyboard sb = new Storyboard();
+            DoubleAnimation db = new DoubleAnimation();
+            double targetVal = 0;
+            double maxScroll = -320;
+            double offset;
+
+            if (BlahDetailsPivot.Items.Count() > 1)
+                offset = maxScroll / (BlahDetailsPivot.Items.Count() - 1);
+            else
+                offset = 0;
+            ExponentialEase ease = new ExponentialEase();
+            ease.Exponent = 5;
+            ease.EasingMode = EasingMode.EaseIn;
+
+            targetVal = offset * BlahDetailsPivot.Items.IndexOf(e.Item);
+            db.EasingFunction = ease;
+            db.BeginTime = TimeSpan.FromSeconds(0);
+            db.Duration = TimeSpan.FromSeconds(.5);
+            db.To = targetVal;
+            Storyboard.SetTarget(db, BackgroundImage);
+            Storyboard.SetTargetProperty(db, new PropertyPath("(Canvas.Left)"));
+            sb.Children.Add(db);
+            sb.Begin();
+        }
+
+        private void HandlePivotLoaded(object sender, PivotItemEventArgs e)
+        {
+
+            switch (e.Item.Header.ToString())
+            {
+                case "summary":
+                    ApplicationBar.Buttons.Add(promoteBtn);
+                    ApplicationBar.Buttons.Add(demoteBtn);
+                    ApplicationBar.Buttons.Add(commentBtn);
+                    ApplicationBar.Buttons.Add(shareBtn);
+
+                    ApplicationBar.MenuItems.Add(reportItem);
+                    ApplicationBar.MenuItems.Add(deleteItem);
+                    ApplicationBar.IsVisible = true;
+                    break;
+
+                case "comments":
+                    ApplicationBar.Buttons.Add(promoteBtn);
+                    ApplicationBar.Buttons.Add(demoteBtn);
+                    ApplicationBar.Buttons.Add(commentBtn);
+                    ApplicationBar.MenuItems.Add(reportItem);
+                    ApplicationBar.MenuItems.Add(deleteItem);
+                    ApplicationBar.IsVisible = true;
+                    break;
+
+                case "stats":
+                    ApplicationBar.IsVisible = false;
+                    break;
+
+                default:
+
+
+                    break;
+            }
+        }
+
+        private void HandlePivotUnloaded(object sender, PivotItemEventArgs e)
+        {
+            ApplicationBar.Buttons.Clear();
+            ApplicationBar.MenuItems.Clear();
+        }
 
         
 
