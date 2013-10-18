@@ -10,9 +10,9 @@ using Microsoft.Phone.Shell;
 
 namespace WinPhoneBlahgua
 {
-    public partial class SigninPage : UserControl
+    public partial class AddBadge : PhoneApplicationPage
     {
-        public SigninPage()
+        public AddBadge()
         {
             InitializeComponent();
         }
