@@ -17,6 +17,8 @@ namespace WinPhoneBlahgua
         Blah currentBlah = null;
         User currentUser = null;
         Channel currentChannel = null;
+        BlahCreateRecord createRec = null;
+
         public event PropertyChangedEventHandler PropertyChanged;
         public bool AutoLogin { set; get; }
         public string UserName { get; set; }
@@ -54,6 +56,7 @@ namespace WinPhoneBlahgua
                         BlahguaRest.GetBlahTypes((bTypeList) =>
                         {
                             blahTypeList = bTypeList;
+                            blahTypeList.Remove(blahTypeList.First(i => i.N == "ad"));
                             curChannelList = chanList;
                             CurrentChannel = curChannelList[0];
                             inited = true;
@@ -77,6 +80,16 @@ namespace WinPhoneBlahgua
                 OnPropertyChanged("CurrentChannelList");
             }
                 
+        }
+
+        public BlahCreateRecord CreateRecord
+        {
+            get { return createRec; }
+            set
+            {
+                createRec = value;
+                OnPropertyChanged("CreateRecord");
+            }
         }
 
         public ChannelTypeList CurrentChannelTypeList

@@ -15,6 +15,7 @@ namespace WinPhoneBlahgua
         public CreateBlah()
         {
             InitializeComponent();
+            this.DataContext = App.BlahguaAPI;
         }
     }
 }

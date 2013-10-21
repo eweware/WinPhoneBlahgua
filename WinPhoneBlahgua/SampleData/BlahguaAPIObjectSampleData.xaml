@@ -61,18 +61,14 @@
    
         </WinPhoneBlahgua:User>
     </WinPhoneBlahgua:BlahguaAPIObject.CurrentUser>
+
 	<WinPhoneBlahgua:BlahguaAPIObject.CurrentBlahTypes>
 		<WinPhoneBlahgua:BlahTypeList Capacity="89">
-			<WinPhoneBlahgua:BlahType C="47" N="Felis himenaeos" _id="Vestibulum natoque magnis adipiscing per" c="Mattis ipsum imperdiet"/>
-			<WinPhoneBlahgua:BlahType C="55" N="Sed posuere justo lacus" _id="Potenti parturient vestibulum lorem vestibulum" c="Sem eleifend facilisi duis adipiscing"/>
-			<WinPhoneBlahgua:BlahType C="60" N="Pretium magna rhoncus" _id="Nunc sodales" c="Massa malesuada parturient"/>
-			<WinPhoneBlahgua:BlahType C="90" N="Viverra sit" _id="Vel amet" c="Mauris ante arcu aliquam"/>
-			<WinPhoneBlahgua:BlahType C="61" N="Metus vestibulum penatibus diam nam" _id="Integer quisque morbi" c="Vestibulum mollis neque porttitor sed"/>
-			<WinPhoneBlahgua:BlahType C="42" N="Tincidunt netus" _id="Faucibus habitant dis est" c="Hac nulla"/>
-			<WinPhoneBlahgua:BlahType C="83" N="Tristique adipiscing leo parturient eget" _id="Vestibulum elit" c="Porta purus vivamus inceptos mus"/>
-			<WinPhoneBlahgua:BlahType C="86" N="Montes interdum" _id="Lobortis ultricies" c="Vestibulum adipiscing"/>
-			<WinPhoneBlahgua:BlahType C="70" N="Parturient nascetur risus" _id="Enim nec" c="Non vestibulum venenatis pharetra vulputate"/>
-			<WinPhoneBlahgua:BlahType C="97" N="Nostra aliquam velit per erat" _id="Eros aliquet" c="Sed curabitur nibh"/>
+			<WinPhoneBlahgua:BlahType C="47" N="Says" _id="Vestibulum natoque magnis adipiscing per" c="Mattis ipsum imperdiet"/>
+			<WinPhoneBlahgua:BlahType C="55" N="Leaks" _id="Potenti parturient vestibulum lorem vestibulum" c="Sem eleifend facilisi duis adipiscing"/>
+			<WinPhoneBlahgua:BlahType C="60" N="Polls" _id="Nunc sodales" c="Massa malesuada parturient"/>
+			<WinPhoneBlahgua:BlahType C="90" N="Asks" _id="Vel amet" c="Mauris ante arcu aliquam"/>
+			<WinPhoneBlahgua:BlahType C="61" N="predicts" _id="Integer quisque morbi" c="Vestibulum mollis neque porttitor sed"/>
 		</WinPhoneBlahgua:BlahTypeList>
 	</WinPhoneBlahgua:BlahguaAPIObject.CurrentBlahTypes>
 	<WinPhoneBlahgua:BlahguaAPIObject.CurrentChannelList>
