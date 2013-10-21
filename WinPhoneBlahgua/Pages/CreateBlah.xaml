@@ -6,12 +6,31 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
-    shell:SystemTray.IsVisible="True">
+    xmlns:local="clr-namespace:WinPhoneBlahgua" 
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    d:DataContext="{d:DesignData /SampleData/BlahguaAPIObjectSampleData.xaml}"
+    local:TiltEffect.IsTiltEnabled="True"
+    shell:SystemTray.IsVisible="False">
+    
+    <phone:PhoneApplicationPage.Resources>
+        <DataTemplate x:Name="BlahTypeTemplate">
+
+          <TextBlock Text="{Binding N}" Margin="0" Padding="0"/>
+
+        </DataTemplate>
+        <DataTemplate x:Name="EmptyTemplate">
+            <Grid Height="0" />
+        </DataTemplate>
+        <DataTemplate x:Name="BadgeItemTemplate">
+            <local:BadgeElement></local:BadgeElement>
+        </DataTemplate>
+    </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
@@ -19,16 +38,77 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
-        <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="blahgua" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding CurrentChannel.ChannelName}" />
+            </StackPanel>
+
             <TextBlock Text="new post" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <ScrollViewer Grid.Row="0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                        <TextBlock Text="Type:" VerticalAlignment="Center" />
+                        <toolkit:ListPicker ItemsSource="{Binding CurrentBlahTypes}" Width="250"
+                                    HeaderTemplate="{StaticResource EmptyTemplate}"
+                                    FullModeItemTemplate="{StaticResource BlahTypeTemplate}"
+                                    ItemTemplate="{StaticResource BlahTypeTemplate}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="1" Orientation="Vertical">
+                        <TextBlock Text="headline (64 chars max)"/>
+                        <TextBox Text="{Binding CreateRecord.T, Mode=TwoWay}" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" MaxLength="64" FontSize="36"></TextBox>
+                    </StackPanel>
+                    <StackPanel Grid.Row="2" Orientation="Vertical">
+                        <TextBlock Text="body"/>
+                        <TextBox Text="{Binding CreateRecord.F, Mode=TwoWay}" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" MaxLength="1022" AcceptsReturn="True"></TextBox>
 
+                    </StackPanel>
+                    <StackPanel Grid.Row="3" Orientation="Vertical">
+                        <TextBlock Text="Images"/>
+                        <toolkit:WrapPanel x:Name="ImagesPanel">
+                            <TextBlock x:Name="NoImageText" Margin="0 0 0 16" Text="no images" HorizontalAlignment="Center" FontStyle="Italic" Foreground="#FF8F8F8F" />
+                        </toolkit:WrapPanel>
+                        <Button Width="200" HorizontalAlignment="Right">Add Image</Button>
+                    </StackPanel>
+                    <StackPanel Grid.Row="4" Orientation="Vertical">
+                        <TextBlock Text="Signature"/>
+                        <CheckBox IsChecked="{Binding CreateRecord.UseProfile, Mode=TwoWay}" >use profile</CheckBox>
+
+                        <toolkit:ListPicker Header="Badges" ItemsSource="{Binding CurrentUser.Badges}"/>
+                    </StackPanel>
+                </Grid>
+
+               
+            </ScrollViewer>
+            <Grid Grid.Row="1"  Margin="0 8 0 0">
+                <Border BorderBrush="#FF898989" BorderThickness="0,1,0,0">
+                <StackPanel Orientation="Horizontal" Margin="0 4 0 0">
+                    <Image Source="{Binding CurrentUser.UserImage}" Width="64" Height="64" VerticalAlignment="Top" Margin="0,0,8,0" />
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{Binding CurrentUser.UserName}" FontFamily="Segoe WP Semibold" FontSize="24" />
+                        <TextBlock Text="{Binding CurrentUser.UserDescriptionString}" FontSize="16" />
+                        <ItemsControl ItemsSource="{Binding CreateRecord.Badges}"
+                                      ItemTemplate="{StaticResource BadgeItemTemplate}"/>
+                    </StackPanel>
+                </StackPanel>
+                </Border>
+            </Grid>
+            <Button Grid.Row="2">Create Post</Button>
         </Grid>
     </Grid>
 

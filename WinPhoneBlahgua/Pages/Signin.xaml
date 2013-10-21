@@ -14,7 +14,7 @@
     mc:Ignorable="d"
     xmlns:local="clr-namespace:WinPhoneBlahgua" 
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
-    d:DataContext="{d:DesignData SampleData/BlahguaAPIObjectSampleData.xaml}"
+    d:DataContext="{d:DesignData /SampleData/BlahguaAPIObjectSampleData.xaml}"
     local:TiltEffect.IsTiltEnabled="True"
     shell:SystemTray.IsVisible="False">
 

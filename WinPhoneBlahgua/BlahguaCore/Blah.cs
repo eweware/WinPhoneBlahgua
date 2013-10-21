@@ -5,6 +5,33 @@ using System.Text;
 
 namespace WinPhoneBlahgua
 {
+    public class BadgeReference
+    {
+        string badgeId = "";
+        public string BadgeName {get; set;}
+
+        public BadgeReference()
+        {
+            
+        }
+
+        public BadgeReference(string theID)
+        {
+            badgeId = theID;
+        }
+
+        public string ID
+        {
+            get { return badgeId; }
+            set
+            {
+                badgeId = value;
+            }
+        }
+
+      
+    }
+
 
     public class InboxBlah
     {
@@ -153,6 +180,57 @@ namespace WinPhoneBlahgua
         }
     }
 
+
+    public class BlahCreateRecord
+    {
+        public List<string> B { get; set; }
+        public string F { get; set; }
+        public DateTime E { get; set; } // expiration date
+        public string G { get; set; } // group ID
+        public List<string> M { get; set; } // image IDs
+        public int H { get; set; } // poll option count
+        public List<string> I { get; set; } // poll text
+        public string T { get; set; } // blah text
+        public string Y { get; set; } // type ID
+        public string XX { get; set; } // wehter or not the blah is public
+        
+        List<BadgeReference> _badges = null;
+
+        public List<BadgeReference> Badges
+        {
+            get
+            {
+                return _badges;
+            }
+        }
+
+        public void AddBadge(string badgeId)
+        {
+            BadgeReference newBadge = new BadgeReference(badgeId);
+
+            if (_badges == null)
+                _badges = new List<BadgeReference>();
+            _badges.Add(newBadge);
+            UpdateBadgeList();
+        }
+
+        private void UpdateBadgeList()
+        {
+            if (_badges == null)
+                B = null;
+            else
+            {
+                List<string> newList = new List<string>();
+                foreach (BadgeReference curBadge in _badges)
+                {
+                    newList.Add(curBadge.ID);
+                }
+                B = newList;
+            }
+        }
+
+ 
+    }
 
     public class Blah
     {
