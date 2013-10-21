@@ -9,7 +9,7 @@
     xmlns:local="clr-namespace:WinPhoneBlahgua" 
     x:Class="WinPhoneBlahgua.BlahDetails"
     local:TiltEffect.IsTiltEnabled="True"
-    d:DataContext="{d:DesignData SampleData/BlahguaAPIObjectSampleData.xaml}"
+    d:DataContext="{d:DesignData ../SampleData/BlahguaAPIObjectSampleData.xaml}"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
 
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
@@ -79,14 +79,14 @@
                                     </TextBlock.Foreground></TextBlock>
                                 <TextBlock Grid.Column="1" Margin="8 0 0 0" HorizontalAlignment="Left" Text="{Binding ElapsedTimeString}" Foreground="#FF8D8D8D" FontStyle="Italic" FontSize="16" VerticalAlignment="Bottom"></TextBlock>
                                 <StackPanel Margin="8 0 0 0" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                                    <Image Source="Images\Icons\promote.png" Width="24" Height="24" VerticalAlignment="Top"></Image>
+                                    <Image Source="/Images/Icons/promote.png" Width="24" Height="24" VerticalAlignment="Top"></Image>
                                     <TextBlock Text="{Binding UpVoteCount}" Margin="0 0 8 0"></TextBlock>
-                                    <Image Source="Images\Icons\demote.png" Width="24" Height="24" VerticalAlignment="Top"></Image>
+                                    <Image Source="/Images/Icons/demote.png" Width="24" Height="24" VerticalAlignment="Top"></Image>
                                     <TextBlock Text="{Binding DownVoteCount}"></TextBlock>
                                 </StackPanel>
                             </Grid>
                             <TextBlock Grid.Row="1" Text="{Binding UserDescriptionString}"  Foreground="#FF8D8D8D" FontStyle="Italic" FontSize="16" />
-                            <TextBlock Grid.Row="2" Text="{Binding T}" TextWrapping="Wrap" />
+                            <local:UrlTextBlock Grid.Row="2" Content="{Binding T}" TextWrapping="Wrap" />
                             <Image Grid.Row="3" Margin="9" Source="{Binding ImageURL}" >
                             </Image>
                         </Grid>
@@ -102,19 +102,19 @@
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <Grid Width="480" Height="800" VerticalAlignment="Top" IsHitTestVisible="False">
+        <Canvas Width="480" Height="800" VerticalAlignment="Top" IsHitTestVisible="False">
             <Image  Width="800" Height="800"  x:Name="BackgroundImage" Canvas.Top="0"  Canvas.Left="0"  Source="{Binding CurrentBlah.ImageURL}" Stretch="UniformToFill" >
 
             </Image>
-            <Rectangle x:Name="BackgroundScreen"></Rectangle>
+            <Rectangle x:Name="BackgroundScreen" Width="480" Height="800" Canvas.Top="0" Canvas.Left="0"></Rectangle>
 
-        </Grid>
+        </Canvas>
         <!--Pivot Control-->
         <controls:Pivot x:Name="BlahDetailsPivot" TitleTemplate="{StaticResource HeaderTemplate}" LoadingPivotItem="OnPivotLoading" LoadedPivotItem="HandlePivotLoaded" UnloadedPivotItem="HandlePivotUnloaded" >
             <!--Pivot item one-->
             <controls:PivotItem Header="summary">
                 <ScrollViewer>
-                    <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Vertical" Margin="0 0 0 64">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="{Binding CurrentBlah.UserImage}" Width="64" Height="64" VerticalAlignment="Top" Margin="0,0,8,0" />
                             <StackPanel Orientation="Vertical">
@@ -130,28 +130,14 @@
                             <TextBlock Foreground="LightGray"  FontSize="24" Text=":" />
                         </StackPanel>
 
-                        <TextBlock  Text="{Binding CurrentBlah.T}" FontFamily="Segoe WP Semibold" FontSize="36" TextWrapping="Wrap" />
+                        <local:UrlTextBlock Content="{Binding CurrentBlah.T}" FontFamily="Segoe WP Semibold" FontSize="36" TextWrapping="Wrap" IsReadOnly="True"/>
                             
                         <Image x:Name="BlahImage" Source="{Binding CurrentBlah.ImageURL}" Margin="8" 
                           
                           HorizontalAlignment="Center" ImageOpened="HandleImageOpened" />
-                        <TextBlock Text="{Binding CurrentBlah.F}" TextWrapping="Wrap" />
+                        <local:UrlTextBlock Content="{Binding CurrentBlah.F}" TextWrapping="Wrap" />
                         <Grid  x:Name="ExtraInfoArea" Margin="8"></Grid>
-                        <TextBlock Text="Top Comments"></TextBlock>
-                        <ListBox  x:Name="TopCommentList"
-                             ItemTemplate="{StaticResource CommentTemplate}"
-                             ItemsSource="{Binding CurrentBlah.TopComments}">
-                            <ListBox.ItemContainerStyle>
-                                <Style TargetType="ListBoxItem">
-                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
-                                </Style>
-                            </ListBox.ItemContainerStyle>
-                            <ListBox.Template>
-                                <ControlTemplate>
-                                    <ItemsPresenter />
-                                </ControlTemplate>
-                            </ListBox.Template>
-                        </ListBox>
+                       
                     </StackPanel>
                 </ScrollViewer>
             </controls:PivotItem>
@@ -159,7 +145,7 @@
             <!--Pivot item two-->
             <controls:PivotItem Header="comments">
 
-                    <ListBox  x:Name="AllCommentList" 
+                <ListBox  x:Name="AllCommentList"  Margin="0 0 0 64" 
                         ItemTemplate="{StaticResource CommentTemplate}"
                         ItemsSource="{Binding CurrentBlah.Comments}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
                         <ListBox.ItemContainerStyle>

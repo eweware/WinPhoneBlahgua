@@ -65,9 +65,16 @@ namespace WinPhoneBlahgua
             App.BlahguaAPI.LoadBlahComments((allComments) =>
                 {
                     AllCommentList.ItemsSource = allComments;
-                    TopCommentList.ItemsSource = App.BlahguaAPI.CurrentBlah.TopComments;
                 }
             );
+        }
+
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            // update the text
+            
         }
 
         void SetBlahBackground()

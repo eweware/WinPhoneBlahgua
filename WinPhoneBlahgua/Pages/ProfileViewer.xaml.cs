@@ -10,7 +10,7 @@ using Microsoft.Phone.Shell;
 
 namespace WinPhoneBlahgua
 {
-    public partial class ProfileViewer : UserControl
+    public partial class ProfileViewer : PhoneApplicationPage
     {
         public ProfileViewer()
         {

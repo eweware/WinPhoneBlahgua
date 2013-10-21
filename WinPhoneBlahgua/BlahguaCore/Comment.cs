@@ -49,7 +49,7 @@ namespace WinPhoneBlahgua
                     return App.BlahguaAPI.GetImageURL(_m[0], "A");
                 }
                 else
-                    return "Images\\unknown-user.png";
+                    return "/Images/unknown-user.png";
             }
         }
 
@@ -57,7 +57,11 @@ namespace WinPhoneBlahgua
         {
             get
             {
-                return 0;// U;
+                int vote = 0;
+                if (U != null)
+                    vote = int.Parse(U);
+
+                return vote;
             }
         }
 
@@ -65,7 +69,11 @@ namespace WinPhoneBlahgua
         {
             get
             {
-                return 0;// D;
+                int vote = 0;
+                if (D != null)
+                    vote = int.Parse(D);
+
+                return vote;
             }
         }
 
@@ -98,7 +106,7 @@ namespace WinPhoneBlahgua
         {
             get
             {
-                return c.ToShortTimeString();
+                return Utilities.ElapsedDateString(c);
             }
         }
 

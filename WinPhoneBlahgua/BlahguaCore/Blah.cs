@@ -179,30 +179,13 @@ namespace WinPhoneBlahgua
 
         }
 
-        public CommentList TopComments
-        {
-            get
-            {
-                if (Comments != null)
-                {
-                    if (Comments.Count > 5)
-                        return (CommentList)Comments.Take(5);
-                    else
-                        return Comments;
-                }
-                else
-                    return null;
-
-            }
-        }
-
         
 
         public string ElapsedTimeString
         {
             get
             {
-                return c.ToShortTimeString();
+                return Utilities.ElapsedDateString(c);
             }
         }
 
@@ -237,7 +220,7 @@ namespace WinPhoneBlahgua
                 if ((Description != null) && (Description.m != null))
                     return App.BlahguaAPI.GetImageURL(Description.m, "A");
                 else
-                    return "Images\\unknown-user.png";
+                    return "..\\Images\\unknown-user.png";
             }
         }
 

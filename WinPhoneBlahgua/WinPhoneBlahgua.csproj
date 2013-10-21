@@ -68,6 +68,7 @@
     <Reference Include="mscorlib.extensions" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlahguaCore\Utilities.cs" />
     <Compile Include="Pages\AddBadge.xaml.cs">
       <DependentUpon>AddBadge.xaml</DependentUpon>
     </Compile>
@@ -115,6 +116,7 @@
     <Compile Include="Pages\UserProfile.xaml.cs">
       <DependentUpon>UserProfile.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UrlTextBlock.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -174,13 +176,19 @@
     <Content Include="Images\Icons\demote.png" />
     <Content Include="Images\Icons\share.png" />
     <Content Include="Images\Icons\promote.png" />
-    <Content Include="Images\The Now Network.png" />
+    <Content Include="Images\The Now Network.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\fontawesome-webfont.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Resource Include="Images\badge_standalone_30x31.png" />
-    <Resource Include="Images\Large_CloseGreen.png" />
-    <Resource Include="Images\unknown-user.png" />
+    <Content Include="Images\Large_CloseGreen.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\unknown-user.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="ApplicationIcon.png">

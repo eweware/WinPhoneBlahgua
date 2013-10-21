@@ -3,13 +3,83 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:local="clr-namespace:WinPhoneBlahgua" 
     mc:Ignorable="d"
+    local:TiltEffect.IsTiltEnabled="True"
+    d:DataContext="{d:DesignData ../SampleData/BlahguaAPIObjectSampleData.xaml}"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    d:DesignHeight="480" d:DesignWidth="480">
-    
-    <Grid x:Name="LayoutRoot" Background="{StaticResource PhoneChromeBrush}">
+    d:DesignHeight="800" d:DesignWidth="480">
 
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardIn"/>
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardIn"/>
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut"/>
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut"/>
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
+
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" >
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FF7DBFE3" Offset="0.55"/>
+                <GradientStop Color="#FF7AD000" Offset="0.734"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <controls:Pivot x:Name="SignInPivot" Title="your profile" >
+            <!--Pivot item one-->
+            <controls:PivotItem Header="personas">
+                <!--ContentPanel - place additional content here-->
+                <Grid>
+
+                </Grid>
+            </controls:PivotItem>
+
+            <controls:PivotItem Header="history">
+                <!--ContentPanel - place additional content here-->
+                <Grid>
+                    
+                </Grid>
+            </controls:PivotItem>
+            <controls:PivotItem Header="stats">
+                <!--ContentPanel - place additional content here-->
+                <Grid>
+
+                </Grid>
+            </controls:PivotItem>
+            <controls:PivotItem Header="account">
+                <!--ContentPanel - place additional content here-->
+                <Grid>
+
+                </Grid>
+            </controls:PivotItem>
+
+        </controls:Pivot>
     </Grid>
 </UserControl>

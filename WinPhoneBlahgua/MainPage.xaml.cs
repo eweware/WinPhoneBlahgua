@@ -28,6 +28,8 @@ namespace WinPhoneBlahgua
         double smallBlahSize, mediumBlahSize, largeBlahSize;
         bool AtScrollEnd = false;
         int FramesPerSecond = 60;
+        BlahRollItem targetBlah = null;
+        DispatcherTimer BlahAnimateTimer = new DispatcherTimer();
      
         // Constructor
         public MainPage()
@@ -35,10 +37,14 @@ namespace WinPhoneBlahgua
             Loaded += new RoutedEventHandler(MainPage_Loaded); 
             InitializeComponent();
             this.DataContext = null;
+            BlahAnimateTimer = new DispatcherTimer();
+            BlahAnimateTimer.Tick += BlahAnimateTimer_Tick;
+            BlahAnimateTimer.Interval = new TimeSpan(0,0,2);
 
 
             
         }
+
 
 
         void BlahScroller_MouseMove(object sender, MouseEventArgs e)
@@ -75,10 +81,26 @@ namespace WinPhoneBlahgua
                     blahList = newBlahList;
                     blahList.PrepareBlahs();
                     RenderInitialBlahs();
-                    scrollTimer.Start();
+                    StartTimers();
+                    
                    
 
                 });
+        }
+
+        void StartTimers()
+        {
+            targetBlah = null;
+            scrollTimer.Start();
+            MaybeAnimateElement();
+        }
+
+        void StopTimers()
+        {
+            scrollTimer.Stop();
+            AnimateTextFadeIn.Stop();
+            AnimateTextFadeOut.Stop();
+            targetBlah = null;
         }
 
         private void FetchNextBlahList()
@@ -147,8 +169,7 @@ namespace WinPhoneBlahgua
             Canvas.SetTop(newBlahItem, yLoc);
 
             BlahContainer.Children.Add(newBlahItem);
-                newBlahItem.ScaleTextToFit();
-
+            newBlahItem.ScaleTextToFit();
         }
 
         private void HandleScrollStart(object sender, ManipulationStartedEventArgs e)
@@ -186,6 +207,7 @@ namespace WinPhoneBlahgua
             App.BlahguaAPI.PropertyChanged += new PropertyChangedEventHandler(On_API_PropertyChanged);
 
             InitService();
+
             
         }
 
@@ -205,8 +227,7 @@ namespace WinPhoneBlahgua
             }
             else
             {
-                if (!scrollTimer.IsEnabled)
-                    scrollTimer.Start();
+                
             }
         }
 
@@ -242,7 +263,7 @@ namespace WinPhoneBlahgua
 
         void OpenBlahItem(BlahRollItem curBlah)
         {
-            scrollTimer.Stop();
+            StopTimers();
             App.BlahguaAPI.SetCurrentBlahFromId(curBlah.BlahData.I, OpenFullBlah);
             
 
@@ -250,7 +271,7 @@ namespace WinPhoneBlahgua
 
         protected override void OnNavigatingFrom(System.Windows.Navigation.NavigatingCancelEventArgs e)
         {
-            scrollTimer.Stop();
+            StopTimers();
             base.OnNavigatingFrom(e);
         }
 
@@ -269,9 +290,9 @@ namespace WinPhoneBlahgua
                 UserInfoBtn.Visibility = Visibility.Collapsed;
                 NewBlahBtn.Visibility = Visibility.Collapsed;
                 SignInBtn.Visibility = Visibility.Visible;
-            }   
+            }
 
-            scrollTimer.Start();
+            StartTimers();
         }
 
 
@@ -279,16 +300,7 @@ namespace WinPhoneBlahgua
         {
             if (theBlah != null)
             {
-                NavigationService.Navigate(new Uri("/BlahDetails.xaml", UriKind.Relative));
-
-                // openthe page
-                /*
-                if (blahPage == null)
-                    blahPage = new BlahViewer();
-                blahPage.CurrentBlah = theBlah;
-                OpenPage(blahPage);
-                 * */
-               
+                NavigationService.Navigate(new Uri("/Pages/BlahDetails.xaml", UriKind.Relative));
             }
             else
             {
@@ -306,6 +318,7 @@ namespace WinPhoneBlahgua
 
         void OnChannelChanged()
         {
+            StopTimers();
             ClearBlahs();
             FetchInitialBlahList();
 
@@ -497,7 +510,7 @@ namespace WinPhoneBlahgua
 
         private void DoSignIn(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new Uri("/Signin.xaml", UriKind.Relative));    
+            NavigationService.Navigate(new Uri("/Pages/Signin.xaml", UriKind.Relative));    
         }
 
         private void NewBlahBtn_Click(object sender, RoutedEventArgs e)
@@ -507,18 +520,105 @@ namespace WinPhoneBlahgua
 
         private void UserInfoBtn_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-
+            NavigationService.Navigate(new Uri("/Pages/ProfileViewer.xaml", UriKind.Relative));    
         }
 
         private void NewBlahBtn_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
+            NavigationService.Navigate(new Uri("/Pages/CreateBlah.xaml", UriKind.Relative));    
+        }
+
+        private void FadeIn_Completed(object sender, EventArgs e)
+        {
+            ((Storyboard)sender).Stop();
+            targetBlah.TextArea.Visibility = Visibility.Visible;
+            targetBlah.BlahBackground.Visibility = Visibility.Visible;
+            MaybeAnimateElement();   
+            
+        }
+
+        private void FadeOut_Completed(object sender, EventArgs e)
+        {
+            ((Storyboard)sender).Stop();
+            targetBlah.TextArea.Visibility = Visibility.Collapsed;
+            targetBlah.BlahBackground.Visibility = Visibility.Collapsed;
+            MaybeAnimateElement();
 
         }
 
-   
 
+        void MaybeAnimateElement()
+        {
+            try
+            {
+                int blahCount = BlahContainer.Children.Count;
 
+                if (blahCount > 0)
+                {
+                    Random rnd = new Random();
+                    BlahRollItem newItem;
+                    double top = BlahScroller.VerticalOffset;
+                    double bottom = top + 800;
+                    double curTop;
+                    int maxTry = 100;
+                    int curTry = 0;
 
+                    do
+                    {
+                        int newindex = rnd.Next(blahCount);
+                        newItem = (BlahRollItem)BlahContainer.Children[newindex];
+                        curTop = Canvas.GetTop(newItem);
+                        curTry++;
+                        if (curTry > maxTry)
+                        {
+                            newItem = null;
+                            break;
+                        }
 
+                    }
+                    while ((newItem.BlahData.M == null) || (newItem.BlahData.T == "") || (curTop < top) || (curTop > bottom) || (targetBlah == newItem));
+
+                    if (newItem != null)
+                    {
+                        targetBlah = newItem;
+
+                        if (newItem.TextArea.Visibility == Visibility.Collapsed)
+                        {
+                            Storyboard.SetTarget(AnimateTextFadeIn.Children[0], newItem.TextArea);
+                            Storyboard.SetTarget(AnimateTextFadeIn.Children[1], newItem.TextArea);
+                            Storyboard.SetTarget(AnimateTextFadeIn.Children[2], newItem.BlahBackground);
+                            Storyboard.SetTarget(AnimateTextFadeIn.Children[3], newItem.BlahBackground);
+                            AnimateTextFadeIn.Begin();
+                        }
+                        else
+                        {
+                            Storyboard.SetTarget(AnimateTextFadeOut.Children[0], newItem.TextArea);
+                            Storyboard.SetTarget(AnimateTextFadeOut.Children[1], newItem.TextArea);
+                            Storyboard.SetTarget(AnimateTextFadeOut.Children[2], newItem.BlahBackground);
+                            Storyboard.SetTarget(AnimateTextFadeOut.Children[3], newItem.BlahBackground);
+                            AnimateTextFadeOut.Begin();
+                        }
+                    }
+                    else
+                    {
+                        BlahAnimateTimer.Start();
+                    }
+                }
+            }
+            catch (Exception exp)
+            {
+                Console.WriteLine("err: " + exp.Message);
+            }
+        }
+
+        void BlahAnimateTimer_Tick(object sender, EventArgs e) 
+        {
+            targetBlah = null;
+            BlahAnimateTimer.Stop();
+            MaybeAnimateElement();
+        }
     }
+
 }
+
+   

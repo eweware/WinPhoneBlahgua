@@ -18,10 +18,14 @@ namespace WinPhoneBlahgua
         private static float maxTextSize = 72;
         public InboxBlah BlahData {get; set;}
 
+        public bool IsAnimating { get; set; }
+
         public BlahRollItem()
         {
             InitializeComponent();
+            IsAnimating = false;
             BlahData = null;
+            
         }
 
         public void Initialize(InboxBlah theBlah)
@@ -29,31 +33,43 @@ namespace WinPhoneBlahgua
             BlahData = theBlah;
             BlahBackground.Fill = GetBlahFrameBrush(BlahData);
             TopBorder.BorderBrush = GetBlahFrameBrush(BlahData);
+            BlahBackground.Opacity = .4;
             if (BlahData.M != null)
             {
                 string imageBase = BlahData.M[0];
                 string imageSize = BlahData.ImageSize;
                 string imageURL = App.BlahguaAPI.GetImageURL(imageBase, imageSize);
+                BlahImage.Opacity = 0;
                 BlahImage.Source = new BitmapImage(new Uri(imageURL, UriKind.Absolute));
-                if ((BlahData.T != null) && (BlahData.T != ""))
-                {
-                    // Put the text on a grey background...
-                    BlahBackground.Opacity = .8;
-                    TextArea.Foreground = (Brush)App.Current.Resources["BrushBlahguaWhite"];
-                }
-                else
-                {
-                    BlahBackground.Visibility = Visibility.Collapsed;
-                    TextArea.Visibility = Visibility.Collapsed;
-                }
+                BlahImage.Loaded += BlahImage_Loaded;
+                
             }
             else
             {
-                BlahBackground.Opacity = .4;
+
                 BlahImage.Visibility = Visibility.Collapsed;
             }
 
             TextArea.Text = BlahData.T;
+        }
+
+        void BlahImage_Loaded(object sender, RoutedEventArgs e)
+        {
+            BlahImage.Opacity = 1;
+            if ((BlahData.T != null) && (BlahData.T != ""))
+            {
+                BlahBackground.Opacity = .8;
+                TextArea.Foreground = (Brush)App.Current.Resources["BrushBlahguaWhite"];
+                BlahBackground.Visibility = Visibility.Collapsed;
+                TextArea.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                BlahBackground.Visibility = Visibility.Collapsed;
+                TextArea.Visibility = Visibility.Collapsed;
+            }
+
+            
         }
 
         private Brush GetBlahBrush(InboxBlah theBlah)
