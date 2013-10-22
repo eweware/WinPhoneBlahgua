@@ -18,6 +18,8 @@ namespace WinPhoneBlahgua
         User currentUser = null;
         Channel currentChannel = null;
         BlahCreateRecord createRec = null;
+        public UserDescription CurrentUserDescription = null;
+
 
         public event PropertyChangedEventHandler PropertyChanged;
         public bool AutoLogin { set; get; }
@@ -26,6 +28,8 @@ namespace WinPhoneBlahgua
         public string UserPassword2 { get; set; }
         public bool NewAccount { get; set; }
         bool inited = false;
+        public Blah NewBlahToInsert { get; set; }
+        private Dictionary<string, string> intBadgeMap = new Dictionary<string,string>();
 
         public delegate void BlahguaInit_callback(bool didIt);
 
@@ -40,7 +44,8 @@ namespace WinPhoneBlahgua
 
         public BlahguaAPIObject()
         {
-            BlahguaRest = new BlahguaRESTservice();    
+            BlahguaRest = new BlahguaRESTservice();
+            NewBlahToInsert = null;
         }
 
         public void Initialize(BlahguaInit_callback callBack)
@@ -71,6 +76,22 @@ namespace WinPhoneBlahgua
             }
         }
 
+        public void GetBadgeName(string badgeId, string_callback callback)
+        {
+            if (intBadgeMap.ContainsKey(badgeId))
+                callback(intBadgeMap[badgeId]);
+            else
+            {
+                BlahguaRest.GetBadgeInfo(badgeId, (theBadge) =>
+                    {
+                        string badgeName = theBadge.N;
+                        intBadgeMap[badgeId] = badgeName;
+                        callback(badgeName);
+                    }
+                );
+            }
+        }
+
         public ChannelList CurrentChannelList
         {
             get { return curChannelList; }
@@ -89,6 +110,30 @@ namespace WinPhoneBlahgua
             {
                 createRec = value;
                 OnPropertyChanged("CreateRecord");
+            }
+        }
+
+        public void CreateBlah(Blah_callback callback)
+        {
+            CreateRecord.G = CurrentChannel.ChannelId;
+            BlahguaRest.CreateBlah(CreateRecord, callback);
+
+        }
+
+        public void EnsureUserDescription(string_callback callback)
+        {
+            if (CurrentUserDescription == null)
+            {
+                BlahguaRest.GetUserDescription(CurrentUser._id, (theDesc) =>
+                    {
+                        CurrentUserDescription = theDesc;
+                        callback(CurrentUserDescription.d);
+                    }
+                );
+            }
+            else
+            {
+                callback( CurrentUser.DescriptionString);
             }
         }
 

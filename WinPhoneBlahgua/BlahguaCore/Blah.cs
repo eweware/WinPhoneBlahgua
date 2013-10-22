@@ -2,9 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel;
+using System.Collections.ObjectModel;
 
 namespace WinPhoneBlahgua
 {
+    public class BadgeRecord
+    {
+        public string N {get; set;}
+
+        public BadgeRecord() 
+        { 
+        }
+
+    }
+
     public class BadgeReference
     {
         string badgeId = "";
@@ -17,7 +29,7 @@ namespace WinPhoneBlahgua
 
         public BadgeReference(string theID)
         {
-            badgeId = theID;
+            ID = theID;
         }
 
         public string ID
@@ -26,10 +38,24 @@ namespace WinPhoneBlahgua
             set
             {
                 badgeId = value;
+                UpdateBadgeName();
             }
         }
 
+        private void UpdateBadgeName()
+        {
+            App.BlahguaAPI.GetBadgeName(ID, (theName) =>
+                {
+                    BadgeName = theName;
+                }
+            );
+        }
+
       
+    }
+
+    public class BadgeList : ObservableCollection<BadgeReference>
+    {
     }
 
 
@@ -192,44 +218,119 @@ namespace WinPhoneBlahgua
         public List<string> I { get; set; } // poll text
         public string T { get; set; } // blah text
         public string Y { get; set; } // type ID
-        public string XX { get; set; } // wehter or not the blah is public
-        
-        List<BadgeReference> _badges = null;
+        public bool XX { get; set; } // wehter or not the blah is private
+       
 
-        public List<BadgeReference> Badges
+        public BlahCreateRecord()
+        {
+            XX = true;
+            Y = App.BlahguaAPI.CurrentBlahTypes.First<BlahType>(n => n.N == "says")._id;
+            E = DateTime.Now + new TimeSpan(30, 0, 0, 0);
+
+        }
+
+        public bool UseProfile
+        {
+            get { return !XX; }
+            set
+            {
+                XX = (!value);
+            }
+        }
+
+
+        public BlahType BlahType
+        {
+            get 
+            {
+                return App.BlahguaAPI.CurrentBlahTypes.First<BlahType>(n => n._id == Y);
+            }
+            set
+            {
+                Y = value._id;
+            }
+        }
+
+        public string UserImage
         {
             get
             {
-                return _badges;
-            }
-        }
-
-        public void AddBadge(string badgeId)
-        {
-            BadgeReference newBadge = new BadgeReference(badgeId);
-
-            if (_badges == null)
-                _badges = new List<BadgeReference>();
-            _badges.Add(newBadge);
-            UpdateBadgeList();
-        }
-
-        private void UpdateBadgeList()
-        {
-            if (_badges == null)
-                B = null;
-            else
-            {
-                List<string> newList = new List<string>();
-                foreach (BadgeReference curBadge in _badges)
+                if (XX)
                 {
-                    newList.Add(curBadge.ID);
+                    return "/Images/unknown-user.png";    
                 }
-                B = newList;
+                else
+                {
+                    return App.BlahguaAPI.CurrentUser.UserImage;
+                }
             }
         }
 
- 
+        public string UserName
+        {
+            get
+            {
+                if (XX)
+                {
+                    return "Someone";
+                }
+                else
+                {
+                    return App.BlahguaAPI.CurrentUser.N;
+                }
+            }
+        }
+
+        public string UserDescriptionString
+        {
+            get
+            {
+                if (XX)
+                {
+                    return "An anonymous person";
+                }
+                else
+                {
+                    return App.BlahguaAPI.CurrentUser.DescriptionString;
+                }
+            }
+        }
+
+        public BadgeList Badges
+        {
+            get
+            {
+                if (B == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    BadgeList badges = new BadgeList();
+                    foreach (string badgeId in B)
+                    {
+                        badges.Add(new BadgeReference(badgeId));
+                    }
+
+                    return badges;
+                }
+            }
+            set
+            {
+                if ((value == null) || (value.Count == 0))
+                {
+                    B = null;
+                }
+                else
+                {
+                    B = new List<string>();
+                    foreach (BadgeReference curBadge in value)
+                    {
+                        B.Add(curBadge.ID);
+                    }
+                }
+            }
+        }
     }
 
     public class Blah

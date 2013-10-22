@@ -25,6 +25,54 @@ namespace WinPhoneBlahgua
                     return "Images\\unknown-user.png";
             }
         }
+
+        public string DescriptionString
+        {
+            get
+            {
+                if (App.BlahguaAPI.CurrentUserDescription != null)
+                    return App.BlahguaAPI.CurrentUserDescription.d;
+                else
+                    return null;
+            }
+        }
+
+        public BadgeList Badges
+        {
+            get
+            {
+                if (B == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    BadgeList badges = new BadgeList();
+                    foreach (string badgeId in B)
+                    {
+                        badges.Add(new BadgeReference(badgeId));
+                    }
+
+                    return badges;
+                }
+            }
+            set
+            {
+                if ((value == null) || (value.Count == 0))
+                {
+                    B = null;
+                }
+                else
+                {
+                    B = new List<string>();
+                    foreach (BadgeReference curBadge in value)
+                    {
+                        B.Add(curBadge.ID);
+                    }
+                }
+            }
+        }
+
     }
 
     public class UserDescription

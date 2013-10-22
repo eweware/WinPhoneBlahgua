@@ -19,7 +19,8 @@ namespace WinPhoneBlahgua
     public delegate void Comments_callback(CommentList theList);
     public delegate void CommentAuthorDescriptionList_callback(CommentAuthorDescriptionList theList);
     public delegate void string_callback(String theResult);
-    public delegate void User_callback(User theResult);  
+    public delegate void User_callback(User theResult);
+    public delegate void BadgeRecord_callback(BadgeRecord theResult);  
 
     public class BlahguaRESTservice
     {
@@ -148,6 +149,18 @@ namespace WinPhoneBlahgua
 
         }
 
+        public void CreateBlah(BlahCreateRecord theBlah , Blah_callback callback)
+        {
+            RestRequest request = new RestRequest("blahs", Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(theBlah);
+            apiClient.ExecuteAsync<Blah>(request, (response) =>
+            {
+                callback(response.Data);
+            });
+
+        }
+
         public void GetUserInfo(User_callback callback)
         {
             RestRequest request = new RestRequest("users/info", Method.GET);
@@ -188,6 +201,15 @@ namespace WinPhoneBlahgua
         {
             RestRequest request = new RestRequest("blahs/" + blahId, Method.GET);
             apiClient.ExecuteAsync<Blah>(request, (response) =>
+            {
+                callback(response.Data);
+            });
+        }
+
+        public void GetBadgeInfo(string badgeId, BadgeRecord_callback callback)
+        {
+            RestRequest request = new RestRequest("badges/" + badgeId, Method.GET);
+            apiClient.ExecuteAsync<BadgeRecord>(request, (response) =>
             {
                 callback(response.Data);
             });

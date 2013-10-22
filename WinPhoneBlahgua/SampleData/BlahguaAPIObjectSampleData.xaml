@@ -1,5 +1,16 @@
-<WinPhoneBlahgua:BlahguaAPIObject xmlns:WinPhoneBlahgua="clr-namespace:WinPhoneBlahgua" xmlns:System="clr-namespace:System;assembly=mscorlib">
-	<WinPhoneBlahgua:BlahguaAPIObject.CurrentBlah>
+<WinPhoneBlahgua:BlahguaAPIObject xmlns:WinPhoneBlahgua="clr-namespace:WinPhoneBlahgua" 
+                                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                                  xmlns:System="clr-namespace:System;assembly=mscorlib">
+    <WinPhoneBlahgua:BlahguaAPIObject.CurrentBlahTypes>
+        <WinPhoneBlahgua:BlahTypeList Capacity="89">
+            <WinPhoneBlahgua:BlahType N="Says" />
+            <WinPhoneBlahgua:BlahType C="55" N="Leaks" _id="Potenti parturient vestibulum lorem vestibulum" c="Sem eleifend facilisi duis adipiscing"/>
+            <WinPhoneBlahgua:BlahType C="60" N="Polls" _id="Nunc sodales" c="Massa malesuada parturient"/>
+            <WinPhoneBlahgua:BlahType C="90" N="Asks" _id="Vel amet" c="Mauris ante arcu aliquam"/>
+            <WinPhoneBlahgua:BlahType C="61" N="predicts" _id="Integer quisque morbi" c="Vestibulum mollis neque porttitor sed"/>
+        </WinPhoneBlahgua:BlahTypeList>
+    </WinPhoneBlahgua:BlahguaAPIObject.CurrentBlahTypes>
+    <WinPhoneBlahgua:BlahguaAPIObject.CurrentBlah>
 		<WinPhoneBlahgua:Blah A="Vestibulum cras class curabitur aenean" 
                               ChannelName="The Testing Channel" 
                               F="One girlfriend became a http://www.sexworker.com sex worker a while after we www.broke.com up and though we had a bit of ex sex, our friendship was affectionate but generally nonsexual during her sex work period. I got to know a lot about sex work by talking to her and saw it in a more complex way than I had before. She stopped a few years ago but is considering starting again for the money. This is in a US state where it is illegal. " G="Conubia eros" 
@@ -54,6 +65,27 @@
 			</WinPhoneBlahgua:Blah.M>
 		</WinPhoneBlahgua:Blah>
 	</WinPhoneBlahgua:BlahguaAPIObject.CurrentBlah>
+    <WinPhoneBlahgua:BlahguaAPIObject.CreateRecord>
+        <WinPhoneBlahgua:BlahCreateRecord  T="Some Headling Text" F="Some Body Text" E="9/28/2103" 
+                                           UserImage="\Images\unknown-user.png"
+                                           UserName="Ultradad" UserDescriptionString="A white male from Beverly Hills, CA">
+            <WinPhoneBlahgua:BlahCreateRecord.BlahType>
+                <WinPhoneBlahgua:BlahType N="Says" />
+            </WinPhoneBlahgua:BlahCreateRecord.BlahType>
+           
+            <WinPhoneBlahgua:BlahCreateRecord.I>
+                <System:String>This is option 1</System:String>
+                <System:String>This is option 2</System:String>
+                <System:String>This is option 3</System:String>
+            </WinPhoneBlahgua:BlahCreateRecord.I>
+            <WinPhoneBlahgua:BlahCreateRecord.Badges>
+                <WinPhoneBlahgua:BadgeList>
+                    <WinPhoneBlahgua:BadgeReference BadgeName="Microsoft"/>
+                    <WinPhoneBlahgua:BadgeReference BadgeName="eweware"/>
+                </WinPhoneBlahgua:BadgeList>
+            </WinPhoneBlahgua:BlahCreateRecord.Badges>
+        </WinPhoneBlahgua:BlahCreateRecord>
+    </WinPhoneBlahgua:BlahguaAPIObject.CreateRecord>
 	<WinPhoneBlahgua:BlahguaAPIObject.CurrentUser>
         <WinPhoneBlahgua:User
             UserImage="Images\unknown-user.png"
@@ -62,15 +94,7 @@
         </WinPhoneBlahgua:User>
     </WinPhoneBlahgua:BlahguaAPIObject.CurrentUser>
 
-	<WinPhoneBlahgua:BlahguaAPIObject.CurrentBlahTypes>
-		<WinPhoneBlahgua:BlahTypeList Capacity="89">
-			<WinPhoneBlahgua:BlahType C="47" N="Says" _id="Vestibulum natoque magnis adipiscing per" c="Mattis ipsum imperdiet"/>
-			<WinPhoneBlahgua:BlahType C="55" N="Leaks" _id="Potenti parturient vestibulum lorem vestibulum" c="Sem eleifend facilisi duis adipiscing"/>
-			<WinPhoneBlahgua:BlahType C="60" N="Polls" _id="Nunc sodales" c="Massa malesuada parturient"/>
-			<WinPhoneBlahgua:BlahType C="90" N="Asks" _id="Vel amet" c="Mauris ante arcu aliquam"/>
-			<WinPhoneBlahgua:BlahType C="61" N="predicts" _id="Integer quisque morbi" c="Vestibulum mollis neque porttitor sed"/>
-		</WinPhoneBlahgua:BlahTypeList>
-	</WinPhoneBlahgua:BlahguaAPIObject.CurrentBlahTypes>
+	
 	<WinPhoneBlahgua:BlahguaAPIObject.CurrentChannelList>
 		<WinPhoneBlahgua:ChannelList Capacity="20">
             <WinPhoneBlahgua:Channel B="78" ChannelImageUrl="Images\The Now Network.png" ChannelTypeName="Consequat sagittis sem commodo convallis" ChannelTypeId="Adipiscing blandit" ChannelName="Vestibulum pulvinar" ChannelId="Phasellus placerat ornare" D="Senectus nisi" F="96" G="Sit vitae" I="26" L="88" M="Parturient conubia vestibulum vel" N="Nam platea" R="93" S="Nisl class vestibulum sociosqu nunc" U="36" V="43" X="Suscipit adipiscing odio" Y="Orci torquent parturient ultrices sed" _id="Curae pede donec cubilia quam" c="Primis quis urna dapibus cras" u="Egestas dignissim"/>
