@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel;
+using Microsoft.Phone.Tasks;
+using System.IO.IsolatedStorage;
 
 namespace WinPhoneBlahgua
 {
@@ -10,6 +12,12 @@ namespace WinPhoneBlahgua
 
     public class BlahguaAPIObject : INotifyPropertyChanged
     {
+        class SavedUserInfo
+        {
+            public string UserName { get; set; }
+            public string Password { get; set; }
+        }
+
         ChannelList curChannelList = null;
         ChannelTypeList curChannelTypes = null;
         BlahTypeList blahTypeList = null;
@@ -48,25 +56,90 @@ namespace WinPhoneBlahgua
             NewBlahToInsert = null;
         }
 
+        SavedUserInfo GetSavedUserInfo()
+        {
+            SavedUserInfo theInfo = new SavedUserInfo();
+            theInfo.UserName = (string)SafeLoadSetting("username", "");
+            theInfo.Password = (string)SafeLoadSetting("password", "");
+            return theInfo;
+        }
+
+        void SaveUserInfo(string name, string password)
+        {
+            SafeSaveSetting("username", name);
+            SafeSaveSetting("password", password);
+        }
+
+        void LoadSettings()
+        {
+            AutoLogin = (bool)SafeLoadSetting("AutoLogin", true);
+        }
+
+        void SaveSettings()
+        {
+            SafeSaveSetting("AutoLogin", AutoLogin);
+        }
+
+        public object SafeLoadSetting(string setting, object defVal)
+        {
+            IsolatedStorageSettings settings = IsolatedStorageSettings.ApplicationSettings;
+            if (settings.Contains(setting))
+                return settings[setting];
+            else
+            {
+                settings.Add(setting, defVal);
+                return defVal;
+            }
+        }
+
+        public void SafeSaveSetting(string setting, object val)
+        {
+            IsolatedStorageSettings settings = IsolatedStorageSettings.ApplicationSettings;
+            if (settings.Contains(setting))
+                settings[setting] = val;
+            else
+            {
+                settings.Add(setting, val);
+            }
+        }
+
         public void Initialize(BlahguaInit_callback callBack)
         {
+            LoadSettings();
             if (!inited)
             {
                 BlahguaRest.GetChannelTypes((cTypeList) =>
                 {
                     curChannelTypes = cTypeList;
 
-                    BlahguaRest.GetPublicChannels((chanList) =>
+                    BlahguaRest.GetBlahTypes((bTypeList) =>
                     {
-                        BlahguaRest.GetBlahTypes((bTypeList) =>
+                        blahTypeList = bTypeList;
+                        blahTypeList.Remove(blahTypeList.First(i => i.N == "ad"));
+
+                        if (AutoLogin)
                         {
-                            blahTypeList = bTypeList;
-                            blahTypeList.Remove(blahTypeList.First(i => i.N == "ad"));
-                            curChannelList = chanList;
-                            CurrentChannel = curChannelList[0];
-                            inited = true;
-                            callBack(true);
-                        });
+                            SavedUserInfo info = GetSavedUserInfo();
+                            if (info.UserName != "")
+                            {
+                                SignIn(info.UserName, info.Password, true, (theErrStr) =>
+                                    {
+                                        if (theErrStr == null)
+                                        {
+                                            inited = true;
+                                            callBack(true);
+                                        }
+                                        else
+                                            CompletePublicSignin(callBack);
+                                    }
+                                );
+                            }
+                            else 
+                                CompletePublicSignin(callBack);
+                        }
+                        else
+                            CompletePublicSignin(callBack);  
+
                     });
                 });
             }
@@ -74,6 +147,26 @@ namespace WinPhoneBlahgua
             {
                 callBack(true);
             }
+        }
+
+        private void CompletePublicSignin(BlahguaInit_callback callback)
+        {
+            BlahguaRest.GetPublicChannels((chanList) =>
+                           {
+                               curChannelList = chanList;
+                               CurrentChannel = curChannelList[0];
+                               inited = true;
+                               callback(true);
+                           });
+        }
+
+        public void UploadPhoto(System.IO.Stream photo, string fileName, string_callback callback)
+        {
+            BlahguaRest.UploadPhoto(photo, fileName, (newPhotoId) =>
+                {
+                    callback(newPhotoId);
+                }
+            );
         }
 
         public void GetBadgeName(string badgeId, string_callback callback)
@@ -308,6 +401,12 @@ namespace WinPhoneBlahgua
                 {
                     if (resultStr == "")
                     {
+                        if (saveIt)
+                        {
+                            AutoLogin = true;
+                            SaveUserInfo(userName, password);
+                            SaveSettings();
+                        }
                         PrepareForNewUser(callBack);
                     }
                     else
@@ -338,8 +437,9 @@ namespace WinPhoneBlahgua
         {
             BlahguaRest.GetUserChannels((chanList) =>
                 {
-                    CurrentChannel = curChannelList[0];
                     CurrentChannelList = chanList;
+                    CurrentChannel = curChannelList[0];
+
                     BlahguaRest.GetUserInfo((newUser) =>
                         {
                             CurrentUser = newUser;

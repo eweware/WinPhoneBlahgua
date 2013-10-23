@@ -69,6 +69,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlahguaCore\Utilities.cs" />
+    <Compile Include="Controls\BlahAuthorHeader.xaml.cs">
+      <DependentUpon>BlahAuthorHeader.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\AddBadge.xaml.cs">
       <DependentUpon>AddBadge.xaml</DependentUpon>
     </Compile>
@@ -120,6 +123,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="Controls\BlahAuthorHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\AddBadge.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -172,13 +179,21 @@
     <Content Include="Images\Icons\demote.png" />
     <Content Include="Images\Icons\share.png" />
     <Content Include="Images\Icons\promote.png" />
+    <Content Include="Images\newblah.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\The Now Network.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\uploadplaceholder.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\fontawesome-webfont.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Images\badge_standalone_30x31.png" />
+    <Content Include="Images\badge_standalone_30x31.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\Large_CloseGreen.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

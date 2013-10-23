@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="WinPhoneBlahgua.BlahAuthorHeader"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:WinPhoneBlahgua"       
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    d:DesignHeight="480" d:DesignWidth="480" 
+    d:DataContext="{d:DesignData /SampleData/BlahguaAPIObjectSampleData.xaml}">
+    
+    <UserControl.Resources>
+        <DataTemplate x:Name="BadgeItemTemplate">
+            <local:BadgeElement Foreground="{StaticResource BrushBlahguaWhite}" ></local:BadgeElement>
+        </DataTemplate>
+    </UserControl.Resources>
+    
+    <Grid x:Name="LayoutRoot" Grid.Row="0"  Background="#40000000">
+        <Border BorderBrush="#FF898989" BorderThickness="0,0,0,0">
+            <StackPanel Orientation="Horizontal" Margin="0 0 0 4">
+                <Image Source="{Binding UserImage, Mode=OneWay}" Width="64" Height="64" VerticalAlignment="Top" Margin="0,0,8,0" />
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="{Binding UserName, Mode=OneWay}" FontFamily="Segoe WP Semibold" FontSize="24" />
+                    <TextBlock Text="{Binding UserDescriptionString, Mode=OneWay}" TextWrapping="Wrap" FontSize="16" />
+                    <ItemsControl ItemsSource="{Binding Badges, Mode=OneWay}"
+                                    ItemTemplate="{StaticResource BadgeItemTemplate}"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+
+</UserControl>

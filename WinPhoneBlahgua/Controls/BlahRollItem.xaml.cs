@@ -25,6 +25,7 @@ namespace WinPhoneBlahgua
             InitializeComponent();
             IsAnimating = false;
             BlahData = null;
+            BlahImage.Loaded += BlahImage_Loaded;
             
         }
 
@@ -34,26 +35,31 @@ namespace WinPhoneBlahgua
             BlahBackground.Fill = GetBlahFrameBrush(BlahData);
             TopBorder.BorderBrush = GetBlahFrameBrush(BlahData);
             BlahBackground.Opacity = .4;
-            if (BlahData.M != null)
-            {
-                string imageBase = BlahData.M[0];
-                string imageSize = BlahData.ImageSize;
-                string imageURL = App.BlahguaAPI.GetImageURL(imageBase, imageSize);
-                BlahImage.Opacity = 0;
-                BlahImage.Source = new BitmapImage(new Uri(imageURL, UriKind.Absolute));
-                BlahImage.Loaded += BlahImage_Loaded;
-                
-            }
-            else
-            {
+            if (theBlah.B == null)
+                BadgeIcon.Visibility = Visibility.Collapsed;
+            
+            TimeSpan diff = DateTime.Now - theBlah.Created;
 
-                BlahImage.Visibility = Visibility.Collapsed;
-            }
+            if (diff.TotalHours > 30)
+                NewBlahIcon.Visibility = Visibility.Collapsed;
 
             TextArea.Text = BlahData.T;
         }
 
         void BlahImage_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (BlahData.M != null)
+            {
+                BlahImage.ImageOpened += Image_loaded;
+                string imageBase = BlahData.M[0];
+                string imageSize = BlahData.ImageSize;
+                string imageURL = App.BlahguaAPI.GetImageURL(imageBase, imageSize);
+                BlahImage.Opacity = 0;
+                BlahImage.Source = new BitmapImage(new Uri(imageURL, UriKind.Absolute));    
+            } 
+        }
+
+        void Image_loaded(object sender, RoutedEventArgs e)
         {
             BlahImage.Opacity = 1;
             if ((BlahData.T != null) && (BlahData.T != ""))
@@ -68,8 +74,6 @@ namespace WinPhoneBlahgua
                 BlahBackground.Visibility = Visibility.Collapsed;
                 TextArea.Visibility = Visibility.Collapsed;
             }
-
-            
         }
 
         private Brush GetBlahBrush(InboxBlah theBlah)

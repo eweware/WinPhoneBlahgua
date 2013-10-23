@@ -23,7 +23,9 @@
             </Grid>
         </Border>
         <TextBlock x:Name="TextArea" Padding="4" TextWrapping="Wrap" FontFamily="Segoe WP SemiLight">This is a  test.  This is only</TextBlock>
+        <Image x:Name="BadgeIcon" Source="/Images/badge_standalone_30x31.png" Width="24" Height="24" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+        <Image x:Name="NewBlahIcon" Source="/Images/newblah.png" Width="24" Height="24" HorizontalAlignment="Left" VerticalAlignment="Bottom" />
 
- 
+
     </Grid>
 </UserControl>

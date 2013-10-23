@@ -312,7 +312,18 @@ namespace WinPhoneBlahgua
 
         void DoServiceInited(bool didIt)
         {
-            
+            if (App.BlahguaAPI.CurrentUser != null)
+            {
+                UserInfoBtn.Visibility = Visibility.Visible;
+                NewBlahBtn.Visibility = Visibility.Visible;
+                SignInBtn.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                UserInfoBtn.Visibility = Visibility.Collapsed;
+                NewBlahBtn.Visibility = Visibility.Collapsed;
+                SignInBtn.Visibility = Visibility.Visible;
+            }
             this.DataContext = App.BlahguaAPI;
         }
 

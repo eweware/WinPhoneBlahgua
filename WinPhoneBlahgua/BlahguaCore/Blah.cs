@@ -94,8 +94,9 @@ namespace WinPhoneBlahgua
         {
             get
             {
-                DateTime newTime = new DateTime(c);
-                return newTime;
+                DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+                origin = System.TimeZoneInfo.ConvertTime(origin, TimeZoneInfo.Local);
+                return origin.AddSeconds(c / 1000);
             }
         }
 
@@ -348,6 +349,11 @@ namespace WinPhoneBlahgua
         public DateTime u { get; set; }
         public List<string> B { get; set; }
         public List<string> M { get; set; }
+        public List<string> I { get; set; }
+        public bool XX { get; set; }
+        public DateTime E { get; set; }
+
+
         public UserDescription Description {get; set;}
         public CommentList Comments { get; set; }
 
@@ -374,7 +380,7 @@ namespace WinPhoneBlahgua
         {
             get
             {
-                if ((Description != null) && (Description.K != null))
+                if ((!XX) && (Description != null) && (Description.K != null))
                     return Description.K;
                 else
                     return "Someone";
@@ -385,7 +391,7 @@ namespace WinPhoneBlahgua
         {
             get
             {
-                if ((Description != null) && (Description.d != null))
+                if ((!XX) && (Description != null) && (Description.d != null))
                     return Description.d;
                 else
                     return "An anonymous user";
@@ -396,10 +402,10 @@ namespace WinPhoneBlahgua
         {
             get
             {
-                if ((Description != null) && (Description.m != null))
+                if ((!XX) && (Description != null) && (Description.m != null))
                     return App.BlahguaAPI.GetImageURL(Description.m, "A");
                 else
-                    return "..\\Images\\unknown-user.png";
+                    return "/Images/unknown-user.png";
             }
         }
 

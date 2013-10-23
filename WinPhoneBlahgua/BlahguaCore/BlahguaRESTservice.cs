@@ -6,6 +6,7 @@ using System.IO;
 using System.Collections.Specialized;
 using System.Text;
 using RestSharp;
+using Microsoft.Phone.Tasks;
 
 
 namespace WinPhoneBlahgua
@@ -27,7 +28,7 @@ namespace WinPhoneBlahgua
         public Dictionary<string, string> groupNames = null;
         public Dictionary<string, string> userGroupNames = null;
         public Dictionary<string, string> blahTypes = null;
-        private bool usingQA = false;
+        private bool usingQA = true;
         private RestClient apiClient;
         private string imageBaseURL = "";
 
@@ -36,16 +37,19 @@ namespace WinPhoneBlahgua
         {
             if (usingQA)
             {
+                System.Console.WriteLine("Using QA Server");
                 apiClient = new RestClient("http://qa.rest.blahgua.com:8080/v2");
                 imageBaseURL = "https://s3-us-west-2.amazonaws.com/qa.blahguaimages/image/";
             }
             else
             {
+                System.Console.WriteLine("Using Production Server");
                 apiClient = new RestClient("https://beta.blahgua.com/v2");
                 imageBaseURL = "https://s3-us-west-2.amazonaws.com/blahguaimages/image/";
             }
 
             apiClient.CookieContainer = new CookieContainer();
+           
         }
 
 
@@ -160,6 +164,77 @@ namespace WinPhoneBlahgua
             });
 
         }
+
+        public void UploadPhoto(Stream photoStream, string fileName, string_callback callback)
+        {
+            var request = new RestRequest("images/upload", Method.POST);
+            request.AddHeader("Accept", "*/*");
+            request.AlwaysMultipartFormData = true;
+            request.AddParameter("objectType", "X");
+            request.AddParameter("objectId", "");
+            request.AddParameter("primary", "true");
+            request.AddFile("file", ReadToEnd(photoStream), fileName, "image/jpeg");
+
+            apiClient.ExecuteAsync(request, (response) =>
+            {
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    callback(response.Content);
+                }
+                else
+                {
+                    //error ocured during upload
+                    callback(null);
+                }
+            });
+
+        }
+
+        //method for converting stream to byte[]
+        public byte[] ReadToEnd(System.IO.Stream stream)
+        {
+            long originalPosition = stream.Position;
+            stream.Position = 0;
+
+            try
+            {
+                byte[] readBuffer = new byte[4096];
+
+                int totalBytesRead = 0;
+                int bytesRead;
+
+                while ((bytesRead = stream.Read(readBuffer, totalBytesRead, readBuffer.Length - totalBytesRead)) > 0)
+                {
+                    totalBytesRead += bytesRead;
+
+                    if (totalBytesRead == readBuffer.Length)
+                    {
+                        int nextByte = stream.ReadByte();
+                        if (nextByte != -1)
+                        {
+                            byte[] temp = new byte[readBuffer.Length * 2];
+                            Buffer.BlockCopy(readBuffer, 0, temp, 0, readBuffer.Length);
+                            Buffer.SetByte(temp, totalBytesRead, (byte)nextByte);
+                            readBuffer = temp;
+                            totalBytesRead++;
+                        }
+                    }
+                }
+
+                byte[] buffer = readBuffer;
+                if (readBuffer.Length != totalBytesRead)
+                {
+                    buffer = new byte[totalBytesRead];
+                    Buffer.BlockCopy(readBuffer, 0, buffer, 0, totalBytesRead);
+                }
+                return buffer;
+            }
+            finally
+            {
+                stream.Position = originalPosition;
+            }
+        }
+
 
         public void GetUserInfo(User_callback callback)
         {
