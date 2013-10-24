@@ -208,18 +208,18 @@
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0" Orientation="Horizontal">
-                        <toolkit:ListPicker ItemsSource="{Binding CurrentBlahTypes}" Width="150"
+                    <toolkit:ListPicker ItemsSource="{Binding CurrentBlahTypes}" Width="150"
                                     HeaderTemplate="{StaticResource EmptyTemplate}"
                                     SelectedItem="{Binding CreateRecord.BlahType, Mode=TwoWay}"
                                     FullModeItemTemplate="{StaticResource BlahTypeTemplate}"
                                     ItemTemplate="{StaticResource BlahTypeTemplate}" 
                                             SelectionChanged="BlahTypeChanged"/>
-                        <TextBlock Text=" to " VerticalAlignment="Center" />
+                    <TextBlock Text=" to " VerticalAlignment="Center" />
                         <TextBlock Text="{Binding CurrentChannel.ChannelName}" VerticalAlignment="Center" />
                     </StackPanel>
                     <StackPanel Grid.Row="1" Orientation="Vertical">
                         <TextBlock Text="headline (64 chars max)"/>
-                        <TextBox Text="{Binding CreateRecord.T, Mode=TwoWay}" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" MaxLength="64" FontSize="36"></TextBox>
+                        <TextBox InputScope="Chat" Text="{Binding CreateRecord.T, Mode=TwoWay}" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" MaxLength="64" FontSize="36"></TextBox>
                     </StackPanel>
                     <StackPanel Grid.Row="2" Orientation="Vertical" Visibility="Visible">
                         <TextBlock Text="Images"/>
@@ -230,7 +230,7 @@
                     </StackPanel>
                     <StackPanel Grid.Row="3" Orientation="Vertical" Visibility="Visible">
                         <TextBlock Text="body"/>
-                        <TextBox Text="{Binding CreateRecord.F, Mode=TwoWay}" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" MaxLength="1022" AcceptsReturn="True"></TextBox>
+                        <TextBox MinHeight="128" InputScope="Text" Text="{Binding CreateRecord.F, Mode=TwoWay}" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" MaxLength="1022" AcceptsReturn="True"></TextBox>
 
                     </StackPanel>
                     <StackPanel Grid.Row="4" x:Name="PollOptionArea" Orientation="Vertical" Opacity="0">

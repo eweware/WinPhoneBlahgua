@@ -7,6 +7,108 @@ using System.Collections.ObjectModel;
 
 namespace WinPhoneBlahgua
 {
+
+    public class CommentCreateRecord
+    {
+        public string B { get; set; }
+        public string T { get; set; }
+        public List<string> BD { get; set; }
+        public bool XX { get; set; }
+        public List<string> M { get; set; }
+        public string CID { get; set; }
+
+        public bool UseProfile
+        {
+            get { return !XX; }
+            set
+            {
+                XX = (!value);
+            }
+        }
+
+        public string UserName
+        {
+            get
+            {
+                if (XX)
+                {
+                    return "Someone";
+                }
+                else
+                {
+                    return App.BlahguaAPI.CurrentUser.N;
+                }
+            }
+        }
+        public string UserImage
+        {
+            get
+            {
+                if (XX)
+                {
+                    return "/Images/unknown-user.png";
+                }
+                else
+                {
+                    return App.BlahguaAPI.CurrentUser.UserImage;
+                }
+            }
+        }
+
+        public string UserDescriptionString
+        {
+            get
+            {
+                if (XX)
+                {
+                    return "An anonymous person";
+                }
+                else
+                {
+                    return App.BlahguaAPI.CurrentUser.DescriptionString;
+                }
+            }
+        }
+
+        public BadgeList Badges
+        {
+            get
+            {
+                if (BD == null)
+                {
+                    return null;
+                }
+                else
+                {
+                    BadgeList badges = new BadgeList();
+                    foreach (string badgeId in BD)
+                    {
+                        badges.Add(new BadgeReference(badgeId));
+                    }
+
+                    return badges;
+                }
+            }
+            set
+            {
+                if ((value == null) || (value.Count == 0))
+                {
+                    BD = null;
+                }
+                else
+                {
+                    BD = new List<string>();
+                    foreach (BadgeReference curBadge in value)
+                    {
+                        BD.Add(curBadge.ID);
+                    }
+                }
+            }
+        }
+
+    }
+
+
     public class Comment
     {
         public string _id { get; set; }
@@ -17,7 +119,7 @@ namespace WinPhoneBlahgua
         public DateTime c { get; set; }
         public List<string> BD { get; set; }
         public string CID { get; set; }
-        public string XX { get; set; }
+        public bool XX { get; set; }
         public int U { get; set; }
         public int D { get; set; }
         public DemographicRecord _d { get; set; }
@@ -41,7 +143,7 @@ namespace WinPhoneBlahgua
         {
             get
             {
-                if (K != null)
+                if ((XX == false) && (K != null))
                     return K;
                 else
                     return "Someone";
@@ -52,7 +154,7 @@ namespace WinPhoneBlahgua
         {
             get
             {
-                if (_m != null)
+                if ((XX == false) && (_m != null))
                 {
                     string imageName = _m[0];
                     return App.BlahguaAPI.GetImageURL(_m[0], "A");
@@ -96,7 +198,7 @@ namespace WinPhoneBlahgua
         {
             get
             {
-                if (d != null)
+                if ((XX == false) && (d != null))
                     return d;
                 else
                     return "An anonymous user";

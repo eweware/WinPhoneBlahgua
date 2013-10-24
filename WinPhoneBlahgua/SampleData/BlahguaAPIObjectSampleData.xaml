@@ -73,12 +73,7 @@
                 <WinPhoneBlahgua:BlahType N="Says" />
             </WinPhoneBlahgua:BlahCreateRecord.BlahType>
            
-            <WinPhoneBlahgua:BlahCreateRecord.I>
-                <WinPhoneBlahgua:PollItemList>
-                    <WinPhoneBlahgua:PollItem G="This is an item" />
-                    <WinPhoneBlahgua:PollItem G="So is this" />
-                </WinPhoneBlahgua:PollItemList>
-            </WinPhoneBlahgua:BlahCreateRecord.I>
+
             <WinPhoneBlahgua:BlahCreateRecord.Badges>
                 <WinPhoneBlahgua:BadgeList>
                     <WinPhoneBlahgua:BadgeReference BadgeName="Microsoft"/>

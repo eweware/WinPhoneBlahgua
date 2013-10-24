@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System.Runtime.Serialization;
 
 namespace WinPhoneBlahgua
 {
@@ -386,12 +387,39 @@ namespace WinPhoneBlahgua
 
     public class DemoProfileSummaryRecord
     {
-        public Dictionary<string, int> J { get; set; }
-        public Dictionary<string, int> C { get; set; }
-        public Dictionary<string, int> B { get; set; }
-        public Dictionary<string, int> E { get; set; }
-        public Dictionary<string, int> D { get; set; }
-        public Dictionary<string, int> Z { get; set; }
+        public DemoDictionary J { get; set; }
+        public DemoDictionary C { get; set; }
+        public DemoDictionary B { get; set; }
+        public DemoDictionary E { get; set; }
+        public DemoDictionary D { get; set; }
+        public DemoDictionary Z { get; set; }
+    }
+
+    [DataContract]
+    public class DemoDictionary
+    {
+        [DataMember(Name = "0")]
+        public int val_0 { get; set; }
+        [DataMember(Name = "1")]
+        public int val_1 { get; set; }
+        [DataMember(Name = "2")]
+        public int val_2 { get; set; }
+        [DataMember(Name = "3")]
+        public int val_3 { get; set; }
+        [DataMember(Name = "4")]
+        public int val_4 { get; set; }
+        [DataMember(Name = "5")]
+        public int val_5 { get; set; }
+        [DataMember(Name = "6")]
+        public int val_6 { get; set; }
+        [DataMember(Name = "7")]
+        public int val_7 { get; set; }
+        [DataMember(Name = "8")]
+        public int val_8 { get; set; }
+        [DataMember(Name = "9")]
+        public int val_90 { get; set; }
+        [DataMember(Name = "-1")]
+        public int val_Unknown { get; set; }
     }
 
     public class Blah
@@ -412,14 +440,14 @@ namespace WinPhoneBlahgua
         public List<string> I { get; set; }
         public List<int> J { get; set; }
         public DateTime E { get; set; }
-        //public int _1 { get; set; }
-        //public int _2 { get; set; }
-        //public int _3 { get; set; }
-        //public int _4 { get; set; }
-        //public int _5 { get; set; }
-        //public int _6 { get; set; }
+        public int _1 { get; set; }
+        public int _2 { get; set; }
+        public int _3 { get; set; }
+        public int _4 { get; set; }
+        public int _5 { get; set; }
+        public int _6 { get; set; }
         public bool XX { get; set; }
-        //public DemographicRecord _d { get; set; }
+        public DemographicRecord _d { get; set; }
         public int uv { get; set; }
         public int P { get; set; }
         public int D { get; set; }

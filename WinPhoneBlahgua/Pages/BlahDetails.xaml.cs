@@ -77,8 +77,8 @@ namespace WinPhoneBlahgua
 
         void UpdateSummaryButtons()
         {
-            promoteBtn.IconUri = new Uri("/Images/Icons/black_promote.png");
-            demoteBtn.IconUri = new Uri("/Images/Icons/black_demote.png");
+            promoteBtn.IconUri = new Uri("/Images/Icons/black_promote.png", UriKind.Relative);
+            demoteBtn.IconUri = new Uri("/Images/Icons/black_demote.png", UriKind.Relative);
             Blah curBlah = App.BlahguaAPI.CurrentBlah;
 
             if (App.BlahguaAPI.CurrentUser != null)
@@ -99,11 +99,11 @@ namespace WinPhoneBlahgua
                     demoteBtn.IsEnabled = false;
                     if (curBlah.uv == 1)
                     {
-                        promoteBtn.IconUri = new Uri("/Images/Icons/promote.png"); 
+                        promoteBtn.IconUri = new Uri("/Images/Icons/promote.png", UriKind.Relative); 
                     }
                     else
                     {
-                        demoteBtn.IconUri = new Uri("/Images/Icons/demote.png"); 
+                        demoteBtn.IconUri = new Uri("/Images/Icons/demote.png", UriKind.Relative); 
                     }
                 }
             }
@@ -111,8 +111,8 @@ namespace WinPhoneBlahgua
 
         void UpdateCommentButtons()
         {
-            promoteBtn.IconUri = new Uri("/Images/Icons/black_promote.png");
-            demoteBtn.IconUri = new Uri("/Images/Icons/black_demote.png");
+            promoteBtn.IconUri = new Uri("/Images/Icons/black_promote.png", UriKind.Relative);
+            demoteBtn.IconUri = new Uri("/Images/Icons/black_demote.png", UriKind.Relative);
             Blah curBlah = App.BlahguaAPI.CurrentBlah;
 
             if (App.BlahguaAPI.CurrentUser == null)
@@ -142,11 +142,11 @@ namespace WinPhoneBlahgua
                         demoteBtn.IsEnabled = false;
                         if (curComment.uv == 1)
                         {
-                            promoteBtn.IconUri = new Uri("/Images/Icons/promote.png");
+                            promoteBtn.IconUri = new Uri("/Images/Icons/promote.png", UriKind.Relative);
                         }
                         else
                         {
-                            demoteBtn.IconUri = new Uri("/Images/Icons/demote.png");
+                            demoteBtn.IconUri = new Uri("/Images/Icons/demote.png", UriKind.Relative);
                         }
                     }
                 }
@@ -163,6 +163,10 @@ namespace WinPhoneBlahgua
             base.OnNavigatedTo(e);
 
             // update the text
+            if (currentPage == "summary")
+                UpdateSummaryButtons();
+            else if (currentPage == "comments")
+                UpdateCommentButtons();
             
         }
 
@@ -254,7 +258,25 @@ namespace WinPhoneBlahgua
 
         private void HandleAddComment(object target, EventArgs theArgs)
         {
-            NavigationService.Navigate(new Uri("/Pages/CreateCommemt.xaml", UriKind.Relative));  
+            if (App.BlahguaAPI.CreateCommentRecord == null)
+                App.BlahguaAPI.CreateCommentRecord = new CommentCreateRecord();
+
+            if (currentPage == "summary")
+            {
+                App.BlahguaAPI.CreateCommentRecord.CID = null;
+                NavigationService.Navigate(new Uri("/Pages/CreateComment.xaml", UriKind.Relative));
+            }
+            else
+            {
+                // on the comment page
+                Comment curComment = (Comment)AllCommentList.SelectedItem;
+                if (curComment != null)
+                    App.BlahguaAPI.CreateCommentRecord.CID = curComment._id;
+                else
+                    App.BlahguaAPI.CreateCommentRecord.CID = null;
+
+                NavigationService.Navigate(new Uri("/Pages/CreateComment.xaml", UriKind.Relative));
+            }
         }
 
         private void HandleReportItem(object target, EventArgs theArgs)

@@ -26,6 +26,7 @@ namespace WinPhoneBlahgua
         User currentUser = null;
         Channel currentChannel = null;
         BlahCreateRecord createRec = null;
+        CommentCreateRecord createCommentRec = null;
         public UserDescription CurrentUserDescription = null;
 
 
@@ -206,6 +207,16 @@ namespace WinPhoneBlahgua
             }
         }
 
+        public CommentCreateRecord CreateCommentRecord
+        {
+            get { return createCommentRec; }
+            set
+            {
+                createCommentRec = value;
+                OnPropertyChanged("CreateCommentRecord");
+            }
+        }
+
         public void CreateBlah(Blah_callback callback)
         {
             CreateRecord.G = CurrentChannel.ChannelId;
@@ -221,6 +232,19 @@ namespace WinPhoneBlahgua
                     CreateRecord = new BlahCreateRecord();
                     callback(theBlah);
                 }
+                );
+
+        }
+
+        public void CreateComment(Comment_callback callback)
+        {
+            CreateCommentRecord.B = CurrentBlah._id;
+
+            BlahguaRest.CreateComment(CreateCommentRecord, (theComment) =>
+            {
+                CreateCommentRecord = new CommentCreateRecord();
+                callback(theComment);
+            }
                 );
 
         }

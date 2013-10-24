@@ -7,6 +7,8 @@ using System.Collections.Specialized;
 using System.Text;
 using RestSharp;
 using Microsoft.Phone.Tasks;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 
 
 namespace WinPhoneBlahgua
@@ -16,6 +18,7 @@ namespace WinPhoneBlahgua
     public delegate void Inbox_callback(Inbox theList);
     public delegate void BlahTypes_callback(BlahTypeList theList);
     public delegate void Blah_callback(Blah theBlah);
+    public delegate void Comment_callback(Comment theBlah);
     public delegate void UserDescription_callback(UserDescription theDesc);
     public delegate void Comments_callback(CommentList theList);
     public delegate void CommentAuthorDescriptionList_callback(CommentAuthorDescriptionList theList);
@@ -29,13 +32,16 @@ namespace WinPhoneBlahgua
         public Dictionary<string, string> groupNames = null;
         public Dictionary<string, string> userGroupNames = null;
         public Dictionary<string, string> blahTypes = null;
-        private bool usingQA = true;
+        private bool usingQA = false;
         private RestClient apiClient;
         private string imageBaseURL = "";
 
 
         public BlahguaRESTservice()
         {
+#if DEBUG
+            usingQA = true;
+#endif
             if (usingQA)
             {
                 System.Console.WriteLine("Using QA Server");
@@ -64,9 +70,19 @@ namespace WinPhoneBlahgua
         {
             RestRequest request = new RestRequest("comments", Method.GET);
             request.AddParameter("blahId", blahId);
-            apiClient.ExecuteAsync<CommentList>(request, (response) =>
+            apiClient.ExecuteAsync(request, (response) =>
             {
-                callback(response.Data);
+                CommentList commentList = null;
+
+                DataContractJsonSerializer des = new DataContractJsonSerializer(typeof(CommentList));
+                var stream = new MemoryStream(Encoding.UTF8.GetBytes(response.Content));
+                object theObj = des.ReadObject(stream);
+                stream.Close();
+
+                if (theObj != null)
+                    commentList = (CommentList)theObj;
+
+                callback(commentList);
             });
         }
 
@@ -165,25 +181,36 @@ namespace WinPhoneBlahgua
             });
         }
 
-        public void SetBlahVote(string blahId, int userVote, int_callback callback)
+        public void CreateComment(CommentCreateRecord theComment, Comment_callback callback)
         {
-            RestRequest request = new RestRequest("blahs/" + blahId, Method.PUT);
+            RestRequest request = new RestRequest("comments", Method.POST);
             request.RequestFormat = DataFormat.Json;
-            request.AddBody(new { uv = userVote });
-            apiClient.ExecuteAsync<int>(request, (response) =>
+            request.AddBody(theComment);
+            apiClient.ExecuteAsync<Comment>(request, (response) =>
             {
                 callback(response.Data);
             });
         }
 
+        public void SetBlahVote(string blahId, int userVote, int_callback callback)
+        {
+            RestRequest request = new RestRequest("blahs/" + blahId + "/stats", Method.PUT);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(new { uv = userVote });
+            apiClient.ExecuteAsync<int>(request, (response) =>
+            {
+                callback(userVote);
+            });
+        }
+
         public void SetCommentVote(string commentId, int userVote, int_callback callback)
         {
-            RestRequest request = new RestRequest("commments/" + commentId, Method.PUT);
+            RestRequest request = new RestRequest("comments/" + commentId, Method.PUT);
             request.RequestFormat = DataFormat.Json;
             request.AddBody(new { C = userVote });
             apiClient.ExecuteAsync<int>(request, (response) =>
             {
-                callback(response.Data);
+                callback(userVote);
             });
         }
 
@@ -302,16 +329,13 @@ namespace WinPhoneBlahgua
             {
                 Blah newBlah = null;
 
-                try
-                {
-                    RestSharp.Deserializers.JsonDeserializer des = new RestSharp.Deserializers.JsonDeserializer();
-                    newBlah = des.Deserialize<Blah>(response);
-                }
-                catch (Exception exp)
-                {
-                    Console.WriteLine("Oh no!");
-                }
+                DataContractJsonSerializer des = new DataContractJsonSerializer(typeof (Blah));
+                var stream = new MemoryStream(Encoding.UTF8.GetBytes(response.Content));
+                object theObj = des.ReadObject(stream);
+                stream.Close();
 
+                if (theObj != null)
+                    newBlah = (Blah)theObj;
 
                 callback(newBlah);
             });
@@ -359,97 +383,7 @@ namespace WinPhoneBlahgua
 
         }
 
-        /*
-
-        public bool AddFileToObject(string objectId, string fName, string objType)
-        {
-            string fileName = DefaultFolderPath + "\\" + fName;
-            if (File.Exists(fileName))
-            {
-                NameValueCollection nvc = new NameValueCollection();
-                nvc.Add("objectType", objType);
-                nvc.Add("primary", "true");
-                nvc.Add("objectId", objectId);
-
-                if (ImportToQA)
-                    HttpUploadFile("http://qa.rest.blahgua.com:8080/v2/images/upload", fileName, "file", "application/octet-stream", nvc);
-                else
-                    HttpUploadFile("https://beta.blahgua.com/v2/images/upload", fileName, "file", "application/octet-stream", nvc);
-                return true;
-            }
-            else
-                return false;
-        }
-
-        private void HttpUploadFile(string url, string file, string paramName, string contentType, NameValueCollection nvc)
-        {
-            string boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x");
-            byte[] boundarybytes = System.Text.Encoding.ASCII.GetBytes("\r\n--" + boundary + "\r\n");
-
-            HttpWebRequest wr = (HttpWebRequest)WebRequest.Create(url);
-            wr.CookieContainer = sessionCookie;
-            wr.ContentType = "multipart/form-data; boundary=" + boundary;
-            wr.Method = "POST";
-            wr.KeepAlive = true;
-            wr.Credentials = System.Net.CredentialCache.DefaultCredentials;
-
-            Stream rs = wr.GetRequestStream();
-
-            string formdataTemplate = "Content-Disposition: form-data; name=\"{0}\"\r\n\r\n{1}";
-            foreach (string key in nvc.Keys)
-            {
-                rs.Write(boundarybytes, 0, boundarybytes.Length);
-                string formitem = string.Format(formdataTemplate, key, nvc[key]);
-                byte[] formitembytes = System.Text.Encoding.UTF8.GetBytes(formitem);
-                rs.Write(formitembytes, 0, formitembytes.Length);
-            }
-            rs.Write(boundarybytes, 0, boundarybytes.Length);
-
-            string headerTemplate = "Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"\r\nContent-Type: {2}\r\n\r\n";
-            string header = string.Format(headerTemplate, paramName, file, contentType);
-            byte[] headerbytes = System.Text.Encoding.UTF8.GetBytes(header);
-            rs.Write(headerbytes, 0, headerbytes.Length);
-
-            FileStream fileStream = new FileStream(file, FileMode.Open, FileAccess.Read);
-            byte[] buffer = new byte[4096];
-            int bytesRead = 0;
-            while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) != 0)
-            {
-                rs.Write(buffer, 0, bytesRead);
-            }
-            fileStream.Close();
-
-            byte[] trailer = System.Text.Encoding.ASCII.GetBytes("\r\n--" + boundary + "--\r\n");
-            rs.Write(trailer, 0, trailer.Length);
-            rs.Close();
-
-            WebResponse wresp = null;
-            try
-            {
-                wresp = wr.GetResponse();
-                Stream stream2 = wresp.GetResponseStream();
-                StreamReader reader2 = new StreamReader(stream2);
-                //log.Debug(string.Format("File uploaded, server response is: {0}", reader2.ReadToEnd()));
-                wresp.Close();
-                wresp.Dispose();
-                wresp = null;
-            }
-            catch (Exception ex)
-            {
-                //log.Error("Error uploading file", ex);
-                if (wresp != null)
-                {
-                    wresp.Close();
-                    wresp.Dispose();
-                    wresp = null;
-                }
-            }
-            finally
-            {
-                wr = null;
-            }
-        }
-         */
+      
 
     }
 }
