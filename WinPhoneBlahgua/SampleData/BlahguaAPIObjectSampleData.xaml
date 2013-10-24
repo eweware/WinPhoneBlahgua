@@ -74,9 +74,10 @@
             </WinPhoneBlahgua:BlahCreateRecord.BlahType>
            
             <WinPhoneBlahgua:BlahCreateRecord.I>
-                <System:String>This is option 1</System:String>
-                <System:String>This is option 2</System:String>
-                <System:String>This is option 3</System:String>
+                <WinPhoneBlahgua:PollItemList>
+                    <WinPhoneBlahgua:PollItem G="This is an item" />
+                    <WinPhoneBlahgua:PollItem G="So is this" />
+                </WinPhoneBlahgua:PollItemList>
             </WinPhoneBlahgua:BlahCreateRecord.I>
             <WinPhoneBlahgua:BlahCreateRecord.Badges>
                 <WinPhoneBlahgua:BadgeList>

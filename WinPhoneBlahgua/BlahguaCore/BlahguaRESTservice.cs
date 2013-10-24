@@ -21,6 +21,7 @@ namespace WinPhoneBlahgua
     public delegate void CommentAuthorDescriptionList_callback(CommentAuthorDescriptionList theList);
     public delegate void string_callback(String theResult);
     public delegate void User_callback(User theResult);
+    public delegate void int_callback(int theResult);
     public delegate void BadgeRecord_callback(BadgeRecord theResult);  
 
     public class BlahguaRESTservice
@@ -162,8 +163,30 @@ namespace WinPhoneBlahgua
             {
                 callback(response.Data);
             });
-
         }
+
+        public void SetBlahVote(string blahId, int userVote, int_callback callback)
+        {
+            RestRequest request = new RestRequest("blahs/" + blahId, Method.PUT);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(new { uv = userVote });
+            apiClient.ExecuteAsync<int>(request, (response) =>
+            {
+                callback(response.Data);
+            });
+        }
+
+        public void SetCommentVote(string commentId, int userVote, int_callback callback)
+        {
+            RestRequest request = new RestRequest("commments/" + commentId, Method.PUT);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(new { C = userVote });
+            apiClient.ExecuteAsync<int>(request, (response) =>
+            {
+                callback(response.Data);
+            });
+        }
+
 
         public void UploadPhoto(Stream photoStream, string fileName, string_callback callback)
         {
@@ -275,9 +298,22 @@ namespace WinPhoneBlahgua
         public void FetchFullBlah(string blahId, Blah_callback callback)
         {
             RestRequest request = new RestRequest("blahs/" + blahId, Method.GET);
-            apiClient.ExecuteAsync<Blah>(request, (response) =>
+            apiClient.ExecuteAsync(request, (response) =>
             {
-                callback(response.Data);
+                Blah newBlah = null;
+
+                try
+                {
+                    RestSharp.Deserializers.JsonDeserializer des = new RestSharp.Deserializers.JsonDeserializer();
+                    newBlah = des.Deserialize<Blah>(response);
+                }
+                catch (Exception exp)
+                {
+                    Console.WriteLine("Oh no!");
+                }
+
+
+                callback(newBlah);
             });
         }
 

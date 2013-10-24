@@ -209,7 +209,19 @@ namespace WinPhoneBlahgua
         public void CreateBlah(Blah_callback callback)
         {
             CreateRecord.G = CurrentChannel.ChannelId;
-            BlahguaRest.CreateBlah(CreateRecord, callback);
+            if (CreateRecord.BlahType.N == "polls")
+            {
+                CreateRecord.H = CreateRecord.I.Count;
+            }
+            else
+                CreateRecord.I = null;
+
+            BlahguaRest.CreateBlah(CreateRecord, (theBlah) =>
+                {
+                    CreateRecord = new BlahCreateRecord();
+                    callback(theBlah);
+                }
+                );
 
         }
 
@@ -306,13 +318,28 @@ namespace WinPhoneBlahgua
         {
             BlahguaRest.FetchFullBlah(blahId, (theBlah) =>
             {
-                BlahguaRest.GetUserDescription(theBlah.A, (theDesc) =>
+                if (theBlah != null)
                 {
-                    theBlah.Description = theDesc;
-                    currentBlah = theBlah;
-                    callback(theBlah);
-                });
+                    BlahguaRest.GetUserDescription(theBlah.A, (theDesc) =>
+                    {
+                        theBlah.Description = theDesc;
+                        currentBlah = theBlah;
+                        callback(theBlah);
+                    });
+                }
+                else
+                    callback(null);
             });
+        }
+
+        public void SetBlahVote(int newVote, int_callback callback)
+        {
+            BlahguaRest.SetBlahVote(CurrentBlah._id, newVote, callback);
+        }
+
+        public void SetCommentVote(Comment theComment, int newVote, int_callback callback)
+        {
+            BlahguaRest.SetCommentVote(theComment._id, newVote, callback);
         }
 
         public void GetInbox(Inbox_callback callback)

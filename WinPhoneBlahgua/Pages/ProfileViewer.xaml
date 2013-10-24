@@ -57,7 +57,7 @@
         <!--TitlePanel contains the name of the application and page title-->
         <controls:Pivot x:Name="SignInPivot" Title="your profile" >
             <!--Pivot item one-->
-            <controls:PivotItem Header="personas">
+            <controls:PivotItem Header="persona">
                 <!--ContentPanel - place additional content here-->
                 <Grid>
 

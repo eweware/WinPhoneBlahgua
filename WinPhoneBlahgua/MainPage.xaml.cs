@@ -292,7 +292,47 @@ namespace WinPhoneBlahgua
                 SignInBtn.Visibility = Visibility.Visible;
             }
 
+            if (App.BlahguaAPI.NewBlahToInsert != null)
+            {
+                InsertBlahInStream(App.BlahguaAPI.NewBlahToInsert);
+                App.BlahguaAPI.NewBlahToInsert = null;
+            }
+
             StartTimers();
+        }
+
+
+        void InsertBlahInStream(Blah theBlah)
+        {
+            BlahRollItem newItem = null;
+            double top = BlahScroller.VerticalOffset;
+            double bottom = top + 800;
+
+            foreach (UIElement curItem in BlahContainer.Children)
+            {
+                newItem = (BlahRollItem)curItem;
+                if ((Canvas.GetTop(newItem) > bottom) && (newItem.BlahData.displaySize == 2))
+                    break;
+                else
+                    newItem = null;
+            }
+
+            if (newItem == null)
+            {
+                for (int curIndex = BlahContainer.Children.Count - 1; curIndex >= 0; curIndex--)
+                {
+                    newItem = (BlahRollItem)BlahContainer.Children[curIndex];
+                    if (newItem.BlahData.displaySize == 2)
+                        break;
+                    else
+                        newItem = null;
+                }
+            }
+
+            if (newItem != null)
+            {
+                newItem.Initialize(new InboxBlah(theBlah));
+            }
         }
 
 
@@ -524,16 +564,12 @@ namespace WinPhoneBlahgua
             NavigationService.Navigate(new Uri("/Pages/Signin.xaml", UriKind.Relative));    
         }
 
-        private void NewBlahBtn_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void UserInfoBtn_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Pages/ProfileViewer.xaml", UriKind.Relative));    
         }
-
+        
         private void NewBlahBtn_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Pages/CreateBlah.xaml", UriKind.Relative));    
@@ -542,8 +578,11 @@ namespace WinPhoneBlahgua
         private void FadeIn_Completed(object sender, EventArgs e)
         {
             ((Storyboard)sender).Stop();
-            targetBlah.TextArea.Visibility = Visibility.Visible;
-            targetBlah.BlahBackground.Visibility = Visibility.Visible;
+            if (targetBlah != null)
+            {
+                targetBlah.TextArea.Visibility = Visibility.Visible;
+                targetBlah.BlahBackground.Visibility = Visibility.Visible;
+            }
             MaybeAnimateElement();   
             
         }
@@ -551,8 +590,11 @@ namespace WinPhoneBlahgua
         private void FadeOut_Completed(object sender, EventArgs e)
         {
             ((Storyboard)sender).Stop();
-            targetBlah.TextArea.Visibility = Visibility.Collapsed;
-            targetBlah.BlahBackground.Visibility = Visibility.Collapsed;
+            if (targetBlah != null)
+            {
+                targetBlah.TextArea.Visibility = Visibility.Collapsed;
+                targetBlah.BlahBackground.Visibility = Visibility.Collapsed;
+            }
             MaybeAnimateElement();
 
         }

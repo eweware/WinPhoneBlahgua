@@ -18,15 +18,24 @@ namespace WinPhoneBlahgua
         public List<string> BD { get; set; }
         public string CID { get; set; }
         public string XX { get; set; }
-        public string U { get; set; }
-        public string D { get; set; }
-
+        public int U { get; set; }
+        public int D { get; set; }
+        public DemographicRecord _d { get; set; }
         public DateTime u { get; set; }
         public List<string> M { get; set; }
         public CommentList subComments = null;
         public string K { get; set; }
         public string d { get; set; }
         public List<string> _m { get; set; }
+        public int uv { get; set; }
+
+
+        public Comment()
+        {
+            U = 0;
+            D = 0;
+            uv = 0;
+        }
 
         public string AuthorName
         {
@@ -55,6 +64,8 @@ namespace WinPhoneBlahgua
 
         public int UpVoteCount
         {
+            get {return U;}
+            /*
             get
             {
                 int vote = 0;
@@ -63,10 +74,13 @@ namespace WinPhoneBlahgua
 
                 return vote;
             }
+             */
         }
 
         public int DownVoteCount
         {
+            get { return D; }
+            /*
             get
             {
                 int vote = 0;
@@ -75,6 +89,7 @@ namespace WinPhoneBlahgua
 
                 return vote;
             }
+             */
         }
 
         public string UserDescriptionString

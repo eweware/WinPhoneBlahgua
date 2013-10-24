@@ -45,53 +45,46 @@
     <phone:PhoneApplicationPage.Resources>
         
         <Storyboard x:Key="ShowPredictionAnimation">
-            <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PredictionOptionArea" Storyboard.TargetProperty="(UIElement.Visibility)">
-                <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="Visible"/>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PredictionOptionArea" Storyboard.TargetProperty="(UIElement.Visibility)">
+                <DiscreteObjectKeyFrame   Value="Visible" KeyTime="0:0:0" />
             </ObjectAnimationUsingKeyFrames>
-            <DoubleAnimation  Storyboard.TargetName="PredictionOptionArea" Storyboard.TargetProperty="RenderTransform.ScaleY" 
-                            From="0" To="1" Duration="0:0:1" />
-            <DoubleAnimation Storyboard.TargetName="PredictionOptionArea" Storyboard.TargetProperty="Opacity"
-                                     To="1"
-                                     Duration="0:0:1" AutoReverse="False"/>
-            <DoubleAnimation Storyboard.TargetName="PollOptionArea" Storyboard.TargetProperty="Opacity"
-                                     To="0.0" 
-                                     Duration="0:0:1" AutoReverse="False"/>
-            <DoubleAnimation  Storyboard.TargetName="PollOptionArea" Storyboard.TargetProperty="RenderTransform.ScaleY" 
-                            From="1" To="0" Duration="0:0:1" />
-            <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PollOptionArea" Storyboard.TargetProperty="(UIElement.Visibility)">
-                <DiscreteObjectKeyFrame KeyTime="00:00:01" Value="Collapsed"/>
-            </ObjectAnimationUsingKeyFrames>
-        </Storyboard>
-        <Storyboard x:Key="ShowPollAnimation">
-            <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PollOptionArea" Storyboard.TargetProperty="(UIElement.Visibility)">
-                <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="Visible"/>
-            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimation  Storyboard.TargetName="PredictYScale" Storyboard.TargetProperty="ScaleY" To="1" Duration="0:0:0.5" />
+            <DoubleAnimation Storyboard.TargetName="PredictionOptionArea" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.5"/>
             
-            <DoubleAnimation Storyboard.TargetName="PollOptionArea" Storyboard.TargetProperty="Opacity"
-                                     To="1"
-                                     Duration="0:0:1" AutoReverse="False"/>
-            <DoubleAnimation Storyboard.TargetName="PredictionOptionArea" Storyboard.TargetProperty="Opacity"
-                                     To="0.0"
-                                     Duration="0:0:1" AutoReverse="False"/>
-            <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PredictionOptionArea" Storyboard.TargetProperty="(UIElement.Visibility)">
-                <DiscreteObjectKeyFrame KeyTime="00:00:01" Value="Collapsed"/>
+            <DoubleAnimation  Storyboard.TargetName="PollYScale" Storyboard.TargetProperty="ScaleY" To="0" Duration="0:0:0.5" />
+            <DoubleAnimation Storyboard.TargetName="PollOptionArea" Storyboard.TargetProperty="Opacity" To="0.0"  Duration="0:0:0.5"/>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PollOptionArea" Storyboard.TargetProperty="(UIElement.Visibility)">
+                <DiscreteObjectKeyFrame   Value="Collapsed" KeyTime="0:0:0.5" />
             </ObjectAnimationUsingKeyFrames>
         </Storyboard>
-        <Storyboard x:Key="HideAllSectionsAnimation">
-            <DoubleAnimation Storyboard.TargetName="PredictionOptionArea" Storyboard.TargetProperty="Opacity"
-                                     To="0.0" 
-                                     Duration="0:0:1" AutoReverse="False"/>
-            <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PredictionOptionArea" Storyboard.TargetProperty="(UIElement.Visibility)">
-                <DiscreteObjectKeyFrame KeyTime="00:00:01" Value="Collapsed"/>
+        
+        <Storyboard x:Key="ShowPollAnimation">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PollOptionArea" Storyboard.TargetProperty="(UIElement.Visibility)">
+                <DiscreteObjectKeyFrame   Value="Visible" KeyTime="0:0:0" />
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimation  Storyboard.TargetName="PollYScale" Storyboard.TargetProperty="ScaleY" To="1" Duration="0:0:0.5" />
+            <DoubleAnimation Storyboard.TargetName="PollOptionArea" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.5"/>
+            
+            <DoubleAnimation  Storyboard.TargetName="PredictYScale" Storyboard.TargetProperty="ScaleY" To="0" Duration="0:0:0.5" />
+            <DoubleAnimation Storyboard.TargetName="PredictionOptionArea" Storyboard.TargetProperty="Opacity" To="0.0"  Duration="0:0:0.5"/>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PredictionOptionArea" Storyboard.TargetProperty="(UIElement.Visibility)">
+                <DiscreteObjectKeyFrame   Value="Collapsed" KeyTime="0:0:0.5" />
             </ObjectAnimationUsingKeyFrames>
 
-            <DoubleAnimation Storyboard.TargetName="PollOptionArea" Storyboard.TargetProperty="Opacity"
-                                     To="0.0" 
-                                     Duration="0:0:1" AutoReverse="False"/>
-            <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="PollOptionArea" Storyboard.TargetProperty="(UIElement.Visibility)">
-                <DiscreteObjectKeyFrame KeyTime="00:00:01" Value="Collapsed"/>
+        </Storyboard>
+        <Storyboard x:Key="HideAllSectionsAnimation">
+            <DoubleAnimation  Storyboard.TargetName="PredictYScale" Storyboard.TargetProperty="ScaleY" To="0" Duration="0:0:0.5" />
+            <DoubleAnimation Storyboard.TargetName="PredictionOptionArea" Storyboard.TargetProperty="Opacity" To="0.0"  Duration="0:0:0.5"/>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PredictionOptionArea" Storyboard.TargetProperty="(UIElement.Visibility)">
+                <DiscreteObjectKeyFrame   Value="Collapsed" KeyTime="0:0:0.5" />
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimation  Storyboard.TargetName="PollYScale" Storyboard.TargetProperty="ScaleY" To="0" Duration="0:0:0.5" />
+            <DoubleAnimation Storyboard.TargetName="PollOptionArea" Storyboard.TargetProperty="Opacity" To="0.0"  Duration="0:0:0.5"/>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PollOptionArea" Storyboard.TargetProperty="(UIElement.Visibility)">
+                <DiscreteObjectKeyFrame   Value="Collapsed" KeyTime="0:0:0.5" />
             </ObjectAnimationUsingKeyFrames>
         </Storyboard>
+        
         <DataTemplate x:Name="BlahTypeTemplate">
             <TextBlock Text="{Binding N}" Margin="0 0 0 0" Padding="0 0 0 0">
                 <TextBlock.Projection>
@@ -112,9 +105,9 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <TextBox MaxLength="64" Text="{Binding}" />
+                <TextBox MaxLength="64" Text="{Binding G, Mode=TwoWay}" />
                 <TextBlock Grid.Column="1" FontFamily="/Resources/fontawesome-webfont.ttf#FontAwesome" Text="&#xf057;" FontSize="36" 
-                           VerticalAlignment="Top" Margin="0,14,0,0" ></TextBlock>
+                           VerticalAlignment="Top" Margin="0,14,0,0" Tap="PollItem_Tap"></TextBlock>
             </Grid>
         </DataTemplate>
 
@@ -187,28 +180,24 @@
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot">
-        <Grid.Background>
-            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                <GradientStop Color="#FF7DBFE3" Offset="0.55"/>
-                <GradientStop Color="#FF7AD000" Offset="0.734"/>
-            </LinearGradientBrush>
-        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <Canvas Grid.RowSpan="2" Width="480" Height="800" VerticalAlignment="Top" IsHitTestVisible="False" >
+            <Image  Width="480" Height="800"  x:Name="BackgroundImage" Canvas.Top="0"  Canvas.Left="0"   Stretch="UniformToFill" >
+
+            </Image>
+            <Rectangle x:Name="BackgroundScreen" Width="480" Height="800" Canvas.Top="0" Canvas.Left="0"></Rectangle>
+
+        </Canvas>
 
         <local:BlahAuthorHeader x:Name="AuthorHeader" Grid.Row="0"  Margin="0 0 0 0"
                           DataContext="{Binding CreateRecord}">
         </local:BlahAuthorHeader>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="auto"></RowDefinition>
-            </Grid.RowDefinitions>
-            <ScrollViewer Grid.Row="0">
+        <ScrollViewer Grid.Row="1" Margin="12 0 12 64">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
@@ -244,22 +233,21 @@
                         <TextBox Text="{Binding CreateRecord.F, Mode=TwoWay}" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" MaxLength="1022" AcceptsReturn="True"></TextBox>
 
                     </StackPanel>
-                    <StackPanel Grid.Row="4" x:Name="PollOptionArea" Orientation="Vertical" Visibility="Collapsed">
+                    <StackPanel Grid.Row="4" x:Name="PollOptionArea" Orientation="Vertical" Opacity="0">
                         <StackPanel.RenderTransform>
-                            <ScaleTransform />
+                            <ScaleTransform x:Name="PollYScale" ScaleY="0"></ScaleTransform>
                         </StackPanel.RenderTransform>
                         <TextBlock Text="poll options (2 minimum)"/>
-                        <Button Tap="DoAddPollChoice">Add Poll Choice</Button>
-                        <ItemsControl  ItemsSource="{Binding CreateRecord.I}"
+                        <ItemsControl x:Name="PollChoiceList"  ItemsSource="{Binding CreateRecord.I}"
                                       ItemTemplate="{StaticResource PollChoiceTemplate}"
                                        >
 
                         </ItemsControl>
-
+                        <Button x:Name="AddPollChoiceBtn" Tap="DoAddPollChoice">Add Poll Choice</Button>
                     </StackPanel>
-                    <StackPanel Grid.Row="4" x:Name="PredictionOptionArea" Visibility="Collapsed" Orientation="Vertical">
+                    <StackPanel Grid.Row="4" x:Name="PredictionOptionArea" Opacity="0" Orientation="Vertical">
                         <StackPanel.RenderTransform>
-                            <ScaleTransform />
+                            <ScaleTransform x:Name="PredictYScale" ScaleY="0"/>
                         </StackPanel.RenderTransform>
                         <TextBlock Text="prediction expiration date"/>
                         <toolkit:DatePicker Value="{Binding CreateRecord.E}" />
@@ -282,9 +270,11 @@
 
 
             </ScrollViewer>
-
-            <Button Grid.Row="1" Tap="DoCreateBlah">Create Post</Button>
-        </Grid>
     </Grid>
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="False" Opacity=".8">
+            <shell:ApplicationBarIconButton IconUri="/Images/Icons/appbar.add.rest.png" Click="DoCreateClick" Text="create"/>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
 
 </phone:PhoneApplicationPage>

@@ -35,10 +35,7 @@ namespace WinPhoneBlahgua
 
         }
 
-        private void DoCreateBlah(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            App.BlahguaAPI.CreateBlah(OnCreateBlahOK);
-        }
+       
 
         private void OnCreateBlahOK(Blah newBlah)
         {
@@ -106,17 +103,11 @@ namespace WinPhoneBlahgua
                 sb.Begin();
             }
 
-        }
-
-        private void DoAddPollChoice(object sender, System.Windows.Input.GestureEventArgs e)
-        {
+            SetBlahBackground();
 
         }
 
-        private void DoRemovePollChoice(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-
-        }
+       
 
         private void UseProfile_Checked(object sender, RoutedEventArgs e)
         {
@@ -145,6 +136,7 @@ namespace WinPhoneBlahgua
             App.BlahguaAPI.CreateRecord.M = null;
             ImagesPanel.Children.Clear();
             ImagesPanel.Children.Add(NoImageText);
+            BackgroundImage.Source = null;
         }
 
         void photoChooserTask_Completed(object sender, PhotoResult e)
@@ -176,6 +168,7 @@ namespace WinPhoneBlahgua
                             ImagesPanel.Children.Remove(newBar);
                             App.BlahguaAPI.CreateRecord.M = new List<string>();
                             App.BlahguaAPI.CreateRecord.M.Add(photoString);
+                            BackgroundImage.Source = new BitmapImage(new Uri(App.BlahguaAPI.GetImageURL(photoString, "D"), UriKind.Absolute));
                         }
                         else
                             ClearImages();
@@ -204,6 +197,86 @@ namespace WinPhoneBlahgua
                 App.BlahguaAPI.CreateRecord.Badges = null;
 
             AuthorHeader.DataContext = App.BlahguaAPI.CreateRecord;
+        }
+
+        private void PollItem_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            if (App.BlahguaAPI.CreateRecord.I.Count > 2)
+            {
+                var curItem = sender;
+                var parent = VisualTreeHelper.GetParent((TextBlock)sender);
+
+                while (!(parent is StackPanel))
+                {
+                    curItem = parent;
+                    parent = VisualTreeHelper.GetParent(parent);
+                }
+
+                int index = ((StackPanel)parent).Children.IndexOf((UIElement)curItem);
+                App.BlahguaAPI.CreateRecord.I.RemoveAt(index);
+                MaybeEnableAddPollBtns();
+
+            }
+        }
+
+
+        void SetBlahBackground()
+        {
+            Brush newBrush;
+
+            switch (App.BlahguaAPI.CreateRecord.BlahType.N)
+            {
+                case "leaks":
+                    newBrush = (Brush)App.Current.Resources["BaseBrushLeaks"];
+                    break;
+                case "polls":
+                    newBrush = (Brush)App.Current.Resources["BaseBrushPolls"]; ;
+                    break;
+                case "asks":
+                    newBrush = (Brush)App.Current.Resources["BaseBrushAsks"]; ;
+                    break;
+                case "predicts":
+                    newBrush = (Brush)App.Current.Resources["BaseBrushPredicts"]; ;
+                    break;
+                default:
+                    newBrush = (Brush)App.Current.Resources["BaseBrushSays"]; ;
+                    break;
+            }
+
+            BackgroundScreen.Fill = newBrush;
+
+        }
+
+
+        private void DoAddPollChoice(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            int count = App.BlahguaAPI.CreateRecord.I.Count;
+
+            if (count < 10)
+            {
+                App.BlahguaAPI.CreateRecord.I.Add(new PollItem("choice " + (count + 1)));
+                MaybeEnableAddPollBtns();
+            }
+        }
+
+        private void MaybeEnableAddPollBtns()
+        {
+            int count = App.BlahguaAPI.CreateRecord.I.Count;
+
+            AddPollChoiceBtn.IsEnabled = (count < 10);
+
+            foreach (object curItem in PollChoiceList.Descendents().OfType<TextBlock>())
+            {
+                if (count > 2)
+                    ((TextBlock)curItem).Opacity = 1;
+                else
+                    ((TextBlock)curItem).Opacity = .4;
+            }
+        }
+
+        private void DoCreateClick(object sender, EventArgs e)
+        {
+            App.BlahguaAPI.CreateBlah(OnCreateBlahOK);
         }
 
     }

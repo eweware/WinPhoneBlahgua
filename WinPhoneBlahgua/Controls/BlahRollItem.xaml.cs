@@ -34,6 +34,14 @@ namespace WinPhoneBlahgua
             BlahData = theBlah;
             BlahBackground.Fill = GetBlahFrameBrush(BlahData);
             TopBorder.BorderBrush = GetBlahFrameBrush(BlahData);
+            User curUser = App.BlahguaAPI.CurrentUser;
+
+            if ((curUser != null) && (curUser._id == theBlah.A))
+            {
+                OwnedBlahIndicator.Stroke = TopBorder.BorderBrush;
+            }
+            else
+                ((Grid)OwnedBlahIndicator.Parent).Children.Remove(OwnedBlahIndicator);
             BlahBackground.Opacity = .4;
             if (theBlah.B == null)
                 BadgeIcon.Visibility = Visibility.Collapsed;
@@ -46,6 +54,7 @@ namespace WinPhoneBlahgua
             TextArea.Text = BlahData.T;
         }
 
+   
         void BlahImage_Loaded(object sender, RoutedEventArgs e)
         {
             if (BlahData.M != null)

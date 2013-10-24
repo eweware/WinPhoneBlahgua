@@ -8,18 +8,19 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource BrushBlahguaBlack}"
     d:DesignHeight="128" d:DesignWidth="128">
-    
+
     <Grid x:Name="LayoutRoot" Background="Transparent">
-		<Grid.RowDefinitions>
-			<RowDefinition Height="*"/>
-		</Grid.RowDefinitions>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="*"/>
-		</Grid.ColumnDefinitions>
-        <Border x:Name="TopBorder" CornerRadius="8,8,0,0" BorderThickness="0,8,0,0" BorderBrush="#FF930000">
-            <Grid> 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Border x:Name="TopBorder" CornerRadius="8,8,0,0" BorderThickness="0,8,0,0" BorderBrush="Black">
+            <Grid>
                 <Image x:Name="BlahImage" Stretch="UniformToFill"/>
                 <Rectangle x:Name="BlahBackground"  Fill="Red"/>
+                <Line x:Name="OwnedBlahIndicator" X1="0" X2="100" Y1="1" Y2="1" Stroke="Green" Stretch="Fill" StrokeDashArray="1 1 1 1" StrokeThickness="8" VerticalAlignment="Bottom" />
             </Grid>
         </Border>
         <TextBlock x:Name="TextArea" Padding="4" TextWrapping="Wrap" FontFamily="Segoe WP SemiLight">This is a  test.  This is only</TextBlock>

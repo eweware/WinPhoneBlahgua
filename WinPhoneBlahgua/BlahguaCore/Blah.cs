@@ -90,6 +90,20 @@ namespace WinPhoneBlahgua
             displaySize = otherBlah.displaySize;
         }
 
+        public InboxBlah(Blah otherBlah)
+        {
+            c = otherBlah.c.ToJavaScriptMilliseconds();
+            I = otherBlah._id;
+            T = otherBlah.T;
+            Y = otherBlah.Y;
+            G = otherBlah.G;
+            A = otherBlah.A;
+            M = otherBlah.M;
+            if (otherBlah.B != null)
+                B = "B";
+            displaySize = 2;
+        }
+
         public DateTime Created
         {
             get
@@ -207,6 +221,21 @@ namespace WinPhoneBlahgua
         }
     }
 
+    public class PollItem
+    {
+        public string G {get; set;}
+        public string T {get; set;}
+
+
+        public PollItem(string theText)
+        {
+            G = theText;
+        }
+    }
+
+    public class PollItemList : ObservableCollection<PollItem>
+    {
+    }
 
     public class BlahCreateRecord
     {
@@ -216,7 +245,7 @@ namespace WinPhoneBlahgua
         public string G { get; set; } // group ID
         public List<string> M { get; set; } // image IDs
         public int H { get; set; } // poll option count
-        public List<string> I { get; set; } // poll text
+        public PollItemList I { get; set; } // poll text
         public string T { get; set; } // blah text
         public string Y { get; set; } // type ID
         public bool XX { get; set; } // wehter or not the blah is private
@@ -228,6 +257,9 @@ namespace WinPhoneBlahgua
             Y = App.BlahguaAPI.CurrentBlahTypes.First<BlahType>(n => n.N == "says")._id;
             E = DateTime.Now + new TimeSpan(30, 0, 0, 0);
 
+            I = new PollItemList();
+            I.Add(new PollItem("first choice"));
+            I.Add(new PollItem("second choice"));
         }
 
         public bool UseProfile
@@ -334,6 +366,34 @@ namespace WinPhoneBlahgua
         }
     }
 
+
+    public class Stats
+    {
+        public Dictionary<string, string> o { get; set; }
+        public Dictionary<string, string> v { get; set; }
+        public Dictionary<string, string> c { get; set; }
+    }
+
+    public class DemographicRecord
+    {
+        public DemoProfileSummaryRecord _o { get; set; }
+        public DemoProfileSummaryRecord _b { get; set; }
+        public DemoProfileSummaryRecord _c { get; set; }
+        public DemoProfileSummaryRecord _d { get; set; }
+        public DemoProfileSummaryRecord _u { get; set; }
+        public DemoProfileSummaryRecord _v { get; set; }
+    }
+
+    public class DemoProfileSummaryRecord
+    {
+        public Dictionary<string, int> J { get; set; }
+        public Dictionary<string, int> C { get; set; }
+        public Dictionary<string, int> B { get; set; }
+        public Dictionary<string, int> E { get; set; }
+        public Dictionary<string, int> D { get; set; }
+        public Dictionary<string, int> Z { get; set; }
+    }
+
     public class Blah
     {
         public string A { get; set; }
@@ -350,8 +410,20 @@ namespace WinPhoneBlahgua
         public List<string> B { get; set; }
         public List<string> M { get; set; }
         public List<string> I { get; set; }
-        public bool XX { get; set; }
+        public List<int> J { get; set; }
         public DateTime E { get; set; }
+        //public int _1 { get; set; }
+        //public int _2 { get; set; }
+        //public int _3 { get; set; }
+        //public int _4 { get; set; }
+        //public int _5 { get; set; }
+        //public int _6 { get; set; }
+        public bool XX { get; set; }
+        //public DemographicRecord _d { get; set; }
+        public int uv { get; set; }
+        public int P { get; set; }
+        public int D { get; set; }
+        public int C { get; set; }
 
 
         public UserDescription Description {get; set;}
@@ -361,6 +433,20 @@ namespace WinPhoneBlahgua
 
         public Blah()
         {
+            uv = 0;
+            O = 0;
+            V = 0;
+            C = 0;
+            D = 0;
+            P = 0;
+            /*
+            _1 = 0;
+            _2 = 0;
+            _3 = 0;
+            _4 = 0;
+            _5 = 0;
+            _6 = 0;
+             */
 
         }
 

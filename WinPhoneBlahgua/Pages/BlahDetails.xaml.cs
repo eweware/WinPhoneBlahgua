@@ -17,17 +17,19 @@ namespace WinPhoneBlahgua
 {
     public partial class BlahDetails : PhoneApplicationPage
     {
+        ApplicationBarIconButton signInBtn;
         ApplicationBarIconButton promoteBtn;
         ApplicationBarIconButton demoteBtn;
         ApplicationBarIconButton shareBtn;
         ApplicationBarIconButton commentBtn;
         ApplicationBarMenuItem reportItem;
         ApplicationBarMenuItem deleteItem;
-
+        string currentPage;
 
 
         public BlahDetails()
         {
+            currentPage = "summary";
             InitializeComponent();
             this.DataContext = App.BlahguaAPI;
             this.ApplicationBar = new ApplicationBar();
@@ -36,11 +38,11 @@ namespace WinPhoneBlahgua
             ApplicationBar.IsVisible = true;
             ApplicationBar.Opacity = .8;
 
-            promoteBtn = new ApplicationBarIconButton(new Uri("/Images/Icons/promote.png", UriKind.Relative));
+            promoteBtn = new ApplicationBarIconButton(new Uri("/Images/Icons/black_promote.png", UriKind.Relative));
             promoteBtn.Text = "promote";
             promoteBtn.Click += HandlePromoteBlah;
 
-            demoteBtn = new ApplicationBarIconButton(new Uri("/Images/Icons/demote.png", UriKind.Relative));
+            demoteBtn = new ApplicationBarIconButton(new Uri("/Images/Icons/black_demote.png", UriKind.Relative));
             demoteBtn.Text = "demote";
             demoteBtn.Click += HandleDemoteBlah;
 
@@ -53,6 +55,10 @@ namespace WinPhoneBlahgua
             commentBtn = new ApplicationBarIconButton(new Uri("/Images/Icons/comment.png", UriKind.Relative));
             commentBtn.Text = "comment";
             commentBtn.Click += HandleAddComment;
+
+            signInBtn = new ApplicationBarIconButton(new Uri("/Images/Icons/signin.png", UriKind.Relative));
+            signInBtn.Text = "sign in";
+            signInBtn.Click += HandleSignin;
 
             reportItem = new ApplicationBarMenuItem("flag post as inappropriate");
             reportItem.Click += HandleReportItem;
@@ -67,6 +73,89 @@ namespace WinPhoneBlahgua
                     AllCommentList.ItemsSource = allComments;
                 }
             );
+        }
+
+        void UpdateSummaryButtons()
+        {
+            promoteBtn.IconUri = new Uri("/Images/Icons/black_promote.png");
+            demoteBtn.IconUri = new Uri("/Images/Icons/black_demote.png");
+            Blah curBlah = App.BlahguaAPI.CurrentBlah;
+
+            if (App.BlahguaAPI.CurrentUser != null)
+            {
+                if (curBlah.A == App.BlahguaAPI.CurrentUser._id)
+                {
+                    promoteBtn.IsEnabled = false;
+                    demoteBtn.IsEnabled = false;
+                }
+                else if (curBlah.uv == 0)
+                {
+                    promoteBtn.IsEnabled = true;
+                    demoteBtn.IsEnabled = true;
+                }
+                else
+                {
+                    promoteBtn.IsEnabled = false;
+                    demoteBtn.IsEnabled = false;
+                    if (curBlah.uv == 1)
+                    {
+                        promoteBtn.IconUri = new Uri("/Images/Icons/promote.png"); 
+                    }
+                    else
+                    {
+                        demoteBtn.IconUri = new Uri("/Images/Icons/demote.png"); 
+                    }
+                }
+            }
+        }
+
+        void UpdateCommentButtons()
+        {
+            promoteBtn.IconUri = new Uri("/Images/Icons/black_promote.png");
+            demoteBtn.IconUri = new Uri("/Images/Icons/black_demote.png");
+            Blah curBlah = App.BlahguaAPI.CurrentBlah;
+
+            if (App.BlahguaAPI.CurrentUser == null)
+            {
+                promoteBtn.IsEnabled = false;
+                demoteBtn.IsEnabled = false;
+                commentBtn.IsEnabled = false;
+
+
+            }
+            else
+            {
+                commentBtn.IsEnabled = true;
+                Comment curComment = (Comment)AllCommentList.SelectedItem;
+
+                if (curComment != null)
+                {
+                    // see if the user voted on it already
+                    if (curComment.uv == 0)
+                    {
+                        promoteBtn.IsEnabled = true;
+                        demoteBtn.IsEnabled = true;
+                    }
+                    else
+                    {
+                        promoteBtn.IsEnabled = false;
+                        demoteBtn.IsEnabled = false;
+                        if (curComment.uv == 1)
+                        {
+                            promoteBtn.IconUri = new Uri("/Images/Icons/promote.png");
+                        }
+                        else
+                        {
+                            demoteBtn.IconUri = new Uri("/Images/Icons/demote.png");
+                        }
+                    }
+                }
+                else
+                {
+                    promoteBtn.IsEnabled = false;
+                    demoteBtn.IsEnabled = false;
+                }
+            }
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
@@ -107,12 +196,55 @@ namespace WinPhoneBlahgua
 
         private void HandlePromoteBlah(object target, EventArgs theArgs)
         {
+            if (currentPage == "summary")
+            {
+                App.BlahguaAPI.SetBlahVote(1, (newVote) =>
+                    {
+                        UpdateSummaryButtons();
+                    });
+            }
+            else
+            {
+                Comment curComment = (Comment)AllCommentList.SelectedItem;
 
+                if (curComment != null)
+                {
+                    App.BlahguaAPI.SetCommentVote(curComment, 1, (newVote) =>
+                        {
+                            UpdateCommentButtons();
+                        }
+                    );
+                }
+            }
+        }
+
+        private void HandleSignin(object target, EventArgs theArgs)
+        {
+            NavigationService.Navigate(new Uri("/Pages/Signin.xaml", UriKind.Relative));    
         }
 
         private void HandleDemoteBlah(object target, EventArgs theArgs)
         {
+            if (currentPage == "summary")
+            {
+                App.BlahguaAPI.SetBlahVote(1, (newVote) =>
+                {
+                    UpdateSummaryButtons();
+                });
+            }
+            else
+            {
+                Comment curComment = (Comment)AllCommentList.SelectedItem;
 
+                if (curComment != null)
+                {
+                    App.BlahguaAPI.SetCommentVote(curComment, -1, (newVote) =>
+                    {
+                        UpdateCommentButtons();
+                    }
+                    );
+                }
+            }
         }
 
         private void HandleShareBlah(object target, EventArgs theArgs)
@@ -122,7 +254,7 @@ namespace WinPhoneBlahgua
 
         private void HandleAddComment(object target, EventArgs theArgs)
         {
-
+            NavigationService.Navigate(new Uri("/Pages/CreateCommemt.xaml", UriKind.Relative));  
         }
 
         private void HandleReportItem(object target, EventArgs theArgs)
@@ -171,37 +303,47 @@ namespace WinPhoneBlahgua
 
         private void HandlePivotLoaded(object sender, PivotItemEventArgs e)
         {
-
-            switch (e.Item.Header.ToString())
+            currentPage = e.Item.Header.ToString();
+            if (App.BlahguaAPI.CurrentUser != null)
             {
-                case "summary":
-                    ApplicationBar.Buttons.Add(promoteBtn);
-                    ApplicationBar.Buttons.Add(demoteBtn);
-                    ApplicationBar.Buttons.Add(commentBtn);
-                    ApplicationBar.Buttons.Add(shareBtn);
+                switch (currentPage)
+                {
+                    case "summary":
+                        ApplicationBar.Buttons.Add(promoteBtn);
+                        ApplicationBar.Buttons.Add(demoteBtn);
+                        ApplicationBar.Buttons.Add(commentBtn);
+                        ApplicationBar.Buttons.Add(shareBtn);
 
-                    ApplicationBar.MenuItems.Add(reportItem);
-                    ApplicationBar.MenuItems.Add(deleteItem);
-                    ApplicationBar.IsVisible = true;
-                    break;
+                        ApplicationBar.MenuItems.Add(reportItem);
+                        ApplicationBar.MenuItems.Add(deleteItem);
+                        ApplicationBar.IsVisible = true;
+                        UpdateSummaryButtons();
+                        break;
 
-                case "comments":
-                    ApplicationBar.Buttons.Add(promoteBtn);
-                    ApplicationBar.Buttons.Add(demoteBtn);
-                    ApplicationBar.Buttons.Add(commentBtn);
-                    ApplicationBar.MenuItems.Add(reportItem);
-                    ApplicationBar.MenuItems.Add(deleteItem);
-                    ApplicationBar.IsVisible = true;
-                    break;
+                    case "comments":
+                        ApplicationBar.Buttons.Add(promoteBtn);
+                        ApplicationBar.Buttons.Add(demoteBtn);
+                        ApplicationBar.Buttons.Add(commentBtn);
+                        ApplicationBar.MenuItems.Add(reportItem);
+                        ApplicationBar.MenuItems.Add(deleteItem);
+                        ApplicationBar.IsVisible = true;
+                        UpdateCommentButtons();
+                        break;
 
-                case "stats":
-                    ApplicationBar.IsVisible = false;
-                    break;
+                    case "stats":
+                        ApplicationBar.IsVisible = false;
+                        break;
 
-                default:
+                    default:
 
 
-                    break;
+                        break;
+                }
+            }
+            else
+            {
+                ApplicationBar.Buttons.Add(signInBtn);
+                ApplicationBar.IsVisible = true;
             }
         }
 
