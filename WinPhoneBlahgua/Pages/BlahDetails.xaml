@@ -6,6 +6,8 @@
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:chart="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Chart"
+    xmlns:chartEngine="clr-namespace:Telerik.Charting;assembly=Telerik.Windows.Controls.Chart"
     xmlns:local="clr-namespace:WinPhoneBlahgua" 
     x:Class="WinPhoneBlahgua.BlahDetails"
     local:TiltEffect.IsTiltEnabled="True"
@@ -287,11 +289,35 @@
                                 <TextBlock Text="{Binding ConversionString}" FontSize="26" />
                             </StackPanel>
                             <TextBlock Text="{Binding ImpressionString}" FontSize="16" FontStyle="Italic"/>
-                            <local:BarChart Height="200" Margin="0 8 0 8" ChartTitle="Blahgua Score" />
-                            <local:BarChart Height="200" Margin="0 8 0 8" ChartTitle="promotes and demotes" />
-                            <local:BarChart Height="200" Margin="0 8 0 8" ChartTitle="impressions" />
-                            <local:BarChart Height="200" Margin="0 8 0 8" ChartTitle="opens" />
-                            <local:BarChart Height="200" Margin="0 8 0 8" ChartTitle="comments" />
+                            <chart:RadCartesianChart x:Name="ScoreChart" Height="150">
+                                    <chart:RadCartesianChart.HorizontalAxis>
+                                    <chart:LinearAxis Maximum="1"/>
+                                </chart:RadCartesianChart.HorizontalAxis>
+                                    <chart:RadCartesianChart.VerticalAxis>
+                                    <chart:CategoricalAxis/>
+                                    </chart:RadCartesianChart.VerticalAxis>
+                                <chart:RadCartesianChart.Series>
+                                    <chart:BarSeries>
+                                        <chartEngine:CategoricalDataPoint Value="{Binding CurrentBlah.S}" Category="" />
+                                    </chart:BarSeries>
+                                </chart:RadCartesianChart.Series>
+                            </chart:RadCartesianChart>
+                            
+                            <chart:RadCartesianChart x:Name="VoteChart" Height="200">
+                                <chart:RadCartesianChart.HorizontalAxis>
+                                    <chart:LinearAxis Maximum="Auto" />
+                                </chart:RadCartesianChart.HorizontalAxis>
+                                <chart:RadCartesianChart.VerticalAxis>
+                                    <chart:CategoricalAxis/>
+                                </chart:RadCartesianChart.VerticalAxis>
+                                <chart:RadCartesianChart.Series>
+                                    <chart:BarSeries>
+                                        <chartEngine:CategoricalDataPoint Value="{Binding CurrentBlah.P}" Category="promotes" />
+                                            <chartEngine:CategoricalDataPoint Value="{Binding CurrentBlah.P}" Category="demotes" />
+                                        </chart:BarSeries>
+                                </chart:RadCartesianChart.Series>
+                            </chart:RadCartesianChart>
+
 
                             </toolkit:ExpanderView>
                         <toolkit:ExpanderView Header="about the audience" IsExpanded="True" Margin="0 0 0 16"

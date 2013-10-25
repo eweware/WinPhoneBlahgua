@@ -368,7 +368,16 @@ namespace WinPhoneBlahgua
                 NoStatsBox.Visibility = Visibility.Collapsed;
                 StatsArea.Visibility = Visibility.Visible;
                 StatsArea.DataContext = App.BlahguaAPI.CurrentBlah;
+                DrawBlahStats();
             });
+
+        }
+
+        private void DrawBlahStats()
+        {
+            
+
+
 
         }
 
