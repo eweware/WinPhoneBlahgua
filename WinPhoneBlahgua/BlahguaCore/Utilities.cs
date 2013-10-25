@@ -19,6 +19,30 @@ namespace WinPhoneBlahgua
     public class Utilities
     {
 
+        public static string CreateDateString(DateTime theDate, bool omitDay)
+        {
+            string year = (theDate.Year - 2000).ToString();
+            string month;
+
+            if (theDate.Month < 10)
+                month = "0" + theDate.Month.ToString();
+            else
+                month = theDate.Month.ToString();
+
+            if (omitDay)
+                return year + month;
+            else
+            {
+                string day;
+                if (theDate.Day < 10)
+                    day = "0" + theDate.Day.ToString();
+                else
+                    day = theDate.Day.ToString();
+
+                return year + month + day;
+            }
+        }
+
         public static string ElapsedDateString(DateTime theDate)
         {
             string tailStr;

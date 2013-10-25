@@ -82,9 +82,8 @@ namespace WinPhoneBlahgua
                     blahList.PrepareBlahs();
                     RenderInitialBlahs();
                     StartTimers();
-                    
+                    LoadingBox.Visibility = Visibility.Collapsed;
                    
-
                 });
         }
 
@@ -369,6 +368,7 @@ namespace WinPhoneBlahgua
 
         void OnChannelChanged()
         {
+            LoadingBox.Visibility = Visibility.Visible;
             StopTimers();
             ClearBlahs();
             FetchInitialBlahList();

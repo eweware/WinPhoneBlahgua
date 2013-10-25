@@ -424,6 +424,92 @@ namespace WinPhoneBlahgua
             return authorList;
         }
 
+
+        public void GetUserPollVote(PollVote_callback callback)
+        {
+            if (!CurrentBlah.IsPollInited)
+            {
+                if (CurrentUser != null)
+                {
+                    BlahguaRest.GetUserPollVote(CurrentBlah._id, (theVote) =>
+                        {
+                            CurrentBlah.UpdateUserPollVote(theVote);
+                            callback(theVote);
+                        }
+                        );
+                }
+                else
+                {
+                    CurrentBlah.UpdateUserPollVote(null);
+                    callback(null);
+                }
+            }
+            else
+                callback(null);
+        }
+
+        public void SetUserPollVote(int theOption, PollVote_callback callback)
+        {
+            BlahguaRest.SetUserPollVote(CurrentBlah._id, theOption, callback);
+        }
+
+        public void LoadBlahStats(Stats_callback callback)
+        {
+            if (CurrentBlah.L != null)
+                callback(CurrentBlah.L);
+            else
+            {
+                DateTime endDate = DateTime.Now;
+                DateTime startDate = endDate - new TimeSpan(7, 0, 0, 0);
+                BlahguaRest.GetBlahWithStats(CurrentBlah._id, startDate, endDate, (blahWithStats) =>
+                {
+                    if (blahWithStats != null)
+                        CurrentBlah.L = blahWithStats.L;
+                    else
+                        CurrentBlah.L = null;
+
+                    callback(CurrentBlah.L);
+
+                }
+                );
+
+            }
+        }
+
+        public void GetUserPredictionVote(PredictionVote_callback callback)
+        {
+            if (!CurrentBlah.IsPredictInited)
+            {
+                if (CurrentUser != null)
+                {
+                    BlahguaRest.GetUserPredictionVote(CurrentBlah._id, (theVote) =>
+                    {
+                        CurrentBlah.UpdateUserPredictionVote(theVote);
+                        callback(theVote);
+                    }
+                        );
+                }
+                else
+                {
+                    CurrentBlah.UpdateUserPredictionVote(null);
+                    callback(null);
+                }
+            }
+            else
+                callback(null);
+        }
+
+        public void SetUserPredictionVote(string userVote, PredictionVote_callback callback)
+        {
+            BlahguaRest.SetUserPredictionVote(CurrentBlah._id, userVote, false, callback);
+        }
+
+        public void SetUserExpPredictionVote(string userVote, PredictionVote_callback callback)
+        {
+            BlahguaRest.SetUserPredictionVote(CurrentBlah._id, userVote, true, callback);
+        }
+
+
   
 
         CommentList ThreadComments(CommentList comments)

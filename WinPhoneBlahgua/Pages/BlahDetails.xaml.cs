@@ -25,10 +25,16 @@ namespace WinPhoneBlahgua
         ApplicationBarMenuItem reportItem;
         ApplicationBarMenuItem deleteItem;
         string currentPage;
+        bool commentsLoaded = false;
+        CommentList blahComments = null;
+        bool statsLoaded = false;
 
 
         public BlahDetails()
         {
+            commentsLoaded = false;
+            blahComments = null;
+            statsLoaded = false;
             currentPage = "summary";
             InitializeComponent();
             this.DataContext = App.BlahguaAPI;
@@ -38,11 +44,11 @@ namespace WinPhoneBlahgua
             ApplicationBar.IsVisible = true;
             ApplicationBar.Opacity = .8;
 
-            promoteBtn = new ApplicationBarIconButton(new Uri("/Images/Icons/black_promote.png", UriKind.Relative));
+            promoteBtn = new ApplicationBarIconButton(new Uri("/Images/Icons/white_promote.png", UriKind.Relative));
             promoteBtn.Text = "promote";
             promoteBtn.Click += HandlePromoteBlah;
 
-            demoteBtn = new ApplicationBarIconButton(new Uri("/Images/Icons/black_demote.png", UriKind.Relative));
+            demoteBtn = new ApplicationBarIconButton(new Uri("/Images/Icons/white_demote.png", UriKind.Relative));
             demoteBtn.Text = "demote";
             demoteBtn.Click += HandleDemoteBlah;
 
@@ -52,7 +58,7 @@ namespace WinPhoneBlahgua
             shareBtn.Click += HandleShareBlah;
 
 
-            commentBtn = new ApplicationBarIconButton(new Uri("/Images/Icons/comment.png", UriKind.Relative));
+            commentBtn = new ApplicationBarIconButton(new Uri("/Images/Icons/white_comment.png", UriKind.Relative));
             commentBtn.Text = "comment";
             commentBtn.Click += HandleAddComment;
 
@@ -66,19 +72,14 @@ namespace WinPhoneBlahgua
             deleteItem = new ApplicationBarMenuItem("remove post");
             deleteItem.Click += HandleDeleteItem;
 
-
-
-            App.BlahguaAPI.LoadBlahComments((allComments) =>
-                {
-                    AllCommentList.ItemsSource = allComments;
-                }
-            );
+            StatsArea.DataContext = null;
         }
+
 
         void UpdateSummaryButtons()
         {
-            promoteBtn.IconUri = new Uri("/Images/Icons/black_promote.png", UriKind.Relative);
-            demoteBtn.IconUri = new Uri("/Images/Icons/black_demote.png", UriKind.Relative);
+            promoteBtn.IconUri = new Uri("/Images/Icons/white_promote.png", UriKind.Relative);
+            demoteBtn.IconUri = new Uri("/Images/Icons/white_demote.png", UriKind.Relative);
             Blah curBlah = App.BlahguaAPI.CurrentBlah;
 
             if (App.BlahguaAPI.CurrentUser != null)
@@ -99,20 +100,34 @@ namespace WinPhoneBlahgua
                     demoteBtn.IsEnabled = false;
                     if (curBlah.uv == 1)
                     {
-                        promoteBtn.IconUri = new Uri("/Images/Icons/promote.png", UriKind.Relative); 
+                        promoteBtn.IconUri = new Uri("/Images/Icons/promote_active.png", UriKind.Relative); 
                     }
                     else
                     {
-                        demoteBtn.IconUri = new Uri("/Images/Icons/demote.png", UriKind.Relative); 
+                        demoteBtn.IconUri = new Uri("/Images/Icons/demote_active.png", UriKind.Relative); 
                     }
                 }
             }
         }
 
+        void UpdateStatsPage()
+        {
+            if (App.BlahguaAPI.CurrentUser == null)
+            {
+                DemoCharts.Visibility = Visibility.Collapsed;
+                SignInStatPromp.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                DemoCharts.Visibility = Visibility.Visible;
+                SignInStatPromp.Visibility = Visibility.Collapsed;
+            }
+        }
+
         void UpdateCommentButtons()
         {
-            promoteBtn.IconUri = new Uri("/Images/Icons/black_promote.png", UriKind.Relative);
-            demoteBtn.IconUri = new Uri("/Images/Icons/black_demote.png", UriKind.Relative);
+            promoteBtn.IconUri = new Uri("/Images/Icons/white_promote.png", UriKind.Relative);
+            demoteBtn.IconUri = new Uri("/Images/Icons/white_demote.png", UriKind.Relative);
             Blah curBlah = App.BlahguaAPI.CurrentBlah;
 
             if (App.BlahguaAPI.CurrentUser == null)
@@ -142,11 +157,11 @@ namespace WinPhoneBlahgua
                         demoteBtn.IsEnabled = false;
                         if (curComment.uv == 1)
                         {
-                            promoteBtn.IconUri = new Uri("/Images/Icons/promote.png", UriKind.Relative);
+                            promoteBtn.IconUri = new Uri("/Images/Icons/promote_active.png", UriKind.Relative);
                         }
                         else
                         {
-                            demoteBtn.IconUri = new Uri("/Images/Icons/demote.png", UriKind.Relative);
+                            demoteBtn.IconUri = new Uri("/Images/Icons/demote_active.png", UriKind.Relative);
                         }
                     }
                 }
@@ -167,6 +182,8 @@ namespace WinPhoneBlahgua
                 UpdateSummaryButtons();
             else if (currentPage == "comments")
                 UpdateCommentButtons();
+            else if (currentPage == "stats")
+                UpdateStatsPage();
             
         }
 
@@ -174,28 +191,64 @@ namespace WinPhoneBlahgua
         {
             Brush newBrush;
 
-
             switch (App.BlahguaAPI.CurrentBlah.TypeName)
             {
                 case "leaks":
                     newBrush = (Brush)App.Current.Resources["BaseBrushLeaks"];
                     break;
                 case "polls":
-                    newBrush = (Brush)App.Current.Resources["BaseBrushPolls"]; ;
+                    newBrush = (Brush)App.Current.Resources["BaseBrushPolls"]; 
                     break;
                 case "asks":
-                    newBrush = (Brush)App.Current.Resources["BaseBrushAsks"]; ;
+                    newBrush = (Brush)App.Current.Resources["BaseBrushAsks"]; 
                     break;
                 case "predicts":
-                    newBrush = (Brush)App.Current.Resources["BaseBrushPredicts"]; ;
+                    newBrush = (Brush)App.Current.Resources["BaseBrushPredicts"]; 
                     break;
                 default:
-                    newBrush = (Brush)App.Current.Resources["BaseBrushSays"]; ;
+                    newBrush = (Brush)App.Current.Resources["BaseBrushSays"]; 
                     break;
             }
 
             BackgroundScreen.Fill = newBrush;
+        }
 
+        private void HandlePollInit()
+        {
+            App.BlahguaAPI.GetUserPollVote((theVote) =>
+                {
+                    ((Storyboard)Resources["ShowPollAnimation"]).Begin();
+                }
+            );
+        }
+
+        private void HandlePredictInit()
+        {
+            App.BlahguaAPI.GetUserPredictionVote((theVote) =>
+                {
+                    Blah curBlah = App.BlahguaAPI.CurrentBlah;
+                    if (curBlah.E > DateTime.Now)
+                    {
+                        // still has time
+                        PredictDateBox.Text = "happening by " + curBlah.E.ToShortDateString();
+                        PredictElapsedTimeBox.Text = "(" + Utilities.ElapsedDateString(curBlah.E) + ")";
+                        WillHappenItems.Visibility = Visibility.Visible;
+                        AllreadyHappenedItems.Visibility = Visibility.Collapsed;
+                        WillHappenItems.ItemsSource = curBlah.PredictionItems;
+                    }
+                    else
+                    {
+                        // expired
+                        PredictDateBox.Text = "should have happened on " + curBlah.E.ToShortDateString();
+                        PredictElapsedTimeBox.Text = "(" + Utilities.ElapsedDateString(curBlah.E) + ")";
+                        WillHappenItems.Visibility = Visibility.Visible;
+                        AllreadyHappenedItems.Visibility = Visibility.Collapsed;
+                        AllreadyHappenedItems.ItemsSource = curBlah.ExpPredictionItems;
+                    }
+
+                    ((Storyboard)Resources["ShowPredictionAnimation"]).Begin();
+                }
+            );
         }
 
         private void HandlePromoteBlah(object target, EventArgs theArgs)
@@ -295,32 +348,173 @@ namespace WinPhoneBlahgua
             BlahImage.MaxWidth = ((BitmapImage)BlahImage.Source).PixelWidth;
         }
 
+        private void LoadComments()
+        {
+            App.BlahguaAPI.LoadBlahComments((theList) =>
+                {
+                    commentsLoaded = true;
+                    blahComments = theList;
+                    NoCommentBox.Visibility = Visibility.Collapsed;
+                    AllCommentList.ItemsSource = blahComments;
+                });
+            
+        }
+
+        private void LoadStats()
+        {
+            App.BlahguaAPI.LoadBlahStats((theStats) =>
+            {
+                statsLoaded = true;
+                NoStatsBox.Visibility = Visibility.Collapsed;
+                StatsArea.Visibility = Visibility.Visible;
+                StatsArea.DataContext = App.BlahguaAPI.CurrentBlah;
+            });
+
+        }
+
         private void OnPivotLoading(object sender, PivotItemEventArgs e)
         {
-            // do the background
-            Storyboard sb = new Storyboard();
-            DoubleAnimation db = new DoubleAnimation();
-            double targetVal = 0;
-            double maxScroll = -320;
-            double offset;
+            string newItem = e.Item.Header.ToString();
 
-            if (BlahDetailsPivot.Items.Count() > 1)
-                offset = maxScroll / (BlahDetailsPivot.Items.Count() - 1);
+            if (newItem == "comments")
+            {
+                if (App.BlahguaAPI.CurrentBlah.C == 0)
+                {
+                    NoCommentBox.Visibility = Visibility.Visible;
+                    NoCommentProgress.Visibility = Visibility.Collapsed;
+                    NoCommentTextBox.Text = "This post has no comments.\nMaybe you can add the first!";
+                }
+                else
+                {
+                    if (commentsLoaded)
+                        NoCommentBox.Visibility = Visibility.Collapsed;
+                    else
+                    {
+                        NoCommentBox.Visibility = Visibility.Visible;
+                        NoCommentTextBox.Text = "loading comments";
+                        NoCommentProgress.Visibility = Visibility.Visible;
+                        LoadComments();
+                    }
+                }
+            }
+            else if (newItem == "stats")
+            {
+                if (!statsLoaded)
+                {
+                    NoStatsBox.Visibility = Visibility.Visible;
+                    LoadStats();
+
+                }
+            }
+            
+            
+            if ((newItem == "summary") && (currentPage == "stats"))
+            {
+                // wrap around
+                BackgroundImage2.Visibility = Visibility.Visible;
+
+                Storyboard sb = new Storyboard();
+                DoubleAnimation db1 = new DoubleAnimation();
+                DoubleAnimation db2 = new DoubleAnimation();
+                ExponentialEase ease = new ExponentialEase();
+                ease.Exponent = 5;
+                ease.EasingMode = EasingMode.EaseIn;
+
+                db1.EasingFunction = ease;
+                db1.BeginTime = TimeSpan.FromSeconds(0);
+                db1.Duration = TimeSpan.FromSeconds(.5);
+                db1.To = -800;
+                Storyboard.SetTarget(db1, BackgroundImage);
+                Storyboard.SetTargetProperty(db1, new PropertyPath("(Canvas.Left)"));
+                sb.Children.Add(db1);
+
+                db2.EasingFunction = ease;
+                db2.BeginTime = TimeSpan.FromSeconds(0);
+                db2.Duration = TimeSpan.FromSeconds(.5);
+                db2.To = 0;
+                Storyboard.SetTarget(db2, BackgroundImage2);
+                Storyboard.SetTargetProperty(db2, new PropertyPath("(Canvas.Left)"));
+                sb.Children.Add(db2);
+
+                sb.Completed += sbWrap_Completed;
+                sb.Begin();
+            }
+            else if ((newItem == "stats") && (currentPage == "summary"))
+            {
+                // back up
+                // wrap around
+                BackgroundImage2.Visibility = Visibility.Visible;
+
+                Storyboard sb = new Storyboard();
+                DoubleAnimation db1 = new DoubleAnimation();
+                DoubleAnimation db2 = new DoubleAnimation();
+                ExponentialEase ease = new ExponentialEase();
+                ease.Exponent = 5;
+                ease.EasingMode = EasingMode.EaseIn;
+
+                db1.EasingFunction = ease;
+                db1.BeginTime = TimeSpan.FromSeconds(0);
+                db1.Duration = TimeSpan.FromSeconds(.5);
+                db1.From = -800;
+                db1.To = -320;
+                Storyboard.SetTarget(db1, BackgroundImage);
+                Storyboard.SetTargetProperty(db1, new PropertyPath("(Canvas.Left)"));
+                sb.Children.Add(db1);
+
+                db2.EasingFunction = ease;
+                db2.BeginTime = TimeSpan.FromSeconds(0);
+                db2.Duration = TimeSpan.FromSeconds(.5);
+                db2.From = 0;
+                db2.To = 480;
+                Storyboard.SetTarget(db2, BackgroundImage2);
+                Storyboard.SetTargetProperty(db2, new PropertyPath("(Canvas.Left)"));
+                sb.Children.Add(db2);
+
+                sb.Completed += sbBackWrap_Completed;
+                sb.Begin();
+
+            }
             else
-                offset = 0;
-            ExponentialEase ease = new ExponentialEase();
-            ease.Exponent = 5;
-            ease.EasingMode = EasingMode.EaseIn;
+            {
+                // do the background
+                Storyboard sb = new Storyboard();
+                DoubleAnimation db = new DoubleAnimation();
+                double targetVal = 0;
+                double maxScroll = -320;
+                double offset;
 
-            targetVal = offset * BlahDetailsPivot.Items.IndexOf(e.Item);
-            db.EasingFunction = ease;
-            db.BeginTime = TimeSpan.FromSeconds(0);
-            db.Duration = TimeSpan.FromSeconds(.5);
-            db.To = targetVal;
-            Storyboard.SetTarget(db, BackgroundImage);
-            Storyboard.SetTargetProperty(db, new PropertyPath("(Canvas.Left)"));
-            sb.Children.Add(db);
-            sb.Begin();
+                if (BlahDetailsPivot.Items.Count() > 1)
+                    offset = maxScroll / (BlahDetailsPivot.Items.Count() - 1);
+                else
+                    offset = 0;
+                ExponentialEase ease = new ExponentialEase();
+                ease.Exponent = 5;
+                ease.EasingMode = EasingMode.EaseIn;
+
+                targetVal = offset * BlahDetailsPivot.Items.IndexOf(e.Item);
+                db.EasingFunction = ease;
+                db.BeginTime = TimeSpan.FromSeconds(0);
+                db.Duration = TimeSpan.FromSeconds(.5);
+                db.To = targetVal;
+                Storyboard.SetTarget(db, BackgroundImage);
+                Storyboard.SetTargetProperty(db, new PropertyPath("(Canvas.Left)"));
+                sb.Children.Add(db);
+                sb.Begin();
+            }
+        }
+
+        void sbWrap_Completed(object sender, EventArgs e)
+        {
+            BackgroundImage2.Visibility = Visibility.Collapsed;
+            Canvas.SetLeft(BackgroundImage2, 480);
+            Canvas.SetLeft(BackgroundImage, 0);
+        }
+
+        void sbBackWrap_Completed(object sender, EventArgs e)
+        {
+            BackgroundImage2.Visibility = Visibility.Collapsed;
+            Canvas.SetLeft(BackgroundImage2, 480);
+            Canvas.SetLeft(BackgroundImage, -320);
         }
 
         private void HandlePivotLoaded(object sender, PivotItemEventArgs e)
@@ -354,6 +548,7 @@ namespace WinPhoneBlahgua
 
                     case "stats":
                         ApplicationBar.IsVisible = false;
+                        UpdateStatsPage();
                         break;
 
                     default:
@@ -366,6 +561,8 @@ namespace WinPhoneBlahgua
             {
                 ApplicationBar.Buttons.Add(signInBtn);
                 ApplicationBar.IsVisible = true;
+                if (currentPage == "stats")
+                    UpdateStatsPage();
             }
         }
 
@@ -373,6 +570,19 @@ namespace WinPhoneBlahgua
         {
             ApplicationBar.Buttons.Clear();
             ApplicationBar.MenuItems.Clear();
+        }
+
+        private void NavigationInTransition_EndTransition(object sender, RoutedEventArgs e)
+        {
+            switch (App.BlahguaAPI.CurrentBlah.TypeName)
+            {
+                case "polls":
+                    HandlePollInit();
+                    break;
+                case "predicts":
+                    HandlePredictInit();
+                    break;
+            }  
         }
 
         

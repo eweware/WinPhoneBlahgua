@@ -222,15 +222,95 @@ namespace WinPhoneBlahgua
         }
     }
 
+    [DataContract]
     public class PollItem
     {
+        [DataMember]
         public string G {get; set;}
+
+        [DataMember]
         public string T {get; set;}
+
+        private int _maxVotes = 0;
+        private int _totalVotes = 0;
+        private int _itemVotes = 0;
+        private bool _isUserVote = false;
 
 
         public PollItem(string theText)
         {
             G = theText;
+        }
+
+        public PollItem(string theText, int numVotes, int maxVotes, int totalVotes, bool isUserVote)
+        {
+            G = theText;
+            _maxVotes = maxVotes;
+            _itemVotes = numVotes;
+            _isUserVote = isUserVote;
+        }
+
+        public int MaxVotes
+        {
+            get { return _maxVotes; }
+            set { _maxVotes = value; }
+        }
+
+        public int TotalVotes
+        {
+            get { return _totalVotes; }
+            set { _totalVotes = value; }
+        }
+
+        public double ComputedWidth
+        {
+            get 
+            { 
+                double votes = 0;
+                if (_maxVotes > 0)
+                votes = 360.0 * ((double)_itemVotes / (double)_maxVotes);
+                return Math.Max(5, votes); 
+            }
+        }
+
+        public string VotePercent
+        {
+            get 
+            {
+                int percent = 0;
+
+                if (_totalVotes > 0)
+                    percent = (int)(((double)_itemVotes / (double)_totalVotes) * 100);
+
+                if (percent > 0)
+                    return percent.ToString() + "%";
+                else
+                    return "no votes"; // no votes
+            }
+        }
+
+        public string VoteString
+        {
+            get
+            {
+                if (_isUserVote)
+                    return "\uf046";
+                else
+                    return "\uf096";
+            }
+        }
+
+
+        public int Votes
+        {
+            get { return _itemVotes; }
+            set { _itemVotes = value; }
+        }
+
+        public bool IsUserVote
+        {
+            get { return _isUserVote; }
+            set { _isUserVote = value; }
         }
     }
 
@@ -367,12 +447,20 @@ namespace WinPhoneBlahgua
         }
     }
 
-
-    public class Stats
+    public class StatDayRecord
     {
-        public Dictionary<string, string> o { get; set; }
-        public Dictionary<string, string> v { get; set; }
-        public Dictionary<string, string> c { get; set; }
+        public int C { get; set; }
+        public int D { get; set; }
+        public int O { get; set; }
+        public int P { get; set; }
+        public int U { get; set; }
+        public int V { get; set; }
+        public string _id { get; set; }
+    }
+
+    public class Stats : ObservableCollection<StatDayRecord>
+    {
+        
     }
 
     public class DemographicRecord
@@ -422,40 +510,114 @@ namespace WinPhoneBlahgua
         public int val_Unknown { get; set; }
     }
 
+    public class UserPollVote
+    {
+        public int W {get; set;}
+    }
+
+    public class UserPredictionVote
+    {
+        public string D {get; set;}
+        public string Z {get; set;}
+    }
+
+    [DataContract]
     public class Blah
     {
+        [DataMember]
         public string A { get; set; }
+
+        [DataMember]        
         public string F { get; set; }
+
+        [DataMember]
         public string G { get; set; }
+
+        [DataMember]
         public int O { get; set; }
+
+        [DataMember]
         public double S { get; set; }
+
+        [DataMember]
         public string T { get; set; }
+
+        [DataMember]
         public int V { get; set; }
+
+        [DataMember]
         public string Y { get; set; }
+
+        [DataMember]
         public string _id { get; set; }
+
+        [DataMember]
         public DateTime c { get; set; }
+
+        [DataMember]
         public DateTime u { get; set; }
+
+        [DataMember]
         public List<string> B { get; set; }
+
+        [DataMember]
         public List<string> M { get; set; }
-        public List<string> I { get; set; }
+
+        [DataMember]
+        public PollItemList I { get; set; }
+
+        [DataMember]
         public List<int> J { get; set; }
+
+        [DataMember]
         public DateTime E { get; set; }
+
+        [DataMember(Name = "1")]
         public int _1 { get; set; }
+
+        [DataMember(Name = "2")]
         public int _2 { get; set; }
+
+        [DataMember(Name = "3")]
         public int _3 { get; set; }
+
+        [DataMember(Name = "4")]
         public int _4 { get; set; }
+
+        [DataMember(Name = "5")]
         public int _5 { get; set; }
+
+        [DataMember(Name = "6")]
         public int _6 { get; set; }
+
+        [DataMember]
         public bool XX { get; set; }
+
+        [DataMember]
         public DemographicRecord _d { get; set; }
+
+        [DataMember]
+        public Stats L { get; set; }
+
+        [DataMember]
         public int uv { get; set; }
+
+        [DataMember]
         public int P { get; set; }
+
+        [DataMember]
         public int D { get; set; }
+
+        [DataMember]
         public int C { get; set; }
 
 
+        public bool IsPollInited = false;
+        public bool IsPredictInited = false;
         public UserDescription Description {get; set;}
         public CommentList Comments { get; set; }
+        private PollItemList _predictionItems;
+        private PollItemList _expPredictionItems;
 
 
 
@@ -467,18 +629,140 @@ namespace WinPhoneBlahgua
             C = 0;
             D = 0;
             P = 0;
-            /*
             _1 = 0;
             _2 = 0;
             _3 = 0;
             _4 = 0;
             _5 = 0;
             _6 = 0;
-             */
-
+            L = null;
         }
 
-        
+        public string ConversionString
+        {
+            get
+            {
+                double theRate = 0;
+
+                if (V > 0)
+                    theRate = (double)O / (double)V;
+
+                return theRate.ToString("p2");
+            }
+        }
+
+        public string ImpressionString
+        {
+            get
+            {
+                string theStr = "opened " + O + " time";
+                if (O != 1)
+                    theStr += "s";
+                theStr += " out of " + V + " impression";
+                if (V != 1)
+                    theStr += "s";
+                return theStr;
+            }
+        }
+
+        public PollItemList PredictionItems
+        {
+            get
+            {
+                return _predictionItems;
+            }
+        }
+
+        public PollItemList ExpPredictionItems
+        {
+            get
+            {
+                return _expPredictionItems;
+            }
+        }
+
+        public void UpdateUserPredictionVote(UserPredictionVote theVote)
+        {
+            int totalExpVotes = _1 + _2 + _3;
+            int maxExpVote = Math.Max(Math.Max(_1, _2), _3);
+            int totalVotes = _4 + _5 + _6;
+            int maxVote = Math.Max(Math.Max(_4, _5), _6);
+            _predictionItems = new PollItemList();
+            _predictionItems.Add(new PollItem("I agree", _4, maxVote, totalVotes, false));
+            _predictionItems.Add(new PollItem("I disagree", _5, maxVote, totalVotes, false));
+            _predictionItems.Add(new PollItem("It is unclear", _6, maxVote, totalVotes, false));
+
+            _expPredictionItems = new PollItemList();
+            _expPredictionItems.Add(new PollItem("The prediction was right", _1, maxExpVote, totalExpVotes, false));
+            _expPredictionItems.Add(new PollItem("The prediction was wrong", _2, maxExpVote, totalExpVotes, false));
+            _expPredictionItems.Add(new PollItem("It is unclear", _3, maxExpVote, totalExpVotes, false));
+
+
+            if (theVote == null)
+            {
+                // user is not signed in
+            }
+            else
+            {
+                switch (theVote.D)
+                {
+                    case "y":
+                        _predictionItems[0].IsUserVote = true;
+                        break;
+                    case "n":
+                        _predictionItems[1].IsUserVote = true;
+                        break;
+                    case "u":
+                        _predictionItems[2].IsUserVote = true;
+                        break;
+                }
+
+                switch (theVote.Z)
+                {
+                    case "y":
+                        _expPredictionItems[0].IsUserVote = true;
+                        break;
+                    case "n":
+                        _expPredictionItems[1].IsUserVote = true;
+                        break;
+                    case "u":
+                        _expPredictionItems[2].IsUserVote = true;
+                        break;
+                }
+            }
+
+            IsPredictInited = true;
+        }
+
+        public void UpdateUserPollVote(UserPollVote theVote)
+        {
+            int maxVote = 0;
+            int userVote = -1;
+            int totalVotes = 0;
+
+            if (theVote != null)
+                userVote = theVote.W;
+
+            foreach (int curVote in J)
+            {
+                totalVotes += curVote;
+                if (curVote > maxVote)
+                    maxVote = curVote;
+            }
+            PollItem curPollItem = null;
+
+            for (int i = 0; i < I.Count; i++)
+            {
+                curPollItem = I[i];
+                curPollItem.MaxVotes = maxVote;
+                curPollItem.Votes = J[i];
+                curPollItem.IsUserVote = (userVote == i);
+                curPollItem.TotalVotes = totalVotes;
+            }
+
+            IsPollInited = true;
+        }
+  
 
         public string ElapsedTimeString
         {

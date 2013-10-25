@@ -25,7 +25,11 @@ namespace WinPhoneBlahgua
     public delegate void string_callback(String theResult);
     public delegate void User_callback(User theResult);
     public delegate void int_callback(int theResult);
-    public delegate void BadgeRecord_callback(BadgeRecord theResult);  
+    public delegate void BadgeRecord_callback(BadgeRecord theResult);
+    public delegate void PredictionVote_callback(UserPredictionVote theResult);
+    public delegate void PollVote_callback(UserPollVote theResult);  
+    public delegate void Stats_callback(Stats theResult);
+
 
     public class BlahguaRESTservice
     {
@@ -86,6 +90,35 @@ namespace WinPhoneBlahgua
             });
         }
 
+        public void GetBlahWithStats(string blahId, DateTime startDate, DateTime endDate, Blah_callback callback)
+        {
+            string startDateString = Utilities.CreateDateString(startDate, false);
+            string endDateString = Utilities.CreateDateString(endDate, false);
+
+            RestRequest request = new RestRequest("blahs/" + blahId, Method.GET);
+            request.AddParameter("stats", "true");
+            request.AddParameter("s", startDateString);
+            request.AddParameter("e", endDateString);
+
+            apiClient.ExecuteAsync(request, (response) =>
+            {
+                Blah theBlah = null;
+                DataContractJsonSerializer des = new DataContractJsonSerializer(typeof(Blah));
+                var stream = new MemoryStream(Encoding.UTF8.GetBytes(response.Content));
+                object theObj = des.ReadObject(stream);
+                stream.Close();
+
+                if (theObj != null)
+                    theBlah = (Blah)theObj;
+
+                callback(theBlah);
+            });
+
+
+
+
+        }
+               
         public void GetPublicChannels(ChannelList_callback callback)
         {
             RestRequest request = new RestRequest("groups/featured", Method.GET);
@@ -290,6 +323,47 @@ namespace WinPhoneBlahgua
         {
             RestRequest request = new RestRequest("users/info", Method.GET);
             apiClient.ExecuteAsync<User>(request, (response) =>
+            {
+                callback(response.Data);
+            });
+        }
+
+        public void GetUserPollVote(string blahId, PollVote_callback callback)
+        {
+            RestRequest request = new RestRequest("blahs/" + blahId + "/pollVote", Method.GET);
+            apiClient.ExecuteAsync<UserPollVote>(request, (response) =>
+            {
+                callback(response.Data);
+            });
+        }
+
+        public void SetUserPollVote(string blahId, int theOption, PollVote_callback callback)
+        {
+            RestRequest request = new RestRequest("blahs/" + blahId + "/pollVote" + theOption, Method.PUT);
+            apiClient.ExecuteAsync<UserPollVote>(request, (response) =>
+            {
+                callback(response.Data);
+            });
+        }
+
+        public void GetUserPredictionVote(string blahId, PredictionVote_callback callback)
+        {
+            RestRequest request = new RestRequest("blahs/" + blahId + "/predicts", Method.GET);
+            apiClient.ExecuteAsync<UserPredictionVote>(request, (response) =>
+            {
+                callback(response.Data);
+            });
+        }
+
+        public void SetUserPredictionVote(string blahId, string theVote, bool expired, PredictionVote_callback callback)
+        {
+            RestRequest request = new RestRequest("blahs/" + blahId + "/predicts", Method.PUT);
+            request.RequestFormat = DataFormat.Json;
+            if (expired)
+                request.AddBody(new { t = "post", v = theVote });
+            else
+                request.AddBody(new { t = "pre", v = theVote });
+            apiClient.ExecuteAsync<UserPredictionVote>(request, (response) =>
             {
                 callback(response.Data);
             });

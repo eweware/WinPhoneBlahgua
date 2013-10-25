@@ -241,6 +241,12 @@
             <Canvas x:Name="BlahContainer">
             </Canvas>
         </ScrollViewer>
+        <Border x:Name="LoadingBox"  Margin="0 200 0 0" Padding="24 24" BorderBrush="#80FFFFFF" BorderThickness="1" CornerRadius="8" Background="#80000000" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <StackPanel Orientation="Vertical">
+            <TextBlock  Text="loading" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Foreground="{StaticResource BrushBlahguaWhite}" />
+            <ProgressBar Width="200" Height="15" IsIndeterminate="True" />
+            </StackPanel>
+        </Border>
     </Grid>
 
 </phone:PhoneApplicationPage>

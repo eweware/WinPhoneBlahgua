@@ -20,7 +20,7 @@
     shell:SystemTray.IsVisible="False">
 
     <toolkit:TransitionService.NavigationInTransition>
-        <toolkit:NavigationInTransition>
+        <toolkit:NavigationInTransition EndTransition="NavigationInTransition_EndTransition">
             <toolkit:NavigationInTransition.Backward>
                 <toolkit:TurnstileTransition Mode="BackwardIn"/>
             </toolkit:NavigationInTransition.Backward>
@@ -43,9 +43,93 @@
     
     
     <phone:PhoneApplicationPage.Resources>
-		<DataTemplate x:Key="HeaderTemplate">
+        <Storyboard x:Key="ShowPredictionAnimation">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PredictionOptionArea" Storyboard.TargetProperty="(UIElement.Visibility)">
+                <DiscreteObjectKeyFrame   Value="Visible" KeyTime="0:0:0" />
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimation  Storyboard.TargetName="PredictYScale" Storyboard.TargetProperty="ScaleY" To="1" Duration="0:0:0.5" />
+            <DoubleAnimation Storyboard.TargetName="PredictionOptionArea" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.5"/>
+
+        </Storyboard>
+
+        <Storyboard x:Key="ShowPollAnimation">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PollOptionArea" Storyboard.TargetProperty="(UIElement.Visibility)">
+                <DiscreteObjectKeyFrame   Value="Visible" KeyTime="0:0:0" />
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimation  Storyboard.TargetName="PollYScale" Storyboard.TargetProperty="ScaleY" To="1" Duration="0:0:0.5" />
+            <DoubleAnimation Storyboard.TargetName="PollOptionArea" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.5"/>
+
+           
+        </Storyboard>
+
+        
+        <DataTemplate x:Key="HeaderTemplate">
 			<Grid/>
 		</DataTemplate>
+
+        <DataTemplate x:Key="LargeHeaderTemplate">
+            <TextBlock Text="{Binding}" FontSize="36" />
+        </DataTemplate>
+        
+        
+        <DataTemplate x:Key="PollNotVotedTemplate">
+            <Grid Margin="0 0 0 16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="24"/>
+                    <ColumnDefinition Width="432"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" Text="&#xf096;" FontFamily="/Resources/fontawesome-webfont.ttf#FontAwesome" VerticalAlignment="Center" FontSize="24"  />
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Rectangle Fill="{StaticResource PhoneAccentBrush}" Width="250" Height="32" VerticalAlignment="Center"></Rectangle>
+                    <TextBlock Margin="8 0 0 0" Text="&#xf059;" VerticalAlignment="Center" FontSize="13"  />
+                </StackPanel>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding G}" VerticalAlignment="Center" TextWrapping="Wrap" Margin="12 0 0 0" FontSize="16"/>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="PollVotedTemplate">
+            <Grid Margin="0 0 0 16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="24"/>
+                    <ColumnDefinition Width="432"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" Text="{Binding VoteString}" FontFamily="/Resources/fontawesome-webfont.ttf#FontAwesome" VerticalAlignment="Center" FontSize="24"  />
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Rectangle Fill="{StaticResource PhoneAccentBrush}" Width="{Binding ComputedWidth}" Height="32" VerticalAlignment="Center"></Rectangle>
+                    <TextBlock Margin="8 0 0 0" Text="{Binding VotePercent}" VerticalAlignment="Center" FontSize="13"  />
+                </StackPanel>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding G}" VerticalAlignment="Center" TextWrapping="Wrap" Margin="12 0 0 0" FontSize="16"/>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="PredictTemplate">
+            <Grid Margin="0 0 0 16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="24"/>
+                    <ColumnDefinition Width="432"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="0" Text="{Binding VoteString}" FontFamily="/Resources/fontawesome-webfont.ttf#FontAwesome" VerticalAlignment="Center" FontSize="24"  />
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Rectangle Fill="{StaticResource PhoneAccentBrush}" Width="{Binding ComputedWidth}" Height="32" VerticalAlignment="Center"></Rectangle>
+                    <TextBlock Margin="8 0 0 0" Text="{Binding VotePercent}" VerticalAlignment="Center" FontSize="13"  />
+                </StackPanel>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding G}" VerticalAlignment="Center" TextWrapping="Wrap" Margin="12 0 0 0" FontSize="16"/>
+            </Grid>
+        </DataTemplate>
+
+       
 
         <DataTemplate x:Name="CommentTemplate">
             <Border BorderBrush="{StaticResource PhoneBorderBrush}" BorderThickness="0,0,0,1" Margin="0,0,0,8">
@@ -103,9 +187,8 @@
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Canvas Width="480" Height="800" VerticalAlignment="Top" IsHitTestVisible="False">
-            <Image  Width="800" Height="800"  x:Name="BackgroundImage" Canvas.Top="0"  Canvas.Left="0"  Source="{Binding CurrentBlah.ImageURL}" Stretch="UniformToFill" >
-
-            </Image>
+            <Image  Width="800" Height="800"  x:Name="BackgroundImage" Canvas.Top="0"  Canvas.Left="0"  Source="{Binding CurrentBlah.ImageURL}" Stretch="UniformToFill" />
+            <Image  Width="800" Height="800"  x:Name="BackgroundImage2" Canvas.Top="0"  Canvas.Left="480"  Source="{Binding CurrentBlah.ImageURL}" Stretch="UniformToFill" Visibility="Collapsed" />
             <Rectangle x:Name="BackgroundScreen" Width="480" Height="800" Canvas.Top="0" Canvas.Left="0"></Rectangle>
 
         </Canvas>
@@ -114,7 +197,7 @@
             <!--Pivot item one-->
             <controls:PivotItem Header="summary">
                 <ScrollViewer>
-                    <StackPanel Orientation="Vertical" Margin="0 0 0 64">
+                    <StackPanel Orientation="Vertical" Margin="0 0 0 72">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="{Binding CurrentBlah.UserImage}" Width="64" Height="64" VerticalAlignment="Top" Margin="0,0,8,0" />
                             <StackPanel Orientation="Vertical">
@@ -136,16 +219,41 @@
                           
                           HorizontalAlignment="Center" ImageOpened="HandleImageOpened" />
                         <local:UrlTextBlock Content="{Binding CurrentBlah.F}" TextWrapping="Wrap" />
-                        <Grid  x:Name="ExtraInfoArea" Margin="8"></Grid>
-                       
+                        <Border x:Name="PollOptionArea"  Margin="0 12 0 0" Padding="8" BorderBrush="#80FFFFFF"  Visibility="Collapsed" BorderThickness="1" CornerRadius="8" Background="#80000000">
+                            <Border.RenderTransform>
+                                <ScaleTransform x:Name="PollYScale" ScaleY="0"/>
+                            </Border.RenderTransform>
+                            <StackPanel>
+                                <TextBlock x:Name="PollPrompt" Text="choices" HorizontalAlignment="Center" />
+                                <ItemsControl x:Name="PollItemList" ItemTemplate="{StaticResource PollNotVotedTemplate}" Margin="0 8 0 0"
+                                      ItemsSource="{Binding CurrentBlah.I}">
+                                    
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+
+                        <Border x:Name="PredictionOptionArea" Padding="8" BorderBrush="#80FFFFFF" BorderThickness="1"  Visibility="Collapsed" CornerRadius="8" Background="#80000000">
+                            <Border.RenderTransform>
+                                <ScaleTransform x:Name="PredictYScale" ScaleY="0"/>
+                            </Border.RenderTransform>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock x:Name="PredictDateBox" Text="Happening by 10/20/2013" />
+                                <TextBlock x:Name="PredictElapsedTimeBox" Text="(23 days from now"/>
+                                <ItemsControl x:Name="WillHappenItems" ItemTemplate="{StaticResource PredictTemplate}"
+                                               />
+                                <ItemsControl x:Name="AllreadyHappenedItems" ItemTemplate="{StaticResource PredictTemplate}"
+                                               />
+
+                            </StackPanel>
+                            </Border>
                     </StackPanel>
                 </ScrollViewer>
             </controls:PivotItem>
 
             <!--Pivot item two-->
             <controls:PivotItem Header="comments">
-
-                <ListBox  x:Name="AllCommentList"  Margin="0 0 0 64" 
+                <Grid >
+                    <ListBox  x:Name="AllCommentList"   Margin="0 0 0 72"
                         ItemTemplate="{StaticResource CommentTemplate}"
                         ItemsSource="{Binding CurrentBlah.Comments}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
                         <ListBox.ItemContainerStyle>
@@ -155,11 +263,62 @@
                         </ListBox.ItemContainerStyle>
 
                     </ListBox>
+                    <Border x:Name="NoCommentBox"  Margin="8" Padding="24 16" BorderBrush="#80FFFFFF" BorderThickness="1" CornerRadius="8" Background="#80000000" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock x:Name="NoCommentTextBox" Text="This post has no comments.&#x0a;Maybe you can add the first!" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" />
+                            <ProgressBar x:Name="NoCommentProgress" Width="200" Height="15" IsIndeterminate="True" />
+                        </StackPanel>
+                    </Border>
+
+                </Grid>
             </controls:PivotItem>
 
             <!--Pivot item two-->
             <controls:PivotItem Header="stats">
-                <Grid/>
+                <Grid>
+                    <ScrollViewer>
+                    <StackPanel Margin="0 0 0 72" x:Name="StatsArea">
+                        <toolkit:ExpanderView Header="audience response" Margin="0 0 0 16" IsExpanded="True"
+                                              HeaderTemplate="{StaticResource LargeHeaderTemplate}">
+
+                            <TextBlock FontSize="11" TextWrapping="Wrap" Text="Key statistical data for this post.  The blahgua score is an overall rating computed by assigning different weights to different data metrics." />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Conversion Ratio: " FontSize="26" />
+                                <TextBlock Text="{Binding ConversionString}" FontSize="26" />
+                            </StackPanel>
+                            <TextBlock Text="{Binding ImpressionString}" FontSize="16" FontStyle="Italic"/>
+                            <local:BarChart Height="200" Margin="0 8 0 8" ChartTitle="Blahgua Score" />
+                            <local:BarChart Height="200" Margin="0 8 0 8" ChartTitle="promotes and demotes" />
+                            <local:BarChart Height="200" Margin="0 8 0 8" ChartTitle="impressions" />
+                            <local:BarChart Height="200" Margin="0 8 0 8" ChartTitle="opens" />
+                            <local:BarChart Height="200" Margin="0 8 0 8" ChartTitle="comments" />
+
+                            </toolkit:ExpanderView>
+                        <toolkit:ExpanderView Header="about the audience" IsExpanded="True" Margin="0 0 0 16"
+                                              HeaderTemplate="{StaticResource LargeHeaderTemplate}" >
+                            <TextBlock FontSize="11" TextWrapping="Wrap" Text="How various demographics responded to this post." />
+                            <StackPanel x:Name="DemoCharts">
+                                <Rectangle Height="200" Fill="LightGray" Margin="0 8 0 8"  />
+                                <Rectangle Height="200" Fill="LightGray" Margin="0 8 0 8"  />
+                                <Rectangle Height="200" Fill="LightGray" Margin="0 8 0 8"  />
+                                <Rectangle Height="200" Fill="LightGray" Margin="0 8 0 8"  />
+                                <Rectangle Height="200" Fill="LightGray" Margin="0 8 0 8"  />
+                            </StackPanel>
+                            <Border x:Name="SignInStatPromp"  Margin="8 24" Padding="24 16" BorderBrush="#80FFFFFF" BorderThickness="1" CornerRadius="8" Background="#80000000" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="Sign in and set up your profile to see demographic stats" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" />
+                                </StackPanel>
+                                </Border>
+                        </toolkit:ExpanderView>
+                    </StackPanel>
+                    </ScrollViewer>
+                    <Border x:Name="NoStatsBox"  Margin="8" Padding="24 16" BorderBrush="#80FFFFFF" BorderThickness="1" CornerRadius="8" Background="#80000000" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="loading" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" />
+                            <ProgressBar  Width="200" Height="15" IsIndeterminate="True" />
+                        </StackPanel>
+                    </Border>
+                </Grid>
             </controls:PivotItem>
         </controls:Pivot>
     </Grid>
