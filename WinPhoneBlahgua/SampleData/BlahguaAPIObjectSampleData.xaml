@@ -63,6 +63,28 @@
 			<WinPhoneBlahgua:Blah.M>
 				<System:String>Nisi proin</System:String>
 			</WinPhoneBlahgua:Blah.M>
+            <WinPhoneBlahgua:Blah.L>
+                <WinPhoneBlahgua:Stats>
+                    <WinPhoneBlahgua:Stats.Impressions>
+                        <System:Int32>5</System:Int32>
+                        <System:Int32>3</System:Int32>
+                        <System:Int32>1</System:Int32>
+                        <System:Int32>6</System:Int32>
+                    </WinPhoneBlahgua:Stats.Impressions>
+                    <WinPhoneBlahgua:Stats.Opens>
+                        <System:Int32>5</System:Int32>
+                        <System:Int32>3</System:Int32>
+                        <System:Int32>1</System:Int32>
+                        <System:Int32>6</System:Int32>
+                    </WinPhoneBlahgua:Stats.Opens>
+                    <WinPhoneBlahgua:Stats.Comments>
+                        <System:Int32>5</System:Int32>
+                        <System:Int32>3</System:Int32>
+                        <System:Int32>1</System:Int32>
+                        <System:Int32>6</System:Int32>
+                    </WinPhoneBlahgua:Stats.Comments>
+                </WinPhoneBlahgua:Stats>
+            </WinPhoneBlahgua:Blah.L>
 		</WinPhoneBlahgua:Blah>
 	</WinPhoneBlahgua:BlahguaAPIObject.CurrentBlah>
     <WinPhoneBlahgua:BlahguaAPIObject.CreateRecord>

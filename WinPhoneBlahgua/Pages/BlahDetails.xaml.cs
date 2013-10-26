@@ -12,6 +12,8 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System.Windows.Media.Imaging;
+using Telerik.Windows.Controls;
+using Telerik.Charting;
 
 namespace WinPhoneBlahgua
 {
@@ -37,6 +39,7 @@ namespace WinPhoneBlahgua
             statsLoaded = false;
             currentPage = "summary";
             InitializeComponent();
+
             this.DataContext = App.BlahguaAPI;
             this.ApplicationBar = new ApplicationBar();
             SetBlahBackground();
@@ -375,8 +378,41 @@ namespace WinPhoneBlahgua
 
         private void DrawBlahStats()
         {
-            
+            Blah curBlah = App.BlahguaAPI.CurrentBlah;
+            Stats stats = curBlah.L;
 
+            // blahgua score
+
+            CategoricalSeries newSeries;
+            newSeries = new BarSeries();
+            CategoricalDataPoint newPoint = new CategoricalDataPoint();
+            newPoint.Value = curBlah.S;
+            newPoint.Category = "";
+
+            
+            newSeries.DataPoints.Add(newPoint);
+            ScoreChart.Series.Add(newSeries);   
+
+            // votes
+
+            newSeries = new BarSeries();
+            newPoint = new CategoricalDataPoint();
+            newPoint.Value = curBlah.P;
+            newPoint.Category = "promotes";
+            newSeries.DataPoints.Add(newPoint);
+            newPoint = new CategoricalDataPoint();
+            newPoint.Value = curBlah.D;
+            newPoint.Category = "demotes";
+            newSeries.DataPoints.Add(newPoint);
+
+            VoteChart.Series.Add(newSeries);   
+
+            // opens
+            newSeries = new SplineAreaSeries();
+            foreach (double curVal in stats.Opens)
+            {
+
+            }
 
 
         }

@@ -460,7 +460,104 @@ namespace WinPhoneBlahgua
 
     public class Stats : ObservableCollection<StatDayRecord>
     {
-        
+
+        List<int> _openList = null;
+        List<int> _commentList = null;
+        List<int> _viewList = null;
+
+        bool _hasComments;
+        bool _hasViews;
+        bool _hasOpens;
+
+        public List<int> Opens
+        {
+            get
+            {
+                if (_openList == null)
+                {
+                    bool hasVotes = false;
+                    int curVote;
+                    _openList = new List<int>();
+                    foreach (StatDayRecord dayRec in this)
+                    {
+                        curVote = dayRec.O;
+                        if (curVote > 0)
+                            hasVotes = true;
+                        _openList.Add(curVote);
+                    }
+
+                    _hasOpens = hasVotes;
+                }
+
+
+                return _openList;
+            }
+        }
+
+        public List<int> Impressions
+        {
+            get
+            {
+                if (_viewList == null)
+                {
+                    bool hasVotes = false;
+                    int curVote;
+                    _viewList = new List<int>();
+                    foreach (StatDayRecord dayRec in this)
+                    {
+                        curVote = dayRec.V;
+                        if (curVote > 0)
+                            hasVotes = true;
+                        _viewList.Add(curVote);
+                    }
+
+                    _hasViews = hasVotes;
+                }
+
+
+                return _viewList;
+            }
+        }
+
+        public List<int> Comments
+        {
+            get
+            {
+                if (_commentList == null)
+                {
+                    bool hasVotes = false;
+                    int curVote;
+                    _commentList = new List<int>();
+                    foreach (StatDayRecord dayRec in this)
+                    {
+                        curVote = dayRec.O;
+                        if (curVote > 0)
+                            hasVotes = true;
+                        _commentList.Add(curVote);
+                    }
+
+                    _hasComments = hasVotes;
+                }
+
+
+                return _commentList;
+            }
+        }
+
+        public bool HasOpens
+        {
+            get { return _hasOpens; }
+        }
+
+        public bool HasViews
+        {
+            get { return _hasViews; }
+        }
+
+        public bool HasComments
+        {
+            get { return _hasComments; }
+        }
     }
 
     public class DemographicRecord

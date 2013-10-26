@@ -279,7 +279,7 @@
             <controls:PivotItem Header="stats">
                 <Grid>
                     <ScrollViewer>
-                    <StackPanel Margin="0 0 0 72" x:Name="StatsArea">
+                    <StackPanel Margin="0 0 0 72" x:Name="StatsArea" DataContext="null">
                         <toolkit:ExpanderView Header="audience response" Margin="0 0 0 16" IsExpanded="True"
                                               HeaderTemplate="{StaticResource LargeHeaderTemplate}">
 
@@ -289,35 +289,48 @@
                                 <TextBlock Text="{Binding ConversionString}" FontSize="26" />
                             </StackPanel>
                             <TextBlock Text="{Binding ImpressionString}" FontSize="16" FontStyle="Italic"/>
-                            <chart:RadCartesianChart x:Name="ScoreChart" Height="150">
-                                    <chart:RadCartesianChart.HorizontalAxis>
-                                    <chart:LinearAxis Maximum="1"/>
-                                </chart:RadCartesianChart.HorizontalAxis>
-                                    <chart:RadCartesianChart.VerticalAxis>
-                                    <chart:CategoricalAxis/>
-                                    </chart:RadCartesianChart.VerticalAxis>
-                                <chart:RadCartesianChart.Series>
-                                    <chart:BarSeries>
-                                        <chartEngine:CategoricalDataPoint Value="{Binding CurrentBlah.S}" Category="" />
-                                    </chart:BarSeries>
-                                </chart:RadCartesianChart.Series>
-                            </chart:RadCartesianChart>
                             
-                            <chart:RadCartesianChart x:Name="VoteChart" Height="200">
+                                <TextBlock Text="blahgua score" Margin="0 16 0 0"/>
+                                <chart:RadCartesianChart x:Name="ScoreChart" Height="150">
+                                    <chart:RadCartesianChart.HorizontalAxis>
+                                        <chart:LinearAxis Maximum="1" LabelFormat="P0" LabelInterval="2" />
+                                    </chart:RadCartesianChart.HorizontalAxis>
+                                    <chart:RadCartesianChart.VerticalAxis>
+                                        <chart:CategoricalAxis ShowLabels="False"/>
+                                    </chart:RadCartesianChart.VerticalAxis>
+                            </chart:RadCartesianChart>
+
+                                <TextBlock Text="promotes and demotes" Margin="0 16 0 0" />
+                                <chart:RadCartesianChart x:Name="VoteChart" Height="200">
                                 <chart:RadCartesianChart.HorizontalAxis>
                                     <chart:LinearAxis Maximum="Auto" />
                                 </chart:RadCartesianChart.HorizontalAxis>
                                 <chart:RadCartesianChart.VerticalAxis>
-                                    <chart:CategoricalAxis/>
-                                </chart:RadCartesianChart.VerticalAxis>
-                                <chart:RadCartesianChart.Series>
-                                    <chart:BarSeries>
-                                        <chartEngine:CategoricalDataPoint Value="{Binding CurrentBlah.P}" Category="promotes" />
-                                            <chartEngine:CategoricalDataPoint Value="{Binding CurrentBlah.P}" Category="demotes" />
-                                        </chart:BarSeries>
-                                </chart:RadCartesianChart.Series>
+                                        <chart:CategoricalAxis>
+                                             
+                                        </chart:CategoricalAxis>
+                                    </chart:RadCartesianChart.VerticalAxis>
                             </chart:RadCartesianChart>
 
+                                <chart:RadCartesianChart x:Name="OpenChart" Height="200">
+                                    <chart:RadCartesianChart.Grid>
+                                        <chart:CartesianChartGrid MajorYLineDashArray="5, 5" MajorLinesVisibility="Y">
+                                            <chart:CartesianChartGrid.MajorYLineStyle>
+                                                <Style TargetType="Line">
+                                                    <Setter Property="Stroke" Value="Gray"/>
+                                                </Style>
+                                            </chart:CartesianChartGrid.MajorYLineStyle>
+                                        </chart:CartesianChartGrid>
+                                    </chart:RadCartesianChart.Grid>
+                                    <chart:RadCartesianChart.HorizontalAxis>
+                                        <chart:CategoricalAxis LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
+                                    </chart:RadCartesianChart.HorizontalAxis>
+                                    <chart:RadCartesianChart.VerticalAxis>
+                                        <chart:LinearAxis LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
+
+                                    </chart:RadCartesianChart.VerticalAxis>
+
+                                </chart:RadCartesianChart>
 
                             </toolkit:ExpanderView>
                         <toolkit:ExpanderView Header="about the audience" IsExpanded="True" Margin="0 0 0 16"
@@ -330,7 +343,8 @@
                                 <Rectangle Height="200" Fill="LightGray" Margin="0 8 0 8"  />
                                 <Rectangle Height="200" Fill="LightGray" Margin="0 8 0 8"  />
                             </StackPanel>
-                            <Border x:Name="SignInStatPromp"  Margin="8 24" Padding="24 16" BorderBrush="#80FFFFFF" BorderThickness="1" CornerRadius="8" Background="#80000000" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                
+                                <Border x:Name="SignInStatPromp"  Margin="8 24" Padding="24 16" BorderBrush="#80FFFFFF" BorderThickness="1" CornerRadius="8" Background="#80000000" HorizontalAlignment="Center" VerticalAlignment="Top">
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock Text="Sign in and set up your profile to see demographic stats" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" />
                                 </StackPanel>
