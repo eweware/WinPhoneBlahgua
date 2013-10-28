@@ -408,11 +408,38 @@ namespace WinPhoneBlahgua
             VoteChart.Series.Add(newSeries);   
 
             // opens
+            
             newSeries = new SplineAreaSeries();
-            foreach (double curVal in stats.Opens)
+            for (int i = 0; i < stats.Count; i++)
             {
-
+                newPoint = new CategoricalDataPoint();
+                newPoint.Value = stats.Impressions[i];
+                newPoint.Category = stats[i].StatDate;
+                newSeries.DataPoints.Add(newPoint);
             }
+            ViewChart.Series.Add(newSeries);
+
+            // opens
+            newSeries = new SplineAreaSeries();
+            for (int i = 0; i < stats.Count; i++)
+            {
+                newPoint = new CategoricalDataPoint();
+                newPoint.Value = stats.Opens[i];
+                newPoint.Category = stats[i].StatDate;
+                newSeries.DataPoints.Add(newPoint);
+            }
+            OpenChart.Series.Add(newSeries);
+
+            // opens
+            newSeries = new SplineAreaSeries();
+            for (int i = 0; i < stats.Count; i++)
+            {
+                newPoint = new CategoricalDataPoint();
+                newPoint.Value = stats.Comments[i];
+                newPoint.Category = stats[i].StatDate;
+                newSeries.DataPoints.Add(newPoint);
+            }
+            CommentChart.Series.Add(newSeries);
 
 
         }

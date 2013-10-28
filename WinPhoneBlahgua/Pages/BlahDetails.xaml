@@ -311,25 +311,34 @@
                                         </chart:CategoricalAxis>
                                     </chart:RadCartesianChart.VerticalAxis>
                             </chart:RadCartesianChart>
-
-                                <chart:RadCartesianChart x:Name="OpenChart" Height="200">
-                                    <chart:RadCartesianChart.Grid>
-                                        <chart:CartesianChartGrid MajorYLineDashArray="5, 5" MajorLinesVisibility="Y">
-                                            <chart:CartesianChartGrid.MajorYLineStyle>
-                                                <Style TargetType="Line">
-                                                    <Setter Property="Stroke" Value="Gray"/>
-                                                </Style>
-                                            </chart:CartesianChartGrid.MajorYLineStyle>
-                                        </chart:CartesianChartGrid>
-                                    </chart:RadCartesianChart.Grid>
+                                <TextBlock Text="impressions" Margin="0 16 0 0" />
+                                <chart:RadCartesianChart x:Name="ViewChart" Height="200">
                                     <chart:RadCartesianChart.HorizontalAxis>
-                                        <chart:CategoricalAxis LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
+                                        <chart:DateTimeContinuousAxis LabelFitMode="None" LabelFormat="MMM-ddd"/>
                                     </chart:RadCartesianChart.HorizontalAxis>
                                     <chart:RadCartesianChart.VerticalAxis>
                                         <chart:LinearAxis LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
-
                                     </chart:RadCartesianChart.VerticalAxis>
+                                </chart:RadCartesianChart>
 
+                                <TextBlock Text="opens" Margin="0 16 0 0" />
+                                <chart:RadCartesianChart x:Name="OpenChart" Height="200">
+                                    <chart:RadCartesianChart.HorizontalAxis>
+                                        <chart:DateTimeContinuousAxis LabelFitMode="None" LabelFormat="MMM-ddd"/>
+                                    </chart:RadCartesianChart.HorizontalAxis>
+                                    <chart:RadCartesianChart.VerticalAxis>
+                                        <chart:LinearAxis LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
+                                    </chart:RadCartesianChart.VerticalAxis>
+                                </chart:RadCartesianChart>
+
+                                <TextBlock Text="comments" Margin="0 16 0 0" />
+                                <chart:RadCartesianChart x:Name="CommentChart" Height="200">
+                                    <chart:RadCartesianChart.HorizontalAxis>
+                                        <chart:DateTimeContinuousAxis LabelFitMode="None" LabelFormat="MMM-ddd"/>
+                                    </chart:RadCartesianChart.HorizontalAxis>
+                                    <chart:RadCartesianChart.VerticalAxis>
+                                        <chart:LinearAxis LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
+                                    </chart:RadCartesianChart.VerticalAxis>
                                 </chart:RadCartesianChart>
 
                             </toolkit:ExpanderView>

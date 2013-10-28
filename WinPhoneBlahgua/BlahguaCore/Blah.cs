@@ -456,6 +456,30 @@ namespace WinPhoneBlahgua
         public int U { get; set; }
         public int V { get; set; }
         public string _id { get; set; }
+
+        public StatDayRecord()
+        {
+            C = D = O = P = U = V = 0;
+        }
+
+        public StatDayRecord(DateTime theDate)
+        {
+            string timeStr = theDate.ToString("yyMMdd");
+            _id = timeStr;
+            C = D = O = P = U = V = 0;
+        }
+
+        public DateTime StatDate
+        {
+            get
+            {
+                string datePart = _id.Substring(_id.Length - 6);
+                string statYear = datePart.Substring(0, 2);
+                string statMonth = datePart.Substring(2, 2);
+                string statDay = datePart.Substring(4, 2);
+                return new DateTime(2000 + int.Parse(statYear), int.Parse(statMonth), int.Parse(statDay));
+            }
+        }
     }
 
     public class Stats : ObservableCollection<StatDayRecord>
