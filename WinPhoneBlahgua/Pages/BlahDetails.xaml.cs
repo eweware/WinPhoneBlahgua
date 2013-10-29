@@ -380,6 +380,7 @@ namespace WinPhoneBlahgua
         {
             Blah curBlah = App.BlahguaAPI.CurrentBlah;
             Stats stats = curBlah.L;
+            int maxVal;
 
             // blahgua score
 
@@ -395,53 +396,122 @@ namespace WinPhoneBlahgua
 
             // votes
 
-            newSeries = new BarSeries();
-            newPoint = new CategoricalDataPoint();
-            newPoint.Value = curBlah.P;
-            newPoint.Category = "promotes";
-            newSeries.DataPoints.Add(newPoint);
-            newPoint = new CategoricalDataPoint();
-            newPoint.Value = curBlah.D;
-            newPoint.Category = "demotes";
-            newSeries.DataPoints.Add(newPoint);
-
-            VoteChart.Series.Add(newSeries);   
-
-            // opens
+            if ((curBlah.P > 0) || (curBlah.D > 0))
+            {
+                maxVal = 2 + Math.Max(curBlah.P, curBlah.D);
+                newSeries = new BarSeries();
+                newPoint = new CategoricalDataPoint();
+                newPoint.Value = curBlah.P;
+                newPoint.Category = "promotes";
+                newSeries.DataPoints.Add(newPoint);
+                newPoint = new CategoricalDataPoint();
+                newPoint.Value = curBlah.D;
+                newPoint.Category = "demotes";
+                newSeries.DataPoints.Add(newPoint);
+                ((LinearAxis)VoteChart.HorizontalAxis).Maximum = maxVal;
+                VoteChart.Series.Add(newSeries);
+            }
             
-            newSeries = new SplineAreaSeries();
-            for (int i = 0; i < stats.Count; i++)
+
+            // views
+            if (stats.HasViews)
             {
-                newPoint = new CategoricalDataPoint();
-                newPoint.Value = stats.Impressions[i];
-                newPoint.Category = stats[i].StatDate;
-                newSeries.DataPoints.Add(newPoint);
+                newSeries = new SplineAreaSeries();
+                for (int i = 0; i < stats.Count; i++)
+                {
+                    newPoint = new CategoricalDataPoint();
+                    newPoint.Value = stats.Impressions[i];
+                    newPoint.Category = stats[i].StatDate;
+                    newSeries.DataPoints.Add(newPoint);
+                }
+                ViewChart.Series.Add(newSeries);
             }
-            ViewChart.Series.Add(newSeries);
 
             // opens
-            newSeries = new SplineAreaSeries();
-            for (int i = 0; i < stats.Count; i++)
+            if (stats.HasOpens)
             {
-                newPoint = new CategoricalDataPoint();
-                newPoint.Value = stats.Opens[i];
-                newPoint.Category = stats[i].StatDate;
-                newSeries.DataPoints.Add(newPoint);
+                newSeries = new SplineAreaSeries();
+                for (int i = 0; i < stats.Count; i++)
+                {
+                    newPoint = new CategoricalDataPoint();
+                    newPoint.Value = stats.Opens[i];
+                    newPoint.Category = stats[i].StatDate;
+                    newSeries.DataPoints.Add(newPoint);
+                }
+                OpenChart.Series.Add(newSeries);
             }
-            OpenChart.Series.Add(newSeries);
+ 
 
-            // opens
-            newSeries = new SplineAreaSeries();
-            for (int i = 0; i < stats.Count; i++)
+            // comments
+            if (stats.HasComments)
             {
-                newPoint = new CategoricalDataPoint();
-                newPoint.Value = stats.Comments[i];
-                newPoint.Category = stats[i].StatDate;
-                newSeries.DataPoints.Add(newPoint);
+                newSeries = new SplineAreaSeries();
+                for (int i = 0; i < stats.Count; i++)
+                {
+                    newPoint = new CategoricalDataPoint();
+                    newPoint.Value = stats.Comments[i];
+                    newPoint.Category = stats[i].StatDate;
+                    newSeries.DataPoints.Add(newPoint);
+                }
+                CommentChart.Series.Add(newSeries);
             }
-            CommentChart.Series.Add(newSeries);
+
+            // gender
+            if (App.BlahguaAPI.CurrentUser != null)
+            {
+                CreateDemoChart(GenderChart, "B");
+
+                // age
+                CreateDemoChart(AgeChart, "C");
 
 
+                // race
+                CreateDemoChart(RaceChart, "D");
+
+
+                // income
+                CreateDemoChart(IncomeChart, "E");
+
+                // country
+                CreateDemoChart(CountryChart, "J");
+                
+            }
+
+        }
+
+        private void CreateDemoChart(RadCartesianChart theChart, string demoProp)
+        {
+            Dictionary<string, string> curDict = App.BlahguaAPI.UserProfile.GetTypesForProperty(demoProp);
+
+            CategoricalDataPoint promotePoint, demotePoint;
+            CategoricalSeries promoteSeries = new BarSeries();
+            CategoricalSeries demoteSeries = new BarSeries();
+            Blah curBlah = App.BlahguaAPI.CurrentBlah;
+            DemoProfileSummaryRecord upVotes = curBlah._d._u;
+            DemoProfileSummaryRecord downVotes = curBlah._d._d;
+
+            int maxVal = 0;
+            promoteSeries = new BarSeries();
+            foreach (string curVal in curDict.Keys)
+            {
+                promotePoint = new CategoricalDataPoint();
+                promotePoint.Category = curDict[curVal];
+                promotePoint.Value = upVotes.GetPropertyValue(demoProp, curVal);// curBlah._d._u.B.GetValue(curVal);
+                promoteSeries.DataPoints.Add(promotePoint);
+
+
+                demotePoint = new CategoricalDataPoint();
+                demotePoint.Category = curDict[curVal];
+                demotePoint.Value = downVotes.GetPropertyValue(demoProp, curVal);
+                demoteSeries.DataPoints.Add(demotePoint);
+
+                if ((promotePoint.Value + demotePoint.Value) > maxVal)
+                    maxVal = (int)(promotePoint.Value + demotePoint.Value);
+            }
+            maxVal += 2;
+            ((LinearAxis)theChart.VerticalAxis).Maximum = maxVal;
+            theChart.Series.Add(promoteSeries);
+            theChart.Series.Add(demoteSeries);
         }
 
         private void OnPivotLoading(object sender, PivotItemEventArgs e)

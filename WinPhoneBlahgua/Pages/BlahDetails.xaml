@@ -301,9 +301,10 @@
                             </chart:RadCartesianChart>
 
                                 <TextBlock Text="promotes and demotes" Margin="0 16 0 0" />
-                                <chart:RadCartesianChart x:Name="VoteChart" Height="200">
+                                <chart:RadCartesianChart x:Name="VoteChart" Height="200" EmptyContent="No votes yet">
+          
                                 <chart:RadCartesianChart.HorizontalAxis>
-                                    <chart:LinearAxis Maximum="Auto" />
+                                    <chart:LinearAxis />
                                 </chart:RadCartesianChart.HorizontalAxis>
                                 <chart:RadCartesianChart.VerticalAxis>
                                         <chart:CategoricalAxis>
@@ -312,9 +313,9 @@
                                     </chart:RadCartesianChart.VerticalAxis>
                             </chart:RadCartesianChart>
                                 <TextBlock Text="impressions" Margin="0 16 0 0" />
-                                <chart:RadCartesianChart x:Name="ViewChart" Height="200">
+                                <chart:RadCartesianChart x:Name="ViewChart" Height="200" EmptyContent="No impressions in the last week">
                                     <chart:RadCartesianChart.HorizontalAxis>
-                                        <chart:DateTimeContinuousAxis LabelFitMode="None" LabelFormat="MMM-ddd"/>
+                                        <chart:DateTimeContinuousAxis LabelFitMode="None" LabelInterval="2"  LabelFormat="MM-dd"/>
                                     </chart:RadCartesianChart.HorizontalAxis>
                                     <chart:RadCartesianChart.VerticalAxis>
                                         <chart:LinearAxis LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
@@ -322,9 +323,9 @@
                                 </chart:RadCartesianChart>
 
                                 <TextBlock Text="opens" Margin="0 16 0 0" />
-                                <chart:RadCartesianChart x:Name="OpenChart" Height="200">
+                                <chart:RadCartesianChart x:Name="OpenChart" Height="200" EmptyContent="No opens in the last week">
                                     <chart:RadCartesianChart.HorizontalAxis>
-                                        <chart:DateTimeContinuousAxis LabelFitMode="None" LabelFormat="MMM-ddd"/>
+                                        <chart:DateTimeContinuousAxis LabelFitMode="None" LabelInterval="2"  LabelFormat="MM-dd"/>
                                     </chart:RadCartesianChart.HorizontalAxis>
                                     <chart:RadCartesianChart.VerticalAxis>
                                         <chart:LinearAxis LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
@@ -332,9 +333,9 @@
                                 </chart:RadCartesianChart>
 
                                 <TextBlock Text="comments" Margin="0 16 0 0" />
-                                <chart:RadCartesianChart x:Name="CommentChart" Height="200">
+                                <chart:RadCartesianChart x:Name="CommentChart" Height="200" EmptyContent="No comments in the last week">
                                     <chart:RadCartesianChart.HorizontalAxis>
-                                        <chart:DateTimeContinuousAxis LabelFitMode="None" LabelFormat="MMM-ddd"/>
+                                        <chart:DateTimeContinuousAxis LabelFitMode="None" LabelInterval="2" LabelFormat="MM-dd"/>
                                     </chart:RadCartesianChart.HorizontalAxis>
                                     <chart:RadCartesianChart.VerticalAxis>
                                         <chart:LinearAxis LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
@@ -346,12 +347,56 @@
                                               HeaderTemplate="{StaticResource LargeHeaderTemplate}" >
                             <TextBlock FontSize="11" TextWrapping="Wrap" Text="How various demographics responded to this post." />
                             <StackPanel x:Name="DemoCharts">
-                                <Rectangle Height="200" Fill="LightGray" Margin="0 8 0 8"  />
-                                <Rectangle Height="200" Fill="LightGray" Margin="0 8 0 8"  />
-                                <Rectangle Height="200" Fill="LightGray" Margin="0 8 0 8"  />
-                                <Rectangle Height="200" Fill="LightGray" Margin="0 8 0 8"  />
-                                <Rectangle Height="200" Fill="LightGray" Margin="0 8 0 8"  />
-                            </StackPanel>
+                                    <TextBlock Text="gender" Margin="0 16 0 0" />
+                                    <chart:RadCartesianChart x:Name="GenderChart" Height="300" EmptyContent="No votes in the last week">
+                                        <chart:RadCartesianChart.HorizontalAxis>
+                                            <chart:CategoricalAxis LabelFitMode="Rotate"/>
+                                        </chart:RadCartesianChart.HorizontalAxis>
+                                        <chart:RadCartesianChart.VerticalAxis>
+                                            <chart:LinearAxis LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
+                                        </chart:RadCartesianChart.VerticalAxis>
+                                    </chart:RadCartesianChart>
+
+                                    <TextBlock Text="age" Margin="0 16 0 0" />
+                                    <chart:RadCartesianChart x:Name="AgeChart" Height="300" EmptyContent="No votes in the last week">
+                                        <chart:RadCartesianChart.HorizontalAxis>
+                                            <chart:CategoricalAxis LabelFitMode="Rotate"/>
+                                        </chart:RadCartesianChart.HorizontalAxis>
+                                        <chart:RadCartesianChart.VerticalAxis>
+                                            <chart:LinearAxis LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
+                                        </chart:RadCartesianChart.VerticalAxis>
+                                    </chart:RadCartesianChart>
+
+                                    <TextBlock Text="ethnicity" Margin="0 16 0 0" />
+                                    <chart:RadCartesianChart x:Name="RaceChart" Height="300" EmptyContent="No votes in the last week">
+                                        <chart:RadCartesianChart.HorizontalAxis>
+                                            <chart:CategoricalAxis LabelFitMode="Rotate"/>
+                                        </chart:RadCartesianChart.HorizontalAxis>
+                                        <chart:RadCartesianChart.VerticalAxis>
+                                            <chart:LinearAxis LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
+                                        </chart:RadCartesianChart.VerticalAxis>
+                                    </chart:RadCartesianChart>
+
+                                    <TextBlock Text="income" Margin="0 16 0 0" />
+                                    <chart:RadCartesianChart x:Name="IncomeChart" Height="300" EmptyContent="No votes in the last week">
+                                        <chart:RadCartesianChart.HorizontalAxis>
+                                            <chart:CategoricalAxis LabelFitMode="Rotate"/>
+                                        </chart:RadCartesianChart.HorizontalAxis>
+                                        <chart:RadCartesianChart.VerticalAxis>
+                                            <chart:LinearAxis LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
+                                        </chart:RadCartesianChart.VerticalAxis>
+                                    </chart:RadCartesianChart>
+
+                                    <TextBlock Text="country" Margin="0 16 0 0" />
+                                    <chart:RadCartesianChart x:Name="CountryChart" Height="300" EmptyContent="No votes in the last week">
+                                        <chart:RadCartesianChart.HorizontalAxis>
+                                            <chart:CategoricalAxis LabelFitMode="Rotate"/>
+                                        </chart:RadCartesianChart.HorizontalAxis>
+                                        <chart:RadCartesianChart.VerticalAxis>
+                                            <chart:LinearAxis LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
+                                        </chart:RadCartesianChart.VerticalAxis>
+                                    </chart:RadCartesianChart>
+                                </StackPanel>
                                 
                                 <Border x:Name="SignInStatPromp"  Margin="8 24" Padding="24 16" BorderBrush="#80FFFFFF" BorderThickness="1" CornerRadius="8" Background="#80000000" HorizontalAlignment="Center" VerticalAlignment="Top">
                                 <StackPanel Orientation="Vertical">

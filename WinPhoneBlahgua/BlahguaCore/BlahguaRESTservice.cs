@@ -29,6 +29,8 @@ namespace WinPhoneBlahgua
     public delegate void PredictionVote_callback(UserPredictionVote theResult);
     public delegate void PollVote_callback(UserPollVote theResult);  
     public delegate void Stats_callback(Stats theResult);
+    public delegate void ProfileSchema_callback(ProfileSchema theResult);
+    public delegate void ProfileSchemaWrapper_callback(ProfileSchemaWrapper theResult);
 
 
     public class BlahguaRESTservice
@@ -142,6 +144,16 @@ namespace WinPhoneBlahgua
                 }
                 else
                     callback(null);
+            });
+
+        }
+
+        public void GetProfileSchema(ProfileSchema_callback callback)
+        {
+            RestRequest request = new RestRequest("users/profile/schema", Method.GET);
+            apiClient.ExecuteAsync<ProfileSchemaWrapper>(request, (response) =>
+            {
+                callback(response.Data.fieldNameToSpecMap);    
             });
 
         }
@@ -404,6 +416,7 @@ namespace WinPhoneBlahgua
                 Blah newBlah = null;
 
                 DataContractJsonSerializer des = new DataContractJsonSerializer(typeof (Blah));
+  
                 var stream = new MemoryStream(Encoding.UTF8.GetBytes(response.Content));
                 object theObj = des.ReadObject(stream);
                 stream.Close();

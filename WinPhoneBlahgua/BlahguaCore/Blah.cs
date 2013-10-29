@@ -489,9 +489,9 @@ namespace WinPhoneBlahgua
         List<int> _commentList = null;
         List<int> _viewList = null;
 
-        bool _hasComments;
-        bool _hasViews;
-        bool _hasOpens;
+        bool? _hasComments;
+        bool? _hasViews;
+        bool? _hasOpens;
 
         public List<int> Opens
         {
@@ -570,66 +570,42 @@ namespace WinPhoneBlahgua
 
         public bool HasOpens
         {
-            get { return _hasOpens; }
+            get 
+            {
+                if (_hasOpens == null)
+                {
+                    List<int> theOpens = Opens;
+                }
+                return (bool)_hasOpens;
+            }
         }
 
         public bool HasViews
         {
-            get { return _hasViews; }
+            get
+            {
+                if (_hasViews == null)
+                {
+                    List<int> views = Impressions;
+                }
+                return (bool)_hasViews;
+            }
         }
 
         public bool HasComments
         {
-            get { return _hasComments; }
+            get
+            {
+                if (_hasComments == null)
+                {
+                    List<int> theComments = Comments;
+                }
+                return (bool)_hasComments;
+            }
         }
     }
 
-    public class DemographicRecord
-    {
-        public DemoProfileSummaryRecord _o { get; set; }
-        public DemoProfileSummaryRecord _b { get; set; }
-        public DemoProfileSummaryRecord _c { get; set; }
-        public DemoProfileSummaryRecord _d { get; set; }
-        public DemoProfileSummaryRecord _u { get; set; }
-        public DemoProfileSummaryRecord _v { get; set; }
-    }
-
-    public class DemoProfileSummaryRecord
-    {
-        public DemoDictionary J { get; set; }
-        public DemoDictionary C { get; set; }
-        public DemoDictionary B { get; set; }
-        public DemoDictionary E { get; set; }
-        public DemoDictionary D { get; set; }
-        public DemoDictionary Z { get; set; }
-    }
-
-    [DataContract]
-    public class DemoDictionary
-    {
-        [DataMember(Name = "0")]
-        public int val_0 { get; set; }
-        [DataMember(Name = "1")]
-        public int val_1 { get; set; }
-        [DataMember(Name = "2")]
-        public int val_2 { get; set; }
-        [DataMember(Name = "3")]
-        public int val_3 { get; set; }
-        [DataMember(Name = "4")]
-        public int val_4 { get; set; }
-        [DataMember(Name = "5")]
-        public int val_5 { get; set; }
-        [DataMember(Name = "6")]
-        public int val_6 { get; set; }
-        [DataMember(Name = "7")]
-        public int val_7 { get; set; }
-        [DataMember(Name = "8")]
-        public int val_8 { get; set; }
-        [DataMember(Name = "9")]
-        public int val_90 { get; set; }
-        [DataMember(Name = "-1")]
-        public int val_Unknown { get; set; }
-    }
+  
 
     public class UserPollVote
     {

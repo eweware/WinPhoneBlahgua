@@ -39,6 +39,7 @@ namespace WinPhoneBlahgua
         bool inited = false;
         public Blah NewBlahToInsert { get; set; }
         private Dictionary<string, string> intBadgeMap = new Dictionary<string,string>();
+        private ProfileSchema _profileSchema = null;
 
         public delegate void BlahguaInit_callback(bool didIt);
 
@@ -91,6 +92,11 @@ namespace WinPhoneBlahgua
                 settings.Add(setting, defVal);
                 return defVal;
             }
+        }
+
+        public ProfileSchema UserProfile
+        {
+            get { return _profileSchema; }
         }
 
         public void SafeSaveSetting(string setting, object val)
@@ -459,12 +465,37 @@ namespace WinPhoneBlahgua
                 callback(CurrentBlah.L);
             else
             {
-                DateTime endDate = DateTime.Now;
+                DateTime endDate = DateTime.Today;
                 DateTime startDate = endDate - new TimeSpan(7, 0, 0, 0);
                 BlahguaRest.GetBlahWithStats(CurrentBlah._id, startDate, endDate, (blahWithStats) =>
                 {
+                    int curStatIndex = 0;
+                    CurrentBlah.L = new Stats();
                     if (blahWithStats != null)
-                        CurrentBlah.L = blahWithStats.L;
+                    {
+                        DateTime curDate = startDate;
+
+                        while (curDate <= endDate)
+                        {
+                            if (curStatIndex >= blahWithStats.L.Count)
+                            {
+                                CurrentBlah.L.Add(new StatDayRecord(curDate));
+                            }
+                            else
+                            {
+                                if (blahWithStats.L[curStatIndex].StatDate != curDate)
+                                {
+                                    CurrentBlah.L.Add(new StatDayRecord(curDate));
+                                }
+                                else
+                                {
+                                    CurrentBlah.L.Add(blahWithStats.L[curStatIndex]);
+                                    curStatIndex++;
+                                }
+                            }
+                            curDate = curDate.AddDays(1);
+                        }
+                    }
                     else
                         CurrentBlah.L = null;
 
@@ -580,12 +611,39 @@ namespace WinPhoneBlahgua
                     BlahguaRest.GetUserInfo((newUser) =>
                         {
                             CurrentUser = newUser;
-                            callBack(null);
+                            BlahguaRest.GetProfileSchema((theSchema) =>
+                                {
+                                    _profileSchema = theSchema;
+
+                                    // add the age
+                                    AddAgeSchemaInfo();
+
+
+                                    callBack(null);
+                                }
+                            );
+                           
                         }
                     );
                     
                 }
             );  
+        }
+
+        private void AddAgeSchemaInfo()
+        {
+            Dictionary<string, string> newDict = new Dictionary<string, string>();
+            newDict.Add("0", "under 18");
+            newDict.Add("1", "18-24");
+            newDict.Add("2", "25-34");
+            newDict.Add("3", "35-44");
+            newDict.Add("4", "45-54");
+            newDict.Add("5", "55-64");
+            newDict.Add("6", "over 65");
+            newDict.Add("-1", "unspecified");
+
+            _profileSchema.C.DT = newDict;
+
         }
 
     }
