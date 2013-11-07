@@ -21,14 +21,17 @@ namespace WinPhoneBlahgua
     public delegate void Comment_callback(Comment theBlah);
     public delegate void UserDescription_callback(UserDescription theDesc);
     public delegate void Comments_callback(CommentList theList);
+    public delegate void Blahs_callback(BlahList theList);
     public delegate void CommentAuthorDescriptionList_callback(CommentAuthorDescriptionList theList);
     public delegate void string_callback(String theResult);
     public delegate void User_callback(User theResult);
+    public delegate void BadgeAuthorities_callback(BadgeAuthorityList theResult);
     public delegate void int_callback(int theResult);
     public delegate void BadgeRecord_callback(BadgeRecord theResult);
     public delegate void PredictionVote_callback(UserPredictionVote theResult);
     public delegate void PollVote_callback(UserPollVote theResult);  
     public delegate void Stats_callback(Stats theResult);
+    public delegate void UserInfo_callback(UserInfoObject theResult);
     public delegate void ProfileSchema_callback(ProfileSchema theResult);
     public delegate void ProfileSchemaWrapper_callback(ProfileSchemaWrapper theResult);
 
@@ -46,7 +49,7 @@ namespace WinPhoneBlahgua
         public BlahguaRESTservice()
         {
 #if DEBUG
-            usingQA = true;
+            usingQA = false;// true;
 #endif
             if (usingQA)
             {
@@ -92,6 +95,60 @@ namespace WinPhoneBlahgua
             });
         }
 
+        public void GetUserStatsInfo(DateTime startDate, DateTime endDate, UserInfo_callback callback)
+        {
+            string startDateString = Utilities.CreateDateString(startDate, false);
+            string endDateString = Utilities.CreateDateString(endDate, false);
+
+            RestRequest request = new RestRequest("users/info", Method.GET);
+            request.AddParameter("stats", "true");
+            request.AddParameter("s", startDateString);
+            request.AddParameter("e", endDateString);
+
+            apiClient.ExecuteAsync(request, (response) =>
+            {
+                UserInfoObject infoObj = null;
+
+                DataContractJsonSerializer des = new DataContractJsonSerializer(typeof(UserInfoObject));
+                var stream = new MemoryStream(Encoding.UTF8.GetBytes(response.Content));
+                object theObj = des.ReadObject(stream);
+                stream.Close();
+
+                if (theObj != null)
+                    infoObj = (UserInfoObject)theObj;
+
+                callback(infoObj);
+            });
+
+        }
+
+        public void GetBadgeAuthorities(BadgeAuthorities_callback callback)
+        {
+            RestRequest request = new RestRequest("badges/authorities", Method.GET);
+            apiClient.ExecuteAsync<BadgeAuthorityList>(request, (response) =>
+            {
+                callback(response.Data);
+            });
+        }
+
+
+        public void CreateBadgeForUser(string authorityId, string badgeTypeId, string_callback callback)
+        {
+            RestRequest request = new RestRequest("badges", Method.POST);
+            request.AddHeader("Accept", "*/*");
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(new { I = authorityId });
+          
+            apiClient.ExecuteAsync(request, (response) =>
+            {
+                callback(response.Content);
+            });
+
+
+        }
+
+        
+
         public void GetBlahWithStats(string blahId, DateTime startDate, DateTime endDate, Blah_callback callback)
         {
             string startDateString = Utilities.CreateDateString(startDate, false);
@@ -119,6 +176,44 @@ namespace WinPhoneBlahgua
 
 
 
+        }
+
+        public void GetUserComments(string userId, Comments_callback callback)
+        {
+            RestRequest request = new RestRequest("comments", Method.GET);
+            request.AddParameter("authorId", userId);
+            apiClient.ExecuteAsync(request, (response) =>
+            {
+                CommentList commentList = null;
+
+                DataContractJsonSerializer des = new DataContractJsonSerializer(typeof(CommentList));
+                var stream = new MemoryStream(Encoding.UTF8.GetBytes(response.Content));
+                object theObj = des.ReadObject(stream);
+                stream.Close();
+
+                if (theObj != null)
+                    commentList = (CommentList)theObj;
+
+                callback(commentList);
+            });
+        }
+
+        public void GetUserBlahs(Blahs_callback callback)
+        {
+            RestRequest request = new RestRequest("blahs", Method.GET);
+            apiClient.ExecuteAsync(request, (response) =>
+            {
+                BlahList blahList = null;
+                DataContractJsonSerializer des = new DataContractJsonSerializer(typeof(BlahList));
+                var stream = new MemoryStream(Encoding.UTF8.GetBytes(response.Content));
+                object theObj = des.ReadObject(stream);
+                stream.Close();
+
+                if (theObj != null)
+                    blahList = (BlahList)theObj;
+
+                callback(blahList);
+            });
         }
                
         public void GetPublicChannels(ChannelList_callback callback)
@@ -214,7 +309,7 @@ namespace WinPhoneBlahgua
             });
 
         }
-
+        
         public void CreateBlah(BlahCreateRecord theBlah , Blah_callback callback)
         {
             RestRequest request = new RestRequest("blahs", Method.POST);

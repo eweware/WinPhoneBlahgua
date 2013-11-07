@@ -481,7 +481,7 @@ namespace WinPhoneBlahgua
 
         private void CreateDemoChart(RadCartesianChart theChart, string demoProp)
         {
-            Dictionary<string, string> curDict = App.BlahguaAPI.UserProfile.GetTypesForProperty(demoProp);
+            Dictionary<string, string> curDict = App.BlahguaAPI.UserProfileSchema.GetTypesForProperty(demoProp);
 
             CategoricalDataPoint promotePoint, demotePoint;
             CategoricalSeries promoteSeries = new BarSeries();
@@ -490,8 +490,9 @@ namespace WinPhoneBlahgua
             DemoProfileSummaryRecord upVotes = curBlah._d._u;
             DemoProfileSummaryRecord downVotes = curBlah._d._d;
 
+            promoteSeries.CombineMode = ChartSeriesCombineMode.Stack;
+            demoteSeries.CombineMode = ChartSeriesCombineMode.Stack;
             int maxVal = 0;
-            promoteSeries = new BarSeries();
             foreach (string curVal in curDict.Keys)
             {
                 promotePoint = new CategoricalDataPoint();
@@ -508,10 +509,13 @@ namespace WinPhoneBlahgua
                 if ((promotePoint.Value + demotePoint.Value) > maxVal)
                     maxVal = (int)(promotePoint.Value + demotePoint.Value);
             }
-            maxVal += 2;
-            ((LinearAxis)theChart.VerticalAxis).Maximum = maxVal;
-            theChart.Series.Add(promoteSeries);
-            theChart.Series.Add(demoteSeries);
+            if (maxVal > 0)
+            {
+                maxVal += 2;
+                ((LinearAxis)theChart.VerticalAxis).Maximum = maxVal;
+                theChart.Series.Add(promoteSeries);
+                theChart.Series.Add(demoteSeries);
+            }
         }
 
         private void OnPivotLoading(object sender, PivotItemEventArgs e)

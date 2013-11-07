@@ -219,7 +219,7 @@
                     </StackPanel>
                     <StackPanel Grid.Row="1" Orientation="Vertical">
                         <TextBlock Text="headline (64 chars max)"/>
-                        <TextBox InputScope="Chat" Text="{Binding CreateRecord.T, Mode=TwoWay}" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" MaxLength="64" FontSize="36"></TextBox>
+                        <TextBox InputScope="Text" Text="{Binding CreateRecord.T, Mode=TwoWay}" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" MaxLength="64" FontSize="36"></TextBox>
                     </StackPanel>
                     <StackPanel Grid.Row="2" Orientation="Vertical" Visibility="Visible">
                         <TextBlock Text="Images"/>

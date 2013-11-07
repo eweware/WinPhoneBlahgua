@@ -20,16 +20,19 @@ namespace WinPhoneBlahgua
 
     public class BadgeReference
     {
-        string badgeId = "";
-        public string BadgeName {get; set;}
+        public string BadgeName { get; set; }
+
+        private string badgeId = "";
+        private DateTime _expDate;
 
         public BadgeReference()
         {
-            
+            BadgeName = "";
         }
 
         public BadgeReference(string theID)
         {
+            BadgeName = "";
             ID = theID;
         }
 
@@ -43,7 +46,28 @@ namespace WinPhoneBlahgua
             }
         }
 
-        private void UpdateBadgeName()
+        public DateTime ExpirationDate
+        {
+            get
+            {
+                return _expDate;
+            }
+
+            set
+            {
+                _expDate = value;
+            }
+        }
+
+        public string BadgeImage
+        {
+            get
+            {
+                return "/Images/badge_standalone_30x31.png";  
+            }
+        }
+
+        public void UpdateBadgeName()
         {
             App.BlahguaAPI.GetBadgeName(ID, (theName) =>
                 {
@@ -455,6 +479,10 @@ namespace WinPhoneBlahgua
         public int P { get; set; }
         public int U { get; set; }
         public int V { get; set; }
+        public int X { get; set; }
+        public int XX { get; set; }
+        public int T { get; set; }
+        public int DT { get; set; }
         public string _id { get; set; }
 
         public StatDayRecord()
@@ -480,6 +508,287 @@ namespace WinPhoneBlahgua
                 return new DateTime(2000 + int.Parse(statYear), int.Parse(statMonth), int.Parse(statDay));
             }
         }
+    }
+
+
+    public class UserStatsList : ObservableCollection<StatDayRecord>
+    {
+        List<int> _openList = null;
+        List<int> _commentList = null;
+        List<int> _viewList = null;
+        List<int> _userOpenList = null;
+        List<int> _userCommentList = null;
+        List<int> _userViewList = null;
+        List<int> _userCreateList = null;
+
+        bool? _hasComments;
+        bool? _hasViews;
+        bool? _hasOpens;
+        bool? _hasUserOpens;
+        bool? _hasUserViews;
+        bool? _hasUserCreates;
+        bool? _hasUserComments;
+
+        public List<int> Opens
+        {
+            get
+            {
+                if (_openList == null)
+                {
+                    bool hasVotes = false;
+                    int curVote;
+                    _openList = new List<int>();
+                    foreach (StatDayRecord dayRec in this)
+                    {
+                        curVote = dayRec.O;
+                        if (curVote > 0)
+                            hasVotes = true;
+                        _openList.Add(curVote);
+                    }
+
+                    _hasOpens = hasVotes;
+                }
+
+
+                return _openList;
+            }
+        }
+
+        public List<int> Impressions
+        {
+            get
+            {
+                if (_viewList == null)
+                {
+                    bool hasVotes = false;
+                    int curVote;
+                    _viewList = new List<int>();
+                    foreach (StatDayRecord dayRec in this)
+                    {
+                        curVote = dayRec.V;
+                        if (curVote > 0)
+                            hasVotes = true;
+                        _viewList.Add(curVote);
+                    }
+
+                    _hasViews = hasVotes;
+                }
+
+
+                return _viewList;
+            }
+        }
+
+        public List<int> Comments
+        {
+            get
+            {
+                if (_commentList == null)
+                {
+                    bool hasVotes = false;
+                    int curVote;
+                    _commentList = new List<int>();
+                    foreach (StatDayRecord dayRec in this)
+                    {
+                        curVote = dayRec.O;
+                        if (curVote > 0)
+                            hasVotes = true;
+                        _commentList.Add(curVote);
+                    }
+
+                    _hasComments = hasVotes;
+                }
+
+
+                return _commentList;
+            }
+        }
+
+        public List<int> UserComments
+        {
+            get
+            {
+                if (_userCommentList == null)
+                {
+                    bool hasVotes = false;
+                    int curVote;
+                    _userCommentList = new List<int>();
+                    foreach (StatDayRecord dayRec in this)
+                    {
+                        curVote = dayRec.XX;
+                        if (curVote > 0)
+                            hasVotes = true;
+                        _userCommentList.Add(curVote);
+                    }
+
+                    _hasUserComments = hasVotes;
+                }
+
+
+                return _userCommentList;
+            }
+        }
+
+        public List<int> UserOpens
+        {
+            get
+            {
+                if (_userOpenList == null)
+                {
+                    bool hasVotes = false;
+                    int curVote;
+                    _userOpenList = new List<int>();
+                    foreach (StatDayRecord dayRec in this)
+                    {
+                        curVote = dayRec.O;
+                        if (curVote > 0)
+                            hasVotes = true;
+                        _userOpenList.Add(curVote);
+                    }
+
+                    _hasUserOpens = hasVotes;
+                }
+
+
+                return _userOpenList;
+            }
+        }
+
+        public List<int> UserViews
+        {
+            get
+            {
+                if (_userViewList == null)
+                {
+                    bool hasVotes = false;
+                    int curVote;
+                    _userViewList = new List<int>();
+                    foreach (StatDayRecord dayRec in this)
+                    {
+                        curVote = dayRec.V;
+                        if (curVote > 0)
+                            hasVotes = true;
+                        _userViewList.Add(curVote);
+                    }
+
+                    _hasUserViews = hasVotes;
+                }
+
+
+                return _userViewList;
+            }
+        }
+
+        public List<int> UserCreates
+        {
+            get
+            {
+                if (_userCreateList == null)
+                {
+                    bool hasVotes = false;
+                    int curVote;
+                    _userCreateList = new List<int>();
+                    foreach (StatDayRecord dayRec in this)
+                    {
+                        curVote = dayRec.X;
+                        if (curVote > 0)
+                            hasVotes = true;
+                        _userCreateList.Add(curVote);
+                    }
+
+                    _hasUserCreates = hasVotes;
+                }
+
+
+                return _userCreateList;
+            }
+        }
+
+        public bool HasOpens
+        {
+            get
+            {
+                if (_hasOpens == null)
+                {
+                    List<int> theOpens = Opens;
+                }
+                return (bool)_hasOpens;
+            }
+        }
+
+        public bool HasViews
+        {
+            get
+            {
+                if (_hasViews == null)
+                {
+                    List<int> views = Impressions;
+                }
+                return (bool)_hasViews;
+            }
+        }
+
+        public bool HasComments
+        {
+            get
+            {
+                if (_hasComments == null)
+                {
+                    List<int> theComments = Comments;
+                }
+                return (bool)_hasComments;
+            }
+        }
+
+        public bool HasUserComments
+        {
+            get
+            {
+                if (_hasUserComments == null)
+                {
+                    List<int> theComments = UserComments;
+                }
+                return (bool)_hasUserComments;
+            }
+        }
+
+        public bool HasUserOpens
+        {
+            get
+            {
+                if (_hasUserOpens == null)
+                {
+                    List<int> theList = UserOpens;
+                }
+                return (bool)_hasUserOpens;
+            }
+        }
+
+        public bool HasUserCreates
+        {
+            get
+            {
+                if (_hasUserCreates == null)
+                {
+                    List<int> theList = UserCreates;
+                }
+                return (bool)_hasUserCreates;
+            }
+        }
+
+        public bool HasUserViews
+        {
+            get
+            {
+                if (_hasUserViews == null)
+                {
+                    List<int> theList = UserViews;
+                }
+                return (bool)_hasUserViews;
+            }
+        }
+
+
     }
 
     public class Stats : ObservableCollection<StatDayRecord>
@@ -928,7 +1237,6 @@ namespace WinPhoneBlahgua
             }
         }
 
-
         public string ChannelName
         {
             get
@@ -939,6 +1247,11 @@ namespace WinPhoneBlahgua
         }
 
         
+    }
+
+    public class BlahList : ObservableCollection<Blah>
+    {
+
     }
 
 

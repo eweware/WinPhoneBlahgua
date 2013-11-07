@@ -10,10 +10,46 @@ namespace WinPhoneBlahgua
         public List<string> M { get; set; }
         public List<string> B { get; set; }
         public string N { get; set; }
-        public double S;
+        public double S { get; set; }
+        public double K { get; set; }
         public string _id { get; set; }
         public DateTime c { get; set; }
         public DateTime u { get; set; }
+
+        private CommentList _commentHistory;
+        private BlahList _postHistory;
+        private UserInfoObject _info = null;
+
+
+
+        public UserInfoObject UserInfo
+        {
+            get { return _info; }
+            set { _info = value; }
+        }
+
+        public string AccountName
+        {
+            get
+            {
+                return N;
+            }
+            set
+            {
+                N = value;
+            }
+        }
+
+        public string UserName
+        {
+            get
+            {
+                if (App.BlahguaAPI.CurrentUserDescription != null)
+                    return App.BlahguaAPI.CurrentUserDescription.K;
+                else
+                    return "Someone";
+            }
+        }
 
         public string UserImage
         {
@@ -35,6 +71,23 @@ namespace WinPhoneBlahgua
                 else
                     return null;
             }
+        }
+
+        public CommentList CommentHistory
+        {
+            get  {  return _commentHistory; }
+            set { _commentHistory = value; }
+        }
+
+        public BlahList PostHistory
+        {
+            get { return _postHistory; }
+            set { _postHistory = value; }
+        }
+
+        public string UserDescriptionString
+        {
+            get { return DescriptionString; }
         }
 
         public BadgeList Badges

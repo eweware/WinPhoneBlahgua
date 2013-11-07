@@ -21,6 +21,7 @@ namespace WinPhoneBlahgua
     {
          Inbox   blahList;
         DispatcherTimer scrollTimer = new DispatcherTimer();
+        int inboxCounter = 0;
 
         int[] rowSequence = new int[]{4,32,31,4,1,33,4,2,4,32,1,4,31,32,33,31,4,33,1,31,4,32,33,1,4,2};
         int screenMargin = 4;
@@ -110,16 +111,42 @@ namespace WinPhoneBlahgua
                 blahList.PrepareBlahs();
                 InsertAdditionalBlahs();
                 AtScrollEnd = false;
+                inboxCounter++;
+                if (inboxCounter >= 10)
+                {
+                    UIElement curBlah;
+                    double bottom = 0;
+                    // remove some blahs...
+                    for (int i = 0; i < 100; i++)
+                    {
+                        curBlah = BlahContainer.Children[0];
+                        BlahContainer.Children.Remove(curBlah);
+                    }
+
+                    bottom = Canvas.GetTop(BlahContainer.Children[0]);
+
+                    // now shift everything up
+                    foreach (UIElement theBlah in BlahContainer.Children)
+                    {
+                        Canvas.SetTop(theBlah, Canvas.GetTop(theBlah) - bottom);
+                    }
+                    BlahScroller.ScrollToVerticalOffset(BlahScroller.VerticalOffset - bottom);
+                    BlahContainer.Height -= bottom;
+                    inboxCounter--;
+
+                }
 
             });
         }
 
         private void ScrollBlahRoll(object sender, EventArgs e)
         {
+            
             double curOffset = BlahScroller.VerticalOffset;
             curOffset += 1.0;
             BlahScroller.ScrollToVerticalOffset(curOffset);
             DetectScrollAtEnd();
+            
         }
 
         
@@ -139,10 +166,12 @@ namespace WinPhoneBlahgua
             }
 
             BlahContainer.Height = curTop + screenMargin;
+            inboxCounter++;
         }
 
         private void ClearBlahs()
         {
+            inboxCounter = 0;
             BlahContainer.Children.Clear();
         }
 

@@ -64,7 +64,8 @@
            
         </Storyboard>
 
-        
+
+
         <DataTemplate x:Key="HeaderTemplate">
 			<Grid/>
 		</DataTemplate>
@@ -302,8 +303,15 @@
 
                                 <TextBlock Text="promotes and demotes" Margin="0 16 0 0" />
                                 <chart:RadCartesianChart x:Name="VoteChart" Height="200" EmptyContent="No votes yet">
-          
-                                <chart:RadCartesianChart.HorizontalAxis>
+                                    <chart:RadCartesianChart.Palette>
+                                        <chart:ChartPalette>
+                                            <chart:ChartPalette.GlobalEntries>
+                                                <chart:PaletteEntry Fill="Green" Stroke="Transparent" />
+                                                <chart:PaletteEntry Fill="Red" Stroke="Transparent"/>
+                                            </chart:ChartPalette.GlobalEntries>
+                                        </chart:ChartPalette>
+                                    </chart:RadCartesianChart.Palette>
+                                    <chart:RadCartesianChart.HorizontalAxis>
                                     <chart:LinearAxis />
                                 </chart:RadCartesianChart.HorizontalAxis>
                                 <chart:RadCartesianChart.VerticalAxis>
@@ -349,6 +357,14 @@
                             <StackPanel x:Name="DemoCharts">
                                     <TextBlock Text="gender" Margin="0 16 0 0" />
                                     <chart:RadCartesianChart x:Name="GenderChart" Height="300" EmptyContent="No votes in the last week">
+                                        <chart:RadCartesianChart.Palette>
+                                            <chart:ChartPalette>
+                                                <chart:ChartPalette.GlobalEntries>
+                                                    <chart:PaletteEntry Fill="Green" Stroke="Transparent" />
+                                                    <chart:PaletteEntry Fill="Red" Stroke="Transparent"/>
+                                                </chart:ChartPalette.GlobalEntries>
+                                            </chart:ChartPalette>
+                                        </chart:RadCartesianChart.Palette>
                                         <chart:RadCartesianChart.HorizontalAxis>
                                             <chart:CategoricalAxis LabelFitMode="Rotate"/>
                                         </chart:RadCartesianChart.HorizontalAxis>
@@ -359,6 +375,14 @@
 
                                     <TextBlock Text="age" Margin="0 16 0 0" />
                                     <chart:RadCartesianChart x:Name="AgeChart" Height="300" EmptyContent="No votes in the last week">
+                                        <chart:RadCartesianChart.Palette>
+                                            <chart:ChartPalette>
+                                                <chart:ChartPalette.GlobalEntries>
+                                                    <chart:PaletteEntry Fill="Green" Stroke="Transparent" />
+                                                    <chart:PaletteEntry Fill="Red" Stroke="Transparent"/>
+                                                </chart:ChartPalette.GlobalEntries>
+                                            </chart:ChartPalette>
+                                        </chart:RadCartesianChart.Palette>
                                         <chart:RadCartesianChart.HorizontalAxis>
                                             <chart:CategoricalAxis LabelFitMode="Rotate"/>
                                         </chart:RadCartesianChart.HorizontalAxis>
@@ -369,6 +393,14 @@
 
                                     <TextBlock Text="ethnicity" Margin="0 16 0 0" />
                                     <chart:RadCartesianChart x:Name="RaceChart" Height="300" EmptyContent="No votes in the last week">
+                                        <chart:RadCartesianChart.Palette>
+                                            <chart:ChartPalette>
+                                                <chart:ChartPalette.GlobalEntries>
+                                                    <chart:PaletteEntry Fill="Green" Stroke="Transparent" />
+                                                    <chart:PaletteEntry Fill="Red" Stroke="Transparent"/>
+                                                </chart:ChartPalette.GlobalEntries>
+                                            </chart:ChartPalette>
+                                        </chart:RadCartesianChart.Palette>
                                         <chart:RadCartesianChart.HorizontalAxis>
                                             <chart:CategoricalAxis LabelFitMode="Rotate"/>
                                         </chart:RadCartesianChart.HorizontalAxis>
@@ -379,6 +411,14 @@
 
                                     <TextBlock Text="income" Margin="0 16 0 0" />
                                     <chart:RadCartesianChart x:Name="IncomeChart" Height="300" EmptyContent="No votes in the last week">
+                                        <chart:RadCartesianChart.Palette>
+                                            <chart:ChartPalette>
+                                                <chart:ChartPalette.GlobalEntries>
+                                                    <chart:PaletteEntry Fill="Green" Stroke="Transparent" />
+                                                    <chart:PaletteEntry Fill="Red" Stroke="Transparent"/>
+                                                </chart:ChartPalette.GlobalEntries>
+                                            </chart:ChartPalette>
+                                        </chart:RadCartesianChart.Palette>
                                         <chart:RadCartesianChart.HorizontalAxis>
                                             <chart:CategoricalAxis LabelFitMode="Rotate"/>
                                         </chart:RadCartesianChart.HorizontalAxis>
@@ -389,6 +429,14 @@
 
                                     <TextBlock Text="country" Margin="0 16 0 0" />
                                     <chart:RadCartesianChart x:Name="CountryChart" Height="300" EmptyContent="No votes in the last week">
+                                        <chart:RadCartesianChart.Palette>
+                                            <chart:ChartPalette>
+                                                <chart:ChartPalette.GlobalEntries>
+                                                    <chart:PaletteEntry Fill="Green" Stroke="Transparent" />
+                                                    <chart:PaletteEntry Fill="Red" Stroke="Transparent"/>
+                                                </chart:ChartPalette.GlobalEntries>
+                                            </chart:ChartPalette>
+                                        </chart:RadCartesianChart.Palette>
                                         <chart:RadCartesianChart.HorizontalAxis>
                                             <chart:CategoricalAxis LabelFitMode="Rotate"/>
                                         </chart:RadCartesianChart.HorizontalAxis>

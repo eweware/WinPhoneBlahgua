@@ -104,10 +104,87 @@
             </WinPhoneBlahgua:BlahCreateRecord.Badges>
         </WinPhoneBlahgua:BlahCreateRecord>
     </WinPhoneBlahgua:BlahguaAPIObject.CreateRecord>
-	<WinPhoneBlahgua:BlahguaAPIObject.CurrentUser>
-        <WinPhoneBlahgua:User
+    <WinPhoneBlahgua:BlahguaAPIObject.CurrentUser >
+        <WinPhoneBlahgua:User N="Ultradad" UserName="Ultradad" AccountName="Ultradad" UserDescriptionString="A male from Beverly Hills, CA"
             UserImage="Images\unknown-user.png"
             >
+            <WinPhoneBlahgua:User.Badges>
+                <WinPhoneBlahgua:BadgeList>
+                    <WinPhoneBlahgua:BadgeReference BadgeName="Microsoft"  ExpirationDate="9/28/2014" BadgeImage="/Images/badge_standalone_30x31.png"/>
+                    <WinPhoneBlahgua:BadgeReference BadgeName="eweware" ExpirationDate="9/28/2014" BadgeImage="/Images/badge_standalone_30x31.png"/>
+                </WinPhoneBlahgua:BadgeList>
+            </WinPhoneBlahgua:User.Badges>
+            
+            <WinPhoneBlahgua:User.CommentHistory>
+                <WinPhoneBlahgua:CommentList>
+                    <WinPhoneBlahgua:Comment
+                        AuthorImage="Images\unknown-user.png"
+                        AuthorName="Comment Author"
+                        ElapsedTimeString="47 days ago"
+                        UpVoteCount="10"
+                        DownVoteCount="4"
+                        UserDescriptionString="A helpful test user from CA"
+                        T="This is a comment.  It is not the world's most exciting comment, but it is the only comment I know...  Bare with me and I will try to make it more cool."
+                        ImageURL="Images\unknown-user.png"
+                        />
+                    <WinPhoneBlahgua:Comment
+                        AuthorImage="Images\unknown-user.png"
+                        AuthorName="Comment Author"
+                        ElapsedTimeString="47 days ago"
+                        UpVoteCount="10"
+                        DownVoteCount="4"
+                        UserDescriptionString="A helpful test user from CA"
+                        T="This is a comment.  It is not the world's most exciting comment, but it is the only comment I know...  Bare with me and I will try to make it more cool."
+                        />
+                </WinPhoneBlahgua:CommentList>
+            </WinPhoneBlahgua:User.CommentHistory>
+            
+            <WinPhoneBlahgua:User.PostHistory>
+                <WinPhoneBlahgua:BlahList>
+                    <WinPhoneBlahgua:Blah A="Vestibulum cras class curabitur aenean" 
+                              ChannelName="The Testing Channel" 
+                              ImageURL="Images/The Now Network.png" 
+                              O="85" S="897.18" P="25" D="12"
+                              TypeName="Mumbles" T="This is the http://www.blagua.com headline of the test.com blah!" 
+                              UserDescriptionString="A cool guy from a cool place" 
+                              UserImage="Images\unknown-user.png" 
+                              ConversionString="24%"
+                              UserName="Blahgua User" V="62" Y="Quis leo mus nec" 
+                              ElapsedTimeString="17 minutes ago" C="13"
+                              _id="Adipiscing lacinia" 
+                              c="12/10/2013" 
+                              u="12/10/2013">
+                     </WinPhoneBlahgua:Blah>
+                    <WinPhoneBlahgua:Blah A="Vestibulum cras class curabitur aenean" 
+                              ChannelName="The Testing Channel" 
+                              ImageURL="" 
+                              O="85" S="897.18" P="25" D="12"
+                              TypeName="Mumbles" T="This is the http://www.blagua.com headline of the test.com blah!" 
+                              UserDescriptionString="A cool guy from a cool place" 
+                              UserImage="Images\unknown-user.png" 
+                              ConversionString="24%"
+                              UserName="Blahgua User" V="62" Y="Quis leo mus nec" 
+                              ElapsedTimeString="17 minutes ago" C="13"
+                              _id="Adipiscing lacinia" 
+                              c="12/10/2013" 
+                              u="12/10/2013">
+                    </WinPhoneBlahgua:Blah>
+                    <WinPhoneBlahgua:Blah A="Vestibulum cras class curabitur aenean" 
+                              ChannelName="The Testing Channel" 
+                              ImageURL="Images/The Now Network.png" 
+                              O="85" S="897.18" P="25" D="12"
+                              TypeName="Mumbles" T="This is the http://www.blagua.com headline of the test.com blah!" 
+                              UserDescriptionString="A cool guy from a cool place" 
+                              UserImage="Images\unknown-user.png" 
+                              ConversionString="24%"
+                              UserName="Blahgua User" V="62" Y="Quis leo mus nec" 
+                              ElapsedTimeString="17 minutes ago" C="13"
+                              _id="Adipiscing lacinia" 
+                              c="12/10/2013" 
+                              u="12/10/2013">
+                    </WinPhoneBlahgua:Blah>
+                </WinPhoneBlahgua:BlahList>
+            </WinPhoneBlahgua:User.PostHistory>
    
         </WinPhoneBlahgua:User>
     </WinPhoneBlahgua:BlahguaAPIObject.CurrentUser>

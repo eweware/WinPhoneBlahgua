@@ -73,13 +73,11 @@
     <Reference Include="Telerik.Windows.Core, Version=2013.3.1016.2040, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlahguaCore\Badge.cs" />
     <Compile Include="BlahguaCore\ProfileSchema.cs" />
     <Compile Include="BlahguaCore\Utilities.cs" />
     <Compile Include="Controls\BlahAuthorHeader.xaml.cs">
       <DependentUpon>BlahAuthorHeader.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\AddBadge.xaml.cs">
-      <DependentUpon>AddBadge.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -88,6 +86,9 @@
       <DependentUpon>BadgeElement.xaml</DependentUpon>
     </Compile>
     <Compile Include="BlahguaCore\Blah.cs" />
+    <Compile Include="Pages\BadgingPage.xaml.cs">
+      <DependentUpon>BadgingPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\BlahDetails.xaml.cs">
       <DependentUpon>BlahDetails.xaml</DependentUpon>
     </Compile>
@@ -133,13 +134,13 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\AddBadge.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\BadgeElement.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\BadgingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\BlahDetails.xaml">
       <SubType>Designer</SubType>
@@ -169,17 +170,25 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ResourceDictionary.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml" />
+    <Content Include="Images\badge1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\createBgnd.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Icons\appbar.add.rest.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\Icons\appbar.delete.rest.png" />
     <Content Include="Images\Icons\signin.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

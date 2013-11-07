@@ -5,6 +5,8 @@ using System.Text;
 using System.ComponentModel;
 using Microsoft.Phone.Tasks;
 using System.IO.IsolatedStorage;
+using RestSharp;
+
 
 namespace WinPhoneBlahgua
 {
@@ -28,6 +30,7 @@ namespace WinPhoneBlahgua
         BlahCreateRecord createRec = null;
         CommentCreateRecord createCommentRec = null;
         public UserDescription CurrentUserDescription = null;
+        string badgeEndpoint;
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -48,7 +51,14 @@ namespace WinPhoneBlahgua
             PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null)
             {
-                handler(this, new PropertyChangedEventArgs(name));
+                try
+                {
+                    handler(this, new PropertyChangedEventArgs(name));
+                }
+                catch (Exception exp)
+                {
+                    // do nothing for now...
+                }
             }
         }
 
@@ -94,7 +104,7 @@ namespace WinPhoneBlahgua
             }
         }
 
-        public ProfileSchema UserProfile
+        public ProfileSchema UserProfileSchema
         {
             get { return _profileSchema; }
         }
@@ -109,6 +119,104 @@ namespace WinPhoneBlahgua
                 settings.Add(setting, val);
             }
         }
+
+        public void LoadUserComments(Comments_callback callback)
+        {
+            string userId = CurrentUser._id;
+            BlahguaRest.GetUserComments(userId, callback);
+            
+        }
+
+        public void LoadUserPosts(Blahs_callback callback)
+        {
+            BlahguaRest.GetUserBlahs(callback);
+        }
+
+        public void GetBadgeAuthorities(BadgeAuthorities_callback callback)
+        {
+            BlahguaRest.GetBadgeAuthorities(callback);
+        }
+
+        public void GetBadgeForUser(string authorityId, string_callback callback)
+        {
+            BlahguaRest.CreateBadgeForUser(authorityId, "", callback);
+        }
+
+        public void GetEmailBadgeForUser(string authorityId, string emailAddr, string_callback callback)
+        {
+            // construct a call manually to the badge authority
+            GetBadgeForUser(authorityId, (newHTML) =>
+                {
+                    string tkv = GetTicket(newHTML);
+                    badgeEndpoint = GetEndPoint(newHTML);
+
+                    RestClient apiClient;
+                    apiClient = new RestClient(badgeEndpoint);
+                    string query = "?tk=" + tkv + "&e=" + emailAddr;
+                    RestRequest request = new RestRequest("/badges/credentials" + query, Method.POST);
+                    request.AddHeader("Accept", "*/*");
+
+                    apiClient.ExecuteAsync(request, (response) =>
+                        {
+                            string step2HTML = response.Content;
+                            int theLoc = step2HTML.IndexOf("Request Domain");
+                            if (theLoc != -1)
+                            {
+                                callback("");
+                            }
+                            else
+                            {
+                                string tk2 = GetTicket(step2HTML);
+                                callback(tk2);
+                            }
+                        }
+                    );
+
+                }
+            );
+        }
+
+
+        public void VerifyEmailBadge(string verificationCode, string ticket, string_callback callback)
+        {
+            RestClient apiClient;
+            apiClient = new RestClient(badgeEndpoint);
+            string query = "?tk=" + ticket + "&c=" + verificationCode;
+            RestRequest request = new RestRequest("/badges/verify" + query, Method.POST);
+            request.AddHeader("Accept", "*/*");
+
+            apiClient.ExecuteAsync(request, (response) =>
+                {
+                    string step3HTML = response.Content;
+                    int theLoc = step3HTML.IndexOf("Congrat");
+                    if (theLoc != -1)
+                        callback("success");
+                    else
+                        callback("fail");
+                }
+            );
+
+        }
+
+        private string GetTicket(string htmlStr)
+        {
+            int startVal = htmlStr.IndexOf("'blahgua.com") + 1;
+            int endVal = htmlStr.IndexOf("'", startVal + 1);
+            string tkv = htmlStr.Substring(startVal, endVal - startVal);
+
+            return tkv;
+        }
+
+        private string GetEndPoint(string htmlStr)
+        {
+            int startVal = htmlStr.IndexOf("'ba_end'");
+            startVal = htmlStr.IndexOf("value='", startVal) + 7;
+            int endVal = htmlStr.IndexOf("'", startVal);
+            string endPoint = htmlStr.Substring(startVal, endVal - startVal);
+
+            return endPoint;
+        }
+
 
         public void Initialize(BlahguaInit_callback callBack)
         {
@@ -459,6 +567,22 @@ namespace WinPhoneBlahgua
             BlahguaRest.SetUserPollVote(CurrentBlah._id, theOption, callback);
         }
 
+        public void LoadUserStatsInfo(UserInfo_callback callback)
+        {
+            DateTime endDate = DateTime.Today;
+            DateTime startDate = endDate - new TimeSpan(7, 0, 0, 0);
+
+            BlahguaRest.GetUserStatsInfo(startDate, endDate, (theStats) =>
+                {
+                    theStats.SetDateRange(startDate, endDate);
+                    CurrentUser.UserInfo = theStats;
+                   
+
+                    callback(CurrentUser.UserInfo);
+                }
+            );
+        }
+
         public void LoadBlahStats(Stats_callback callback)
         {
             if (CurrentBlah.L != null)
@@ -585,6 +709,17 @@ namespace WinPhoneBlahgua
             );
         }
 
+        public void SignOut(BlahguaInit_callback callBack)
+        {
+            BlahguaRest.SignOut((resultStr) =>
+                {
+                    CurrentUser = null;
+                    CurrentUserDescription = null;
+                    CompletePublicSignin(callBack);
+                }
+            );
+        }
+
         public void Register(string userName, string password, bool saveIt, string_callback callBack)
         {
             BlahguaRest.Register(userName, password, (resultStr) =>
@@ -597,6 +732,20 @@ namespace WinPhoneBlahgua
                     {
                         callBack(resultStr);
                     }
+                }
+            );
+        }
+
+        public void RefreshUserBadges(string_callback callback)
+        {
+            BlahguaRest.GetUserInfo((newUser) =>
+                {
+                    CurrentUser.B = newUser.B;
+                    foreach (BadgeReference curBadge in CurrentUser.Badges)
+                    {
+                        //curBadge.UpdateBadgeName();
+                    }
+                    callback("ok");
                 }
             );
         }
@@ -618,8 +767,20 @@ namespace WinPhoneBlahgua
                                     // add the age
                                     AddAgeSchemaInfo();
 
+                                    // badge names
+                                    if (CurrentUser.Badges != null)
+                                    {
+                                        foreach (BadgeReference curBadge in CurrentUser.Badges)
+                                        {
+                                            //curBadge.UpdateBadgeName();
+                                        }
+                                    }
 
-                                    callBack(null);
+                                    EnsureUserDescription((theDesc) =>
+                                        {
+                                            callBack(null);
+                                        }
+                                    );
                                 }
                             );
                            

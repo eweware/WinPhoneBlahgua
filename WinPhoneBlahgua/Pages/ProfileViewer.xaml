@@ -6,6 +6,8 @@
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:chart="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Chart"
+    xmlns:chartEngine="clr-namespace:Telerik.Charting;assembly=Telerik.Windows.Controls.Chart"
     xmlns:local="clr-namespace:WinPhoneBlahgua" 
     x:Class="WinPhoneBlahgua.ProfileViewer"
     d:DataContext="{d:DesignData ../SampleData/BlahguaAPIObjectSampleData.xaml}"
@@ -40,6 +42,105 @@
         </toolkit:NavigationOutTransition>
     </toolkit:TransitionService.NavigationOutTransition>
 
+    <phone:PhoneApplicationPage.Resources>
+        <DataTemplate x:Key="BadgeItemList">
+            <Grid Margin="0 0 0 4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0" Source="{Binding BadgeImage}"  Width="24" VerticalAlignment="Center" />
+                <TextBlock Grid.Column="1" Text="{Binding BadgeName}" FontSize="20" Margin="8 0 0 0 " />
+                <TextBlock Grid.Column="2" FontSize="16" VerticalAlignment="Center" Text="{Binding ExpirationDate, StringFormat=d}" Margin="8 0 0 0" />
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="HeaderTemplate">
+            <Grid/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="LargeHeaderTemplate">
+            <TextBlock Text="{Binding }" FontSize="36" />
+        </DataTemplate>
+
+        <DataTemplate x:Key="UserCommentTemplate">
+            <Border BorderThickness="0,0,0,1" BorderBrush="#FF727272">
+            <Grid Margin="0 10 0 10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock Text="{Binding T}" FontSize="20" TextWrapping="Wrap" />
+                <Image Source="{Binding ImageURL}" Grid.Column="1" Grid.Row="0" Width="64" Margin="8 0 0 0" />
+                
+                <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal" Grid.Column="0">
+                        <TextBlock Text="open post" FontSize="20" Foreground="Blue" TextAlignment="Center" Margin="3"/>
+                        <Image Width="25" Source="/Images/Icons/black_promote.png" Margin="8 0 0 0"/>
+                        <TextBlock Text="{Binding UpVoteCount}" />
+                        <Image Width="25" Source="/Images/Icons/black_demote.png"  Margin="8 0 0 0"/>
+                        <TextBlock Text="{Binding DownVoteCount}" />
+                    </StackPanel>
+                    <TextBlock Grid.Column="1" Text="{Binding ElapsedTimeString}" FontSize="16" FontStyle="Italic" HorizontalAlignment="Right" />
+                </Grid>
+               
+            </Grid>
+            </Border>
+        </DataTemplate>
+
+        <DataTemplate x:Key="UserPostTemplate">
+            <Border BorderThickness="0,0,0,1" BorderBrush="#FF727272">
+                <Grid Margin="0 0 0 15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="{Binding T}" FontSize="20" TextWrapping="Wrap" />
+                    <Image Source="{Binding ImageURL}" Grid.Column="1" Grid.Row="0" Width="64" />
+
+                    <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal" Grid.Column="0">
+                            <Border Background="#80FFFFFF" BorderThickness="1" CornerRadius="8" >
+                                <TextBlock Text="{Binding TypeName}"   FontSize="16" Width="90" TextAlignment="Center" Margin="3" Foreground="{StaticResource BrushBlahguaBlack}"/>
+                            </Border>
+                            <Image Width="25" Source="/Images/Icons/black_promote.png" Margin="12 0 0 0"/>
+                            <TextBlock FontSize="16" VerticalAlignment="Center" Foreground="{StaticResource BrushBlahguaBlack}" Text="{Binding P}" />
+                            <Image Width="25" Source="/Images/Icons/black_demote.png"  Margin="12 0 0 0"/>
+                            <TextBlock FontSize="16"  VerticalAlignment="Center" Foreground="{StaticResource BrushBlahguaBlack}" Text="{Binding D}" />
+                            <TextBlock   Margin="12 0 2 0" Text="&#xf06e;" Foreground="Black"  FontFamily="/Resources/fontawesome-webfont.ttf#FontAwesome" VerticalAlignment="Center" FontSize="24"  />
+                            <TextBlock FontSize="16"  VerticalAlignment="Center" Foreground="{StaticResource BrushBlahguaBlack}" Text="{Binding ConversionString}" />
+                            <TextBlock   Margin="12 0 2 0" Text="&#xf086;" Foreground="Black"  FontFamily="/Resources/fontawesome-webfont.ttf#FontAwesome" VerticalAlignment="Center" FontSize="24"  />
+                            <TextBlock FontSize="16"  VerticalAlignment="Center" Foreground="{StaticResource BrushBlahguaBlack}" Text="{Binding C}" />
+                        </StackPanel>
+                    </Grid>
+                    <TextBlock Grid.Row="2" Grid.ColumnSpan="3" Text="{Binding ElapsedTimeString}" FontSize="16" FontStyle="Italic" />
+                </Grid>
+            </Border>
+        </DataTemplate>
+
+
+
+    </phone:PhoneApplicationPage.Resources>
+
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" >
@@ -55,32 +156,490 @@
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <controls:Pivot x:Name="SignInPivot" Title="your profile" >
+        <local:BlahAuthorHeader Grid.Row="0" x:Name="UserHeader"  Margin="0 0 0 0" 
+                                DataContext="{Binding CurrentUser}" >
+        </local:BlahAuthorHeader>
+        <controls:Pivot x:Name="SignInPivot" Grid.Row="1"  LoadedPivotItem="HandlePivotLoaded" UnloadedPivotItem="HandlePivotUnloaded" LoadingPivotItem="OnPivotLoading" >
             <!--Pivot item one-->
             <controls:PivotItem Header="persona">
                 <!--ContentPanel - place additional content here-->
-                <Grid>
+                <ScrollViewer>
+                    <StackPanel>
+                            <TextBlock Text="nickname" VerticalAlignment="Center" />
+                            <TextBox x:Name="ScreenName" Text="{Binding CurrentUser.UserName, Mode=TwoWay}" />
 
-                </Grid>
+                            <TextBlock Text="user image" VerticalAlignment="Center" />
+                            <Image Source="{Binding CurrentUser.UserImage}" Width="256" Margin="8" />
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button>remove</Button>
+                                <Button>change</Button>
+                            </StackPanel>
+
+                    </StackPanel>
+                </ScrollViewer>
             </controls:PivotItem>
 
-            <controls:PivotItem Header="history">
+            <controls:PivotItem Header="badges">
                 <!--ContentPanel - place additional content here-->
                 <Grid>
-                    
+                    <ItemsControl x:Name="UserBadgeList" Margin="0 0 0 72" ItemTemplate="{StaticResource BadgeItemList}" ItemsSource="{Binding CurrentUser.Badges}" />
+                    <TextBlock x:Name="NoBadgeList" Text="you have no badges" HorizontalAlignment="Center"></TextBlock>
                 </Grid>
             </controls:PivotItem>
+
+            <controls:PivotItem Header="demographics">
+                <!--ContentPanel - place additional content here-->
+                <ScrollViewer>
+                <StackPanel Orientation="Vertical">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="138" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        
+                        <TextBlock Text="Gender" Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
+                        <toolkit:ListPicker Grid.Row="1" Grid.Column="0" ItemsSource="{Binding UserProfileSchema.GenderChoices}" >
+                        </toolkit:ListPicker>
+                        <toolkit:ToggleSwitch Grid.Row="1" Grid.Column="1" Content="" >
+                            <toolkit:ToggleSwitch.Projection>
+                                <PlaneProjection GlobalOffsetY="20"/>
+                            </toolkit:ToggleSwitch.Projection>
+                        </toolkit:ToggleSwitch>
+                    </Grid>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="138" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Date of Birth"  Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
+                        <toolkit:DatePicker Grid.Column="0" Grid.Row="1" />
+                        <toolkit:ToggleSwitch Grid.Row="1" Grid.Column="1" Content="" >
+                            <toolkit:ToggleSwitch.Projection>
+                                <PlaneProjection GlobalOffsetY="10"/>
+                            </toolkit:ToggleSwitch.Projection>
+                        </toolkit:ToggleSwitch>
+                    </Grid>
+
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="138" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Ethnicity"  Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
+                        <toolkit:ListPicker Grid.Row="1" Grid.Column="0" ItemsSource="{Binding UserProfileSchema.RaceChoices}" >
+                        </toolkit:ListPicker>
+                        <toolkit:ToggleSwitch Grid.Row="1" Grid.Column="1" Content="">
+                            <toolkit:ToggleSwitch.Projection>
+                                <PlaneProjection GlobalOffsetY="20"/>
+                            </toolkit:ToggleSwitch.Projection>
+                        </toolkit:ToggleSwitch>
+                    </Grid>
+
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="138" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="City"  Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
+                        <TextBox Grid.Row="1" Text="{Binding CurrentUser.Profile.City}" />
+                        <toolkit:ToggleSwitch Grid.Row="1" Grid.Column="1" Content="">
+                            <toolkit:ToggleSwitch.Projection>
+                                <PlaneProjection GlobalOffsetY="20"/>
+                            </toolkit:ToggleSwitch.Projection>
+                        </toolkit:ToggleSwitch>
+                    </Grid>
+
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="138" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="State"  Grid.Row="0"  Grid.ColumnSpan="2" ></TextBlock>
+                        <TextBox Grid.Row="1" Text="{Binding CurrentUser.Profile.State}" />
+                        <toolkit:ToggleSwitch Grid.Row="1" Grid.Column="1" Content="" >
+                            <toolkit:ToggleSwitch.Projection>
+                                <PlaneProjection GlobalOffsetY="20"/>
+                            </toolkit:ToggleSwitch.Projection>
+                        </toolkit:ToggleSwitch>
+                    </Grid>
+
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="138" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Post Code"  Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
+                        <TextBox Grid.Row="1" Text="{Binding CurrentUser.Profile.PostCode}" />
+                        <toolkit:ToggleSwitch Grid.Row="1" Grid.Column="1" Content="">
+                            <toolkit:ToggleSwitch.Projection>
+                                <PlaneProjection GlobalOffsetY="20"/>
+                            </toolkit:ToggleSwitch.Projection>
+                        </toolkit:ToggleSwitch>
+                    </Grid>
+
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="138" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Country"  Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
+                        <toolkit:ListPicker Grid.Row="1" Grid.Column="0" ItemsSource="{Binding UserProfileSchema.CountryChoices}">
+                        </toolkit:ListPicker>
+                        <toolkit:ToggleSwitch Grid.Row="1" Grid.Column="1" Content="" >
+                            <toolkit:ToggleSwitch.Projection>
+                                <PlaneProjection GlobalOffsetY="20"/>
+                            </toolkit:ToggleSwitch.Projection>
+                        </toolkit:ToggleSwitch>
+                    </Grid>
+
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="138" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Income"  Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
+                        <toolkit:ListPicker Grid.Row="1" Grid.Column="0" ItemsSource="{Binding UserProfileSchema.IncomeChoices}">
+                        </toolkit:ListPicker>
+                        <toolkit:ToggleSwitch Grid.Row="1" Grid.Column="1" Content="" >
+                            <toolkit:ToggleSwitch.Projection>
+                                <PlaneProjection GlobalOffsetY="20"/>
+                            </toolkit:ToggleSwitch.Projection>
+                        </toolkit:ToggleSwitch>
+                    </Grid>
+
+
+                </StackPanel>
+                </ScrollViewer>
+            </controls:PivotItem>
+
+            <controls:PivotItem Header="posts">
+                <!--ContentPanel - place additional content here-->
+                <Grid>
+                    <ListBox  x:Name="UserPostList" ItemsSource="{Binding CurrentUser.PostHistory}"  Margin="0 0 0 72"
+                        ItemTemplate="{StaticResource UserPostTemplate}"
+                        VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
+                    <Border x:Name="NoPostsBox"  Margin="8" Padding="24 16" BorderBrush="#80FFFFFF" BorderThickness="1" CornerRadius="8" Background="#80000000" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock  x:Name="NoPostTextBlock" Text="loading" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" />
+                            <ProgressBar x:Name="NoPostProgress" Width="200" Height="15" IsIndeterminate="True" />
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </controls:PivotItem>
+
+            <controls:PivotItem Header="comments">
+                <!--ContentPanel - place additional content here-->
+                <Grid>
+                    <ListBox  x:Name="UserCommentList"  Margin="0 0 0 72"
+                        ItemTemplate="{StaticResource UserCommentTemplate}"
+                              ItemsSource="{Binding CurrentUser.CommentHistory}"
+                         VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
+                    <Border x:Name="NoCommentsBox"  Margin="8" Padding="24 16" BorderBrush="#80FFFFFF" BorderThickness="1" CornerRadius="8" Background="#80000000" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock x:Name="NoCommentTextBlock" Text="loading" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" />
+                            <ProgressBar x:Name="NoCommentProgress"  Width="200" Height="15" IsIndeterminate="True" />
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </controls:PivotItem>
+            
             <controls:PivotItem Header="stats">
                 <!--ContentPanel - place additional content here-->
                 <Grid>
+                    <ScrollViewer>
+                        <StackPanel Margin="0 0 0 72" x:Name="StatsArea" DataContext="null">
+                            <toolkit:ExpanderView Header="overall standing" Margin="0 0 0 16" IsExpanded="True"
+                                              HeaderTemplate="{StaticResource LargeHeaderTemplate}" Style="{StaticResource CompactExpanderTemplate}">
+                                <chart:RadCartesianChart x:Name="StandingChart" Height="200">
+                                    <chart:RadCartesianChart.HorizontalAxis>
+                                        <chart:LinearAxis />
+                                    </chart:RadCartesianChart.HorizontalAxis>
+                                    <chart:RadCartesianChart.VerticalAxis>
+                                        <chart:CategoricalAxis>
 
+                                        </chart:CategoricalAxis>
+                                    </chart:RadCartesianChart.VerticalAxis>
+                                </chart:RadCartesianChart>
+                            </toolkit:ExpanderView>
+                            
+                            <toolkit:ExpanderView Header="your activity" Margin="0 0 0 16" IsExpanded="True"
+                                              HeaderTemplate="{StaticResource LargeHeaderTemplate}" Style="{StaticResource CompactExpanderTemplate}">
+                                <TextBlock Text="impression count" Margin="0 16 0 0" />
+                                <chart:RadCartesianChart x:Name="UserViewChart" Height="200" EmptyContent="No impressions in the last week">
+                                    <chart:RadCartesianChart.HorizontalAxis>
+                                        <chart:DateTimeContinuousAxis LabelFitMode="None" LabelInterval="2"  LabelFormat="MM-dd"/>
+                                    </chart:RadCartesianChart.HorizontalAxis>
+                                    <chart:RadCartesianChart.VerticalAxis>
+                                        <chart:LinearAxis LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
+                                    </chart:RadCartesianChart.VerticalAxis>
+                                </chart:RadCartesianChart>
+
+                                <TextBlock Text="posts opened" Margin="0 16 0 0" />
+                                <chart:RadCartesianChart x:Name="UserOpenChart" Height="200" EmptyContent="No posts opened in the last week">
+                                    <chart:RadCartesianChart.HorizontalAxis>
+                                        <chart:DateTimeContinuousAxis LabelFitMode="None" LabelInterval="2"  LabelFormat="MM-dd"/>
+                                    </chart:RadCartesianChart.HorizontalAxis>
+                                    <chart:RadCartesianChart.VerticalAxis>
+                                        <chart:LinearAxis LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
+                                    </chart:RadCartesianChart.VerticalAxis>
+                                </chart:RadCartesianChart>
+
+                                <TextBlock Text="posts created" Margin="0 16 0 0" />
+                                <chart:RadCartesianChart x:Name="PostsCreatedChart" Height="200" EmptyContent="No posts created in the last week">
+                                    <chart:RadCartesianChart.HorizontalAxis>
+                                        <chart:DateTimeContinuousAxis LabelFitMode="None" LabelInterval="2"  LabelFormat="MM-dd"/>
+                                    </chart:RadCartesianChart.HorizontalAxis>
+                                    <chart:RadCartesianChart.VerticalAxis>
+                                        <chart:LinearAxis LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
+                                    </chart:RadCartesianChart.VerticalAxis>
+                                </chart:RadCartesianChart>
+
+                                <TextBlock Text="comments created" Margin="0 16 0 0" />
+                                <chart:RadCartesianChart x:Name="CommentsCreatedChart" Height="200" EmptyContent="No comments created in the last week">
+                                    <chart:RadCartesianChart.HorizontalAxis>
+                                        <chart:DateTimeContinuousAxis LabelFitMode="None" LabelInterval="2" LabelFormat="MM-dd"/>
+                                    </chart:RadCartesianChart.HorizontalAxis>
+                                    <chart:RadCartesianChart.VerticalAxis>
+                                        <chart:LinearAxis LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
+                                    </chart:RadCartesianChart.VerticalAxis>
+                                </chart:RadCartesianChart>
+                            </toolkit:ExpanderView>
+                            <toolkit:ExpanderView Header="audience response" Margin="0 0 0 16" IsExpanded="False"
+                                              HeaderTemplate="{StaticResource LargeHeaderTemplate}" Style="{StaticResource CompactExpanderTemplate}">
+
+                                <TextBlock FontSize="11" TextWrapping="Wrap" Text="How users responded to your posts in the last seven days" />
+
+                                <TextBlock Text="user sentiment" Margin="0 16 0 0" />
+                                <chart:RadCartesianChart x:Name="Sentiment" Height="200" EmptyContent="No votes this week">
+                                    <chart:RadCartesianChart.Palette>
+                                        <chart:ChartPalette>
+                                            <chart:ChartPalette.GlobalEntries>
+                                                <chart:PaletteEntry Fill="Green" Stroke="Transparent" />
+                                                <chart:PaletteEntry Fill="Red" Stroke="Transparent"/>
+                                            </chart:ChartPalette.GlobalEntries>
+                                        </chart:ChartPalette>
+                                    </chart:RadCartesianChart.Palette>
+                                    <chart:RadCartesianChart.HorizontalAxis>
+                                        <chart:DateTimeContinuousAxis LabelFitMode="None" LabelInterval="2"  LabelFormat="MM-dd"/>
+                                    </chart:RadCartesianChart.HorizontalAxis>
+                                    <chart:RadCartesianChart.VerticalAxis>
+                                        <chart:LinearAxis LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
+                                    </chart:RadCartesianChart.VerticalAxis>
+                                </chart:RadCartesianChart>
+                                
+                                <TextBlock Text="impressions" Margin="0 16 0 0" />
+                                <chart:RadCartesianChart x:Name="ViewChart" Height="200" EmptyContent="No impressions in the last week">
+                                    <chart:RadCartesianChart.HorizontalAxis>
+                                        <chart:DateTimeContinuousAxis LabelFitMode="None" LabelInterval="2"  LabelFormat="MM-dd"/>
+                                    </chart:RadCartesianChart.HorizontalAxis>
+                                    <chart:RadCartesianChart.VerticalAxis>
+                                        <chart:LinearAxis LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
+                                    </chart:RadCartesianChart.VerticalAxis>
+                                </chart:RadCartesianChart>
+
+                                <TextBlock Text="opens" Margin="0 16 0 0" />
+                                <chart:RadCartesianChart x:Name="OpenChart" Height="200" EmptyContent="No opens in the last week">
+                                    <chart:RadCartesianChart.HorizontalAxis>
+                                        <chart:DateTimeContinuousAxis LabelFitMode="None" LabelInterval="2"  LabelFormat="MM-dd"/>
+                                    </chart:RadCartesianChart.HorizontalAxis>
+                                    <chart:RadCartesianChart.VerticalAxis>
+                                        <chart:LinearAxis LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
+                                    </chart:RadCartesianChart.VerticalAxis>
+                                </chart:RadCartesianChart>
+
+                                <TextBlock Text="comments" Margin="0 16 0 0" />
+                                <chart:RadCartesianChart x:Name="CommentChart" Height="200" EmptyContent="No comments in the last week">
+                                    <chart:RadCartesianChart.HorizontalAxis>
+                                        <chart:DateTimeContinuousAxis LabelFitMode="None" LabelInterval="2" LabelFormat="MM-dd"/>
+                                    </chart:RadCartesianChart.HorizontalAxis>
+                                    <chart:RadCartesianChart.VerticalAxis>
+                                        <chart:LinearAxis LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
+                                    </chart:RadCartesianChart.VerticalAxis>
+                                </chart:RadCartesianChart>
+
+                            </toolkit:ExpanderView>
+                            <toolkit:ExpanderView Header="about the audience" IsExpanded="True" Margin="0 0 0 16"
+                                              HeaderTemplate="{StaticResource LargeHeaderTemplate}" Style="{StaticResource CompactExpanderTemplate}" >
+                                <TextBlock FontSize="11" TextWrapping="Wrap" Text="How various demographics responded to this post." />
+                                <StackPanel x:Name="DemoCharts">
+                                    <TextBlock Text="gender" Margin="0 16 0 0" />
+                                    <chart:RadCartesianChart x:Name="GenderChart" Height="300" EmptyContent="No votes in the last week">
+                                        <chart:RadCartesianChart.Palette>
+                                            <chart:ChartPalette>
+                                                <chart:ChartPalette.GlobalEntries>
+                                                    <chart:PaletteEntry Fill="Green" Stroke="Transparent" />
+                                                    <chart:PaletteEntry Fill="Red" Stroke="Transparent"/>
+                                                </chart:ChartPalette.GlobalEntries>
+                                            </chart:ChartPalette>
+                                        </chart:RadCartesianChart.Palette>
+                                        <chart:RadCartesianChart.HorizontalAxis>
+                                            <chart:CategoricalAxis LabelFitMode="Rotate"/>
+                                        </chart:RadCartesianChart.HorizontalAxis>
+                                        <chart:RadCartesianChart.VerticalAxis>
+                                            <chart:LinearAxis LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
+                                        </chart:RadCartesianChart.VerticalAxis>
+                                    </chart:RadCartesianChart>
+
+                                    <TextBlock Text="age" Margin="0 16 0 0" />
+                                    <chart:RadCartesianChart x:Name="AgeChart" Height="300" EmptyContent="No votes in the last week">
+                                        <chart:RadCartesianChart.Palette>
+                                            <chart:ChartPalette>
+                                                <chart:ChartPalette.GlobalEntries>
+                                                    <chart:PaletteEntry Fill="Green" Stroke="Transparent" />
+                                                    <chart:PaletteEntry Fill="Red" Stroke="Transparent"/>
+                                                </chart:ChartPalette.GlobalEntries>
+                                            </chart:ChartPalette>
+                                        </chart:RadCartesianChart.Palette>
+                                        <chart:RadCartesianChart.HorizontalAxis>
+                                            <chart:CategoricalAxis LabelFitMode="Rotate"/>
+                                        </chart:RadCartesianChart.HorizontalAxis>
+                                        <chart:RadCartesianChart.VerticalAxis>
+                                            <chart:LinearAxis LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
+                                        </chart:RadCartesianChart.VerticalAxis>
+                                    </chart:RadCartesianChart>
+
+                                    <TextBlock Text="ethnicity" Margin="0 16 0 0" />
+                                    <chart:RadCartesianChart x:Name="RaceChart" Height="300" EmptyContent="No votes in the last week">
+                                        <chart:RadCartesianChart.Palette>
+                                            <chart:ChartPalette>
+                                                <chart:ChartPalette.GlobalEntries>
+                                                    <chart:PaletteEntry Fill="Green" Stroke="Transparent" />
+                                                    <chart:PaletteEntry Fill="Red" Stroke="Transparent"/>
+                                                </chart:ChartPalette.GlobalEntries>
+                                            </chart:ChartPalette>
+                                        </chart:RadCartesianChart.Palette>
+                                        <chart:RadCartesianChart.HorizontalAxis>
+                                            <chart:CategoricalAxis LabelFitMode="Rotate"/>
+                                        </chart:RadCartesianChart.HorizontalAxis>
+                                        <chart:RadCartesianChart.VerticalAxis>
+                                            <chart:LinearAxis LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
+                                        </chart:RadCartesianChart.VerticalAxis>
+                                    </chart:RadCartesianChart>
+
+                                    <TextBlock Text="income" Margin="0 16 0 0" />
+                                    <chart:RadCartesianChart x:Name="IncomeChart" Height="300" EmptyContent="No votes in the last week">
+                                        <chart:RadCartesianChart.Palette>
+                                            <chart:ChartPalette>
+                                                <chart:ChartPalette.GlobalEntries>
+                                                    <chart:PaletteEntry Fill="Green" Stroke="Transparent" />
+                                                    <chart:PaletteEntry Fill="Red" Stroke="Transparent"/>
+                                                </chart:ChartPalette.GlobalEntries>
+                                            </chart:ChartPalette>
+                                        </chart:RadCartesianChart.Palette>
+                                        <chart:RadCartesianChart.HorizontalAxis>
+                                            <chart:CategoricalAxis LabelFitMode="Rotate"/>
+                                        </chart:RadCartesianChart.HorizontalAxis>
+                                        <chart:RadCartesianChart.VerticalAxis>
+                                            <chart:LinearAxis LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
+                                        </chart:RadCartesianChart.VerticalAxis>
+                                    </chart:RadCartesianChart>
+
+                                    <TextBlock Text="country" Margin="0 16 0 0" />
+                                    <chart:RadCartesianChart x:Name="CountryChart" Height="300" EmptyContent="No votes in the last week">
+                                        <chart:RadCartesianChart.Palette>
+                                            <chart:ChartPalette>
+                                                <chart:ChartPalette.GlobalEntries>
+                                                    <chart:PaletteEntry Fill="Green" Stroke="Transparent" />
+                                                    <chart:PaletteEntry Fill="Red" Stroke="Transparent"/>
+                                                </chart:ChartPalette.GlobalEntries>
+                                            </chart:ChartPalette>
+                                        </chart:RadCartesianChart.Palette>
+                                        <chart:RadCartesianChart.HorizontalAxis>
+                                            <chart:CategoricalAxis LabelFitMode="Rotate"/>
+                                        </chart:RadCartesianChart.HorizontalAxis>
+                                        <chart:RadCartesianChart.VerticalAxis>
+                                            <chart:LinearAxis LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
+                                        </chart:RadCartesianChart.VerticalAxis>
+                                    </chart:RadCartesianChart>
+                                </StackPanel>
+
+                                
+                            </toolkit:ExpanderView>
+                        </StackPanel>
+                    </ScrollViewer>
+                    <Border x:Name="NoStatsBox"  Margin="8" Padding="24 16" BorderBrush="#80FFFFFF" BorderThickness="1" CornerRadius="8" Background="#80000000" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="loading" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" />
+                            <ProgressBar  Width="200" Height="15" IsIndeterminate="True" />
+                        </StackPanel>
+                    </Border>
                 </Grid>
             </controls:PivotItem>
-            <controls:PivotItem Header="account">
+            <controls:PivotItem Header="prefereces">
                 <!--ContentPanel - place additional content here-->
-                <Grid>
+                    <ScrollViewer>
+                        <StackPanel>
+                            <TextBlock Text="user name" />
+                            <TextBlock x:Name="UserName" Text="{Binding CurrentUser.AccountName}" FontSize="24" Margin="8 0 0 15"/>
+                            <TextBlock Text="password" />
+                            <Button HorizontalAlignment="Center"  Margin="16">change password</Button>
+                            <TextBlock Text="recovery email" VerticalAlignment="Center" />
+                            <TextBlock x:Name="recover" Text="{Binding CurrentUser.RecoveryEmail}" FontSize="24" />
+                            <Button HorizontalAlignment="Center"  Margin="16">set recovery email</Button>
+                        
+                        <toolkit:ToggleSwitch Header="profanity filter" />
+                        <toolkit:ToggleSwitch Header="flagged content filter" />
+                    </StackPanel>
+                    </ScrollViewer>
 
-                </Grid>
             </controls:PivotItem>
 
         </controls:Pivot>
