@@ -287,7 +287,7 @@ namespace WinPhoneBlahgua
         {
             if (currentPage == "summary")
             {
-                App.BlahguaAPI.SetBlahVote(1, (newVote) =>
+                App.BlahguaAPI.SetBlahVote(-1, (newVote) =>
                 {
                     UpdateSummaryButtons();
                 });
@@ -729,6 +729,11 @@ namespace WinPhoneBlahgua
                     HandlePredictInit();
                     break;
             }  
+        }
+
+        private void AllCommentList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateCommentButtons();
         }
 
         

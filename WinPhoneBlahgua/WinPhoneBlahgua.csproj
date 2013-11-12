@@ -75,6 +75,7 @@
   <ItemGroup>
     <Compile Include="BlahguaCore\Badge.cs" />
     <Compile Include="BlahguaCore\ProfileSchema.cs" />
+    <Compile Include="BlahguaCore\UserProfile.cs" />
     <Compile Include="BlahguaCore\Utilities.cs" />
     <Compile Include="Controls\BlahAuthorHeader.xaml.cs">
       <DependentUpon>BlahAuthorHeader.xaml</DependentUpon>

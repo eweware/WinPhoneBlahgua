@@ -19,8 +19,18 @@ namespace WinPhoneBlahgua
         private CommentList _commentHistory;
         private BlahList _postHistory;
         private UserInfoObject _info = null;
+        private UserProfile _theProfile = null;
 
 
+
+        public UserProfile Profile
+        {
+            get { return _theProfile; }
+            set
+            {
+                _theProfile = value;
+            }
+        }
 
         public UserInfoObject UserInfo
         {

@@ -31,6 +31,8 @@ namespace WinPhoneBlahgua
         int FramesPerSecond = 60;
         BlahRollItem targetBlah = null;
         DispatcherTimer BlahAnimateTimer = new DispatcherTimer();
+        Dictionary<string, int> ImpressionMap = new Dictionary<string, int>();
+        int maxScroll = 0;
      
         // Constructor
         public MainPage()
@@ -46,6 +48,13 @@ namespace WinPhoneBlahgua
             
         }
 
+        protected override void OnNavigatingFrom(System.Windows.Navigation.NavigatingCancelEventArgs e)
+        {
+            StopTimers();
+            FlushImpressionList();
+ 	        base.OnNavigatingFrom(e);
+        }
+       
 
 
         void BlahScroller_MouseMove(object sender, MouseEventArgs e)
@@ -55,6 +64,7 @@ namespace WinPhoneBlahgua
 
         void DetectScrollAtEnd()
         {
+            maxScroll = Math.Max((int)BlahScroller.VerticalOffset, maxScroll);
             if ((BlahScroller.VerticalOffset == BlahScroller.ScrollableHeight) && (BlahContainer.Children.Count > 10))
             {
                 if (!AtScrollEnd)
@@ -114,12 +124,13 @@ namespace WinPhoneBlahgua
                 inboxCounter++;
                 if (inboxCounter >= 10)
                 {
-                    UIElement curBlah;
+                    BlahRollItem curBlah;
                     double bottom = 0;
                     // remove some blahs...
                     for (int i = 0; i < 100; i++)
                     {
-                        curBlah = BlahContainer.Children[0];
+                        curBlah = (BlahRollItem)BlahContainer.Children[0];
+                        AddImpression(curBlah.BlahData.I);
                         BlahContainer.Children.Remove(curBlah);
                     }
 
@@ -132,11 +143,35 @@ namespace WinPhoneBlahgua
                     }
                     BlahScroller.ScrollToVerticalOffset(BlahScroller.VerticalOffset - bottom);
                     BlahContainer.Height -= bottom;
+                    maxScroll -= (int)bottom;
                     inboxCounter--;
 
                 }
 
             });
+        }
+
+        private void AddImpression(string blahId)
+        {
+            if (!ImpressionMap.ContainsKey(blahId))
+            {
+                ImpressionMap[blahId] = 1;
+            }
+            else
+                ImpressionMap[blahId]++;
+        }
+
+        private void FlushImpressionList()
+        {
+            foreach (BlahRollItem curItem in BlahContainer.Children)
+            {
+                if (Canvas.GetTop(curItem) < maxScroll)
+                    AddImpression(curItem.BlahData.I);
+            }
+
+            App.BlahguaAPI.RecordImpressions(ImpressionMap);
+
+            ImpressionMap.Clear();
         }
 
         private void ScrollBlahRoll(object sender, EventArgs e)
@@ -297,11 +332,6 @@ namespace WinPhoneBlahgua
 
         }
 
-        protected override void OnNavigatingFrom(System.Windows.Navigation.NavigatingCancelEventArgs e)
-        {
-            StopTimers();
-            base.OnNavigatingFrom(e);
-        }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
@@ -397,6 +427,7 @@ namespace WinPhoneBlahgua
 
         void OnChannelChanged()
         {
+            FlushImpressionList();
             LoadingBox.Visibility = Visibility.Visible;
             StopTimers();
             ClearBlahs();

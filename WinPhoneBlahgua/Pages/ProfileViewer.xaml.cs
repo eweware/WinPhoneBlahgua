@@ -411,6 +411,10 @@ namespace WinPhoneBlahgua
                     UpdateBadgeArea();
                     break;
 
+                case "demographics":
+                    UpdateDemographics();
+                    break;
+
                 case "posts":
                     ApplicationBar.Buttons.Add(deletePostBtn);
                     ApplicationBar.IsVisible = true;
@@ -437,6 +441,19 @@ namespace WinPhoneBlahgua
             }
         }
 
+        private void UpdateDemographics()
+        {
+            App.BlahguaAPI.GetUserProfile((theProfile) =>
+                {
+                    // update everything by hand
+                    GenderList.SelectedItem = "Female";
+                    
+
+
+
+                }
+            );
+        }
 
         private void UpdateBadgeArea()
         {

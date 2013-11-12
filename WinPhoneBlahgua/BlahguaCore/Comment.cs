@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 namespace WinPhoneBlahgua
 {
 
-    public class CommentCreateRecord
+    public class CommentCreateRecord : INotifyPropertyChanged
     {
         public string B { get; set; }
         public string T { get; set; }
@@ -17,12 +17,41 @@ namespace WinPhoneBlahgua
         public List<string> M { get; set; }
         public string CID { get; set; }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                try
+                {
+                    handler(this, new PropertyChangedEventArgs(name));
+                }
+                catch (Exception exp)
+                {
+                    // do nothing for now...
+                }
+            }
+        }
+
+        public string Text
+        {
+            get { return T; }
+            set
+            {
+                T = value;
+                OnPropertyChanged("Text");
+            }
+        }
+
         public bool UseProfile
         {
             get { return !XX; }
             set
             {
                 XX = (!value);
+                OnPropertyChanged("UseProfile");
             }
         }
 
@@ -103,13 +132,14 @@ namespace WinPhoneBlahgua
                         BD.Add(curBadge.ID);
                     }
                 }
+                OnPropertyChanged("Badges");
             }
         }
 
     }
 
 
-    public class Comment
+    public class Comment : INotifyPropertyChanged
     {
         public string _id { get; set; }
         public string B { get; set; }
@@ -131,6 +161,23 @@ namespace WinPhoneBlahgua
         public List<string> _m { get; set; }
         public int uv { get; set; }
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                try
+                {
+                    handler(this, new PropertyChangedEventArgs(name));
+                }
+                catch (Exception exp)
+                {
+                    // do nothing for now...
+                }
+            }
+        }
 
         public Comment()
         {
@@ -167,31 +214,40 @@ namespace WinPhoneBlahgua
         public int UpVoteCount
         {
             get {return U;}
-            /*
-            get
+            set
             {
-                int vote = 0;
-                if (U != null)
-                    vote = int.Parse(U);
-
-                return vote;
+                U = value;
+                OnPropertyChanged("UpVoteCount");
             }
-             */
+           
         }
 
         public int DownVoteCount
         {
             get { return D; }
-            /*
-            get
+            set
             {
-                int vote = 0;
-                if (D != null)
-                    vote = int.Parse(D);
-
-                return vote;
+                D = value;
+                OnPropertyChanged("DownVoteCount");
             }
-             */
+        }
+
+        public int UserVote
+        {
+            get { return uv; }
+            set
+            {
+                uv = value;
+                OnPropertyChanged("UserVote");
+                if (uv == 1)
+                {
+                    UpVoteCount++;
+                }
+                else
+                {
+                    DownVoteCount++;
+                }
+            }
         }
 
         public string UserDescriptionString

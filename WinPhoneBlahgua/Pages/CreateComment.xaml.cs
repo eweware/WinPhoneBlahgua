@@ -21,10 +21,12 @@ namespace WinPhoneBlahgua
             InitializeComponent();
 
             SelectedBadgesList.SummaryForSelectedItemsDelegate = SummarizeItems;
+            CreateCommentBtn.IsEnabled = false;
 
             App.BlahguaAPI.EnsureUserDescription((desc) =>
             {
                 this.DataContext = App.BlahguaAPI;
+                CreateCommentBtn.IsEnabled = true;
             }
              );
 
@@ -33,7 +35,7 @@ namespace WinPhoneBlahgua
 
         void CreateComment_Loaded(object sender, RoutedEventArgs e)
         {
-            this.DataContext = App.BlahguaAPI;
+            //this.DataContext = App.BlahguaAPI;
         }
 
 
@@ -131,18 +133,14 @@ namespace WinPhoneBlahgua
         {
             if (newComment != null)
             {
-
-
+                // might want to resort the comments...
+                NavigationService.GoBack();
             }
             else
             {
                 // handle create comment failed
-
+                MessageBox.Show("Your comment was not created.  Please try again or come back another time.");
             }
-
-            //App.BlahguaAPI.NewBlahToInsert = newBlah;
-
-            NavigationService.GoBack();
 
         }
 

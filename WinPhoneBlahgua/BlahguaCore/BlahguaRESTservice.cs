@@ -34,6 +34,7 @@ namespace WinPhoneBlahgua
     public delegate void UserInfo_callback(UserInfoObject theResult);
     public delegate void ProfileSchema_callback(ProfileSchema theResult);
     public delegate void ProfileSchemaWrapper_callback(ProfileSchemaWrapper theResult);
+    public delegate void Profile_callback(UserProfile theResult);
 
 
     public class BlahguaRESTservice
@@ -131,6 +132,38 @@ namespace WinPhoneBlahgua
             });
         }
 
+
+        public void RecordImpressions(Dictionary<string, int> impressionMap, int_callback callback)
+        {
+            RestRequest request = new RestRequest("blahs/counts", Method.PUT);
+            string jsonString = "";
+            foreach (string curKey in impressionMap.Keys)
+            {
+                if (jsonString != "")
+                    jsonString += ", ";
+                jsonString += "\"" + curKey + "\": " + impressionMap[curKey].ToString();
+            }
+
+            jsonString  = "{\"V\":{" + jsonString + "}}";
+            request.AddParameter("application/json", jsonString, ParameterType.RequestBody); 
+            apiClient.ExecuteAsync(request, (response) =>
+            {
+                if (callback != null)
+                    callback(impressionMap.Count);
+            });
+        }
+
+        public void AddBlahOpen(string blahId)
+        {
+            RestRequest request = new RestRequest("blahs/" + blahId + "/stats", Method.PUT);
+            string jsonString = "{\"O\": 1}";
+           
+            request.AddParameter("application/json", jsonString, ParameterType.RequestBody);
+            apiClient.ExecuteAsync(request, (response) =>
+            {
+               
+            });
+        }
 
         public void CreateBadgeForUser(string authorityId, string badgeTypeId, string_callback callback)
         {
@@ -249,6 +282,54 @@ namespace WinPhoneBlahgua
             apiClient.ExecuteAsync<ProfileSchemaWrapper>(request, (response) =>
             {
                 callback(response.Data.fieldNameToSpecMap);    
+            });
+
+        }
+
+        public void GetUserProfile(Profile_callback callback)
+        {
+            RestRequest request = new RestRequest("users/profile/info", Method.GET);
+            apiClient.ExecuteAsync(request, (response) =>
+            {
+                UserProfile profile = null;
+                DataContractJsonSerializer des = new DataContractJsonSerializer(typeof(UserProfile));
+                var stream = new MemoryStream(Encoding.UTF8.GetBytes(response.Content));
+                object theObj = des.ReadObject(stream);
+                stream.Close();
+
+                if (theObj != null)
+                    profile = (UserProfile)theObj;
+
+                callback(profile);
+            });
+
+        }
+
+        public void UpdateUserProfile(UserProfile theProfile, Profile_callback callback)
+        {
+            RestRequest request = new RestRequest("users/profile/info", Method.PUT);
+            MemoryStream ms = new MemoryStream();
+ 
+            // Serializer the User object to the stream.
+            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(UserProfile));
+            ser.WriteObject(ms, theProfile);
+            byte[] json = ms.ToArray();
+            ms.Close();
+            string dataStr = Encoding.UTF8.GetString(json, 0, json.Length);
+            request.AddParameter("application/json", dataStr, ParameterType.RequestBody); 
+
+            apiClient.ExecuteAsync(request, (response) =>
+            {
+                UserProfile profile = null;
+                DataContractJsonSerializer des = new DataContractJsonSerializer(typeof(UserProfile));
+                var stream = new MemoryStream(Encoding.UTF8.GetBytes(response.Content));
+                object theObj = des.ReadObject(stream);
+                stream.Close();
+
+                if (theObj != null)
+                    profile = (UserProfile)theObj;
+
+                callback(profile);
             });
 
         }

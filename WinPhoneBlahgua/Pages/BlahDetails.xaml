@@ -256,7 +256,7 @@
             <!--Pivot item two-->
             <controls:PivotItem Header="comments">
                 <Grid >
-                    <ListBox  x:Name="AllCommentList"   Margin="0 0 0 72"
+                    <ListBox  x:Name="AllCommentList"   Margin="0 0 0 72" SelectionChanged="AllCommentList_SelectionChanged"
                         ItemTemplate="{StaticResource CommentTemplate}"
                         ItemsSource="{Binding CurrentBlah.Comments}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
                         <ListBox.ItemContainerStyle>

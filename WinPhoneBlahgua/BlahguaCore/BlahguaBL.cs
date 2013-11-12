@@ -33,7 +33,7 @@ namespace WinPhoneBlahgua
         string badgeEndpoint;
 
 
-        public event PropertyChangedEventHandler PropertyChanged;
+
         public bool AutoLogin { set; get; }
         public string UserName { get; set; }
         public string UserPassword { get; set; }
@@ -45,6 +45,8 @@ namespace WinPhoneBlahgua
         private ProfileSchema _profileSchema = null;
 
         public delegate void BlahguaInit_callback(bool didIt);
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(string name)
         {
@@ -61,6 +63,7 @@ namespace WinPhoneBlahgua
                 }
             }
         }
+        
 
         public BlahguaAPIObject()
         {
@@ -120,16 +123,56 @@ namespace WinPhoneBlahgua
             }
         }
 
+        public string UnprocessText(string originalString)
+        {
+            if (originalString == null)
+                return null;
+            else
+                return originalString.Replace("[_r;", "\n");
+        }
+
+        public string ProcessText(string originalString)
+        {
+             if (originalString == null)
+                return null;
+            else
+                 return originalString.Replace("\n", "[_r;").Replace("\r", "[_r;");
+        }
+
         public void LoadUserComments(Comments_callback callback)
         {
             string userId = CurrentUser._id;
-            BlahguaRest.GetUserComments(userId, callback);
+            BlahguaRest.GetUserComments(userId, (theList) =>
+                {
+                    if (theList != null)
+                    {
+                        foreach (Comment curComment in theList)
+                        {
+                            curComment.T = UnprocessText(curComment.T);
+                        }
+                    }
+                    callback(theList);
+                }
+            );
             
         }
 
         public void LoadUserPosts(Blahs_callback callback)
         {
-            BlahguaRest.GetUserBlahs(callback);
+            BlahguaRest.GetUserBlahs((theList) =>
+                {
+                    if (theList != null)
+                    {
+                        foreach (Blah curBlah in theList)
+                        {
+                            curBlah.T = UnprocessText(curBlah.T);
+                            curBlah.F = UnprocessText(curBlah.F);
+                        }
+                    }
+                    callback(theList);
+                }
+                
+            );
         }
 
         public void GetBadgeAuthorities(BadgeAuthorities_callback callback)
@@ -341,6 +384,9 @@ namespace WinPhoneBlahgua
             else
                 CreateRecord.I = null;
 
+            CreateRecord.T = ProcessText(CreateRecord.T);
+            CreateRecord.F = ProcessText(CreateRecord.F);
+
             BlahguaRest.CreateBlah(CreateRecord, (theBlah) =>
                 {
                     CreateRecord = new BlahCreateRecord();
@@ -354,13 +400,42 @@ namespace WinPhoneBlahgua
         {
             CreateCommentRecord.B = CurrentBlah._id;
 
-            BlahguaRest.CreateComment(CreateCommentRecord, (theComment) =>
-            {
-                CreateCommentRecord = new CommentCreateRecord();
-                callback(theComment);
-            }
-                );
+            CreateCommentRecord.T = ProcessText(CreateCommentRecord.T);
 
+            BlahguaRest.CreateComment(CreateCommentRecord, (theComment) =>
+                {
+                    if (theComment != null)
+                    {
+                        CreateCommentRecord = new CommentCreateRecord();
+                        if (CurrentBlah.Comments == null)
+                            CurrentBlah.Comments = new CommentList();
+                        theComment.T = UnprocessText(theComment.T);
+                        CurrentBlah.Comments.Add(theComment);
+                    }
+                    callback(theComment);
+                }
+            );
+
+        }
+
+        public void GetUserProfile(Profile_callback callback)
+        {
+            BlahguaRest.GetUserProfile((theProfile) =>
+                {
+                    CurrentUser.Profile = theProfile;
+                    callback(theProfile);
+                }
+            );
+        }
+
+        public void UpdateUserProfile(Profile_callback callback)
+        {
+            BlahguaRest.UpdateUserProfile(CurrentUser.Profile, (theProfile) =>
+                {
+                    CurrentUser.Profile = theProfile;
+                    callback(theProfile);
+                }
+            );
         }
 
         public void EnsureUserDescription(string_callback callback)
@@ -460,7 +535,10 @@ namespace WinPhoneBlahgua
                 {
                     BlahguaRest.GetUserDescription(theBlah.A, (theDesc) =>
                     {
+                        BlahguaRest.AddBlahOpen(theBlah._id);
                         theBlah.Description = theDesc;
+                        theBlah.T = UnprocessText(theBlah.T);
+                        theBlah.F = UnprocessText(theBlah.F);
                         currentBlah = theBlah;
                         callback(theBlah);
                     });
@@ -472,17 +550,52 @@ namespace WinPhoneBlahgua
 
         public void SetBlahVote(int newVote, int_callback callback)
         {
-            BlahguaRest.SetBlahVote(CurrentBlah._id, newVote, callback);
+            BlahguaRest.SetBlahVote(CurrentBlah._id, newVote, (theInt) => 
+                {
+                    if (theInt == newVote)
+                    {
+                        CurrentBlah.uv = theInt;
+                        callback(theInt);
+                    }
+                }
+            );
         }
 
         public void SetCommentVote(Comment theComment, int newVote, int_callback callback)
         {
-            BlahguaRest.SetCommentVote(theComment._id, newVote, callback);
+            BlahguaRest.SetCommentVote(theComment._id, newVote, (theInt) => 
+                {
+                    if (theInt == newVote)
+                    {
+                        theComment.UserVote = theInt;
+                        callback(theInt);
+                    }
+                }
+            );
+        }
+
+        public void RecordImpressions(Dictionary<string, int> impressionMap)
+        {
+            if ((impressionMap != null) && (impressionMap.Count > 0))
+            {
+                BlahguaRest.RecordImpressions(impressionMap, null);
+            }
         }
 
         public void GetInbox(Inbox_callback callback)
         {
-            BlahguaRest.GetInbox(CurrentChannel._id, callback);
+            BlahguaRest.GetInbox(CurrentChannel._id, (theList) =>
+                {
+                    if (theList != null)
+                    {
+                        foreach (InboxBlah theBlah in theList)
+                        {
+                            theBlah.T = UnprocessText(theBlah.T);
+                        }
+                    }
+                    callback(theList);
+                }
+            );
         }
 
         public void LoadBlahComments(Comments_callback callback)
@@ -491,6 +604,10 @@ namespace WinPhoneBlahgua
                 {
                     if (comments != null)
                     {
+                        foreach (Comment theComment in comments)
+                        {
+                            theComment.T = UnprocessText(theComment.T);
+                        }
                         List<string> authorIds = GetCommentAuthorIds(comments);
                         BlahguaRest.GetCommentAuthorDescriptions(authorIds, (descList) =>
                             {
