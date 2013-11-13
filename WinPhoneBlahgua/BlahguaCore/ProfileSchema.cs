@@ -156,6 +156,16 @@ namespace WinPhoneBlahgua
     {
         public Dictionary<string, string> DT { get; set; }
         public string E { get; set; }
+
+        public string GetKeyForValue(string theVal)
+        {
+            foreach (KeyValuePair<string, string> curPair in DT)
+            {
+                if (curPair.Value == theVal)
+                    return curPair.Key;
+            }
+            return null;
+        }
     }
 
     public class ProfileSchema
@@ -165,6 +175,7 @@ namespace WinPhoneBlahgua
         public SpecMap E { get; set; } // Income
         public SpecMap J { get; set; } // country
         public SpecMap C { get; set; } // age
+
 
 
         public Dictionary<string, string> GetTypesForProperty(string propName)

@@ -202,10 +202,10 @@
                             </Grid.RowDefinitions>
 
                             <TextBlock Text="Gender" Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
-                            <toolkit:ListPicker SelectedItem="{Binding CurrentUser.Profile.}" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding UserProfileSchema.GenderChoices}" >
+                            <toolkit:ListPicker SelectedItem="{Binding CurrentUser.Profile.Gender}" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding UserProfileSchema.GenderChoices}" >
                             </toolkit:ListPicker>
-                            <TextBlock HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" Text="Public"/>
-                            <toolkit:ToggleSwitch x:Name="GenderPerm" Grid.Row="1" Grid.Column="1" Content="" >
+                            <TextBlock HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" Text="Public?"/>
+                            <toolkit:ToggleSwitch IsEnabled="{Binding CurrentUser.Profile.GenderPerm}" Grid.Row="1" Grid.Column="1" Content="" >
                                 <toolkit:ToggleSwitch.Projection>
                                     <PlaneProjection GlobalOffsetY="20"/>
                                 </toolkit:ToggleSwitch.Projection>
@@ -224,8 +224,8 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Text="Date of Birth"  Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
-                        <toolkit:DatePicker Grid.Column="0" Grid.Row="1" />
-                            <toolkit:ToggleSwitch x:Name="DOBPerm" Grid.Row="1" Grid.Column="1" Content="" >
+                        <toolkit:DatePicker Grid.Column="0" Grid.Row="1" Value="{Binding CurrentUser.Profile.DOB}" />
+                            <toolkit:ToggleSwitch IsEnabled="{Binding CurrentUser.Profile.DOBPerm}" Grid.Row="1" Grid.Column="1" Content="" >
                             <toolkit:ToggleSwitch.Projection>
                                 <PlaneProjection GlobalOffsetY="10"/>
                             </toolkit:ToggleSwitch.Projection>
@@ -244,9 +244,9 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Text="Ethnicity"  Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
-                        <toolkit:ListPicker Grid.Row="1" Grid.Column="0" ItemsSource="{Binding UserProfileSchema.RaceChoices}" >
+                        <toolkit:ListPicker SelectedItem="{Binding CurrentUser.Profile.Race}" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding UserProfileSchema.RaceChoices}" >
                         </toolkit:ListPicker>
-                            <toolkit:ToggleSwitch x:Name="RacePerm" Grid.Row="1" Grid.Column="1" Content="">
+                            <toolkit:ToggleSwitch IsEnabled="{Binding CurrentUser.Profile.RacePerm}" Grid.Row="1" Grid.Column="1" Content="">
                             <toolkit:ToggleSwitch.Projection>
                                 <PlaneProjection GlobalOffsetY="20"/>
                             </toolkit:ToggleSwitch.Projection>
@@ -266,7 +266,7 @@
 
                         <TextBlock Text="City"  Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
                         <TextBox Grid.Row="1" Text="{Binding CurrentUser.Profile.City}" />
-                            <toolkit:ToggleSwitch x:Name="CityPerm" Grid.Row="1" Grid.Column="1" Content="">
+                            <toolkit:ToggleSwitch IsEnabled="{Binding CurrentUser.Profile.CityPerm}" Grid.Row="1" Grid.Column="1" Content="">
                             <toolkit:ToggleSwitch.Projection>
                                 <PlaneProjection GlobalOffsetY="20"/>
                             </toolkit:ToggleSwitch.Projection>
@@ -286,7 +286,7 @@
 
                         <TextBlock Text="State"  Grid.Row="0"  Grid.ColumnSpan="2" ></TextBlock>
                         <TextBox Grid.Row="1" Text="{Binding CurrentUser.Profile.State}" />
-                            <toolkit:ToggleSwitch x:Name="StatePerm" Grid.Row="1" Grid.Column="1" Content="" >
+                            <toolkit:ToggleSwitch IsEnabled="{Binding CurrentUser.Profile.StatePerm}" Grid.Row="1" Grid.Column="1" Content="" >
                             <toolkit:ToggleSwitch.Projection>
                                 <PlaneProjection GlobalOffsetY="20"/>
                             </toolkit:ToggleSwitch.Projection>
@@ -305,8 +305,8 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Text="Post Code"  Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
-                            <TextBox Grid.Row="1" x:Name="PostCodeField" Text="{Binding CurrentUser.Profile.PostCode}" />
-                            <toolkit:ToggleSwitch  x:Name="PostcodePerm" Grid.Row="1" Grid.Column="1" Content="">
+                            <TextBox Grid.Row="1" Text="{Binding CurrentUser.Profile.PostCode}" />
+                            <toolkit:ToggleSwitch IsEnabled="{Binding CurrentUser.Profile.PostCodePerm}" Grid.Row="1" Grid.Column="1" Content="">
                             <toolkit:ToggleSwitch.Projection>
                                 <PlaneProjection GlobalOffsetY="20"/>
                             </toolkit:ToggleSwitch.Projection>
@@ -325,9 +325,9 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Text="Country"  Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
-                            <toolkit:ListPicker x:Name="CountrySelect" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding UserProfileSchema.CountryChoices}">
+                            <toolkit:ListPicker SelectedItem="{Binding CurrentUser.Profile.Country}" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding UserProfileSchema.CountryChoices}">
                         </toolkit:ListPicker>
-                            <toolkit:ToggleSwitch x:Name="CountryPerm" Grid.Row="1" Grid.Column="1" Content="" >
+                            <toolkit:ToggleSwitch IsEnabled="{Binding CurrentUser.Profile.CountryPerm}" Grid.Row="1" Grid.Column="1" Content="" >
                             <toolkit:ToggleSwitch.Projection>
                                 <PlaneProjection GlobalOffsetY="20"/>
                             </toolkit:ToggleSwitch.Projection>
@@ -346,9 +346,9 @@
                         </Grid.RowDefinitions>
 
                             <TextBlock Text="Income" x:Name="IncomeSelect" Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
-                        <toolkit:ListPicker Grid.Row="1" Grid.Column="0" ItemsSource="{Binding UserProfileSchema.IncomeChoices}">
+                        <toolkit:ListPicker SelectedItem="{Binding CurrentUser.Profile.Income}" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding UserProfileSchema.IncomeChoices}">
                         </toolkit:ListPicker>
-                            <toolkit:ToggleSwitch x:Name="IncomePerm" Grid.Row="1" Grid.Column="1" Content="" >
+                            <toolkit:ToggleSwitch IsEnabled="{Binding CurrentUser.Profile.RacePerm}" Grid.Row="1" Grid.Column="1" Content="" >
                             <toolkit:ToggleSwitch.Projection>
                                 <PlaneProjection GlobalOffsetY="20"/>
                             </toolkit:ToggleSwitch.Projection>

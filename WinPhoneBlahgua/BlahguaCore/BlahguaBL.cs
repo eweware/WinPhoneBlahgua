@@ -418,15 +418,45 @@ namespace WinPhoneBlahgua
 
         }
 
-        public void GetUserProfile(Profile_callback callback)
+        private void _intGetUserProfile(Profile_callback callback)
         {
             BlahguaRest.GetUserProfile((theProfile) =>
                 {
+                    theProfile.Nickname_perm = 2;
                     CurrentUser.Profile = theProfile;
                     callback(theProfile);
                 }
             );
         }
+
+        private void GetUserProfileSchema(ProfileSchema_callback callback)
+        {
+            BlahguaRest.GetProfileSchema((theSchema) =>
+                {
+                    _profileSchema = theSchema;
+
+                    // add the age
+                    AddAgeSchemaInfo();
+                    UserProfile.Schema = UserProfileSchema;
+                    callback(theSchema);
+                }
+            );
+        }
+
+        public void GetUserProfile(Profile_callback callback)
+        {
+            if (UserProfileSchema == null)
+            {
+                GetUserProfileSchema((theProfile) =>
+                    {
+                        _intGetUserProfile(callback);
+                    }
+                );
+            }
+            else
+                _intGetUserProfile(callback);
+        }
+            
 
         public void UpdateUserProfile(Profile_callback callback)
         {
@@ -453,6 +483,16 @@ namespace WinPhoneBlahgua
             {
                 callback( CurrentUser.DescriptionString);
             }
+        }
+
+        public void GetUserDescription(string_callback callback)
+        {
+            BlahguaRest.GetUserDescription(CurrentUser._id, (theDesc) =>
+                {
+                    CurrentUserDescription = theDesc;
+                    callback(CurrentUserDescription.d);
+                }
+            );
         }
 
         public ChannelTypeList CurrentChannelTypeList

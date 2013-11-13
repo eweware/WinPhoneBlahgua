@@ -57,6 +57,7 @@ namespace WinPhoneBlahgua
 
             UserHeader.BadgeListArea.Visibility = Visibility.Collapsed;
 
+
         }
 
     
@@ -107,6 +108,7 @@ namespace WinPhoneBlahgua
 
         private void HandlePivotUnloaded(object sender, PivotItemEventArgs e)
         {
+            App.BlahguaAPI.CurrentUser.Profile.PropertyChanged -= Profile_PropertyChanged;
             ApplicationBar.Buttons.Clear();
             ApplicationBar.MenuItems.Clear();
         }
@@ -446,11 +448,25 @@ namespace WinPhoneBlahgua
             App.BlahguaAPI.GetUserProfile((theProfile) =>
                 {
                     // update everything by hand
-                    GenderList.SelectedItem = "Female";
+                    App.BlahguaAPI.CurrentUser.Profile.PropertyChanged += Profile_PropertyChanged;
                     
 
 
 
+                }
+            );
+        }
+
+        void Profile_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            // the profile has changed, save and reload the description...
+            App.BlahguaAPI.UpdateUserProfile((theProfile) =>
+                {
+                    App.BlahguaAPI.GetUserDescription((theDesc) =>
+                        {
+                            // to do - see if we need to rebind or...
+                        }
+                    );
                 }
             );
         }

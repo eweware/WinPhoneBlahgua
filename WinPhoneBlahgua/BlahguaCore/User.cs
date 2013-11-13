@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel;
+using System.Collections.ObjectModel;
 
 namespace WinPhoneBlahgua
 {
-    public class User
+    public class User : INotifyPropertyChanged
     {
         public List<string> M { get; set; }
         public List<string> B { get; set; }
@@ -21,6 +23,24 @@ namespace WinPhoneBlahgua
         private UserInfoObject _info = null;
         private UserProfile _theProfile = null;
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                try
+                {
+                    handler(this, new PropertyChangedEventArgs(name));
+                }
+                catch (Exception exp)
+                {
+                    // do nothing for now...
+                }
+            }
+        }
+
 
 
         public UserProfile Profile
@@ -29,13 +49,18 @@ namespace WinPhoneBlahgua
             set
             {
                 _theProfile = value;
+                OnPropertyChanged("Profile");
             }
         }
 
         public UserInfoObject UserInfo
         {
             get { return _info; }
-            set { _info = value; }
+            set 
+            { 
+                _info = value;
+                OnPropertyChanged("UserInfo");
+            }
         }
 
         public string AccountName
