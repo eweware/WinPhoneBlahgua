@@ -414,12 +414,12 @@ namespace WinPhoneBlahgua
                 }
                 else
                 {
-                    return App.BlahguaAPI.CurrentUser.N;
+                    return App.BlahguaAPI.CurrentUser.UserName;
                 }
             }
         }
 
-        public string UserDescriptionString
+        public string DescriptionString
         {
             get
             {
@@ -1191,7 +1191,7 @@ namespace WinPhoneBlahgua
             }
         }
 
-        public string UserDescriptionString
+        public string DescriptionString
         {
             get
             {

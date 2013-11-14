@@ -166,13 +166,18 @@
                 <ScrollViewer>
                     <StackPanel>
                             <TextBlock Text="nickname" VerticalAlignment="Center" />
-                            <TextBox x:Name="ScreenName" Text="{Binding CurrentUser.UserName, Mode=TwoWay}" />
+                        <TextBox Text="{Binding CurrentUser.UserName, Mode=TwoWay}" />
 
                             <TextBlock Text="user image" VerticalAlignment="Center" />
+                            
+                        <Grid>
                             <Image Source="{Binding CurrentUser.UserImage}" Width="256" Margin="8" />
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Button>remove</Button>
-                                <Button>change</Button>
+
+                            <ProgressBar Width="256" x:Name="UploadImageProgress" IsIndeterminate="True" Visibility="Collapsed" />
+                        </Grid>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Tap="ClearImage_Tap">remove</Button>
+                                <Button Tap="ChangeImage_Tap">change</Button>
                             </StackPanel>
 
                     </StackPanel>
@@ -187,7 +192,7 @@
                 </Grid>
             </controls:PivotItem>
 
-            <controls:PivotItem Header="demographics">
+            <controls:PivotItem Name="DemoPivot" Header="demographics">
                 <!--ContentPanel - place additional content here-->
                 <ScrollViewer>
                 <StackPanel Orientation="Vertical">
@@ -202,10 +207,10 @@
                             </Grid.RowDefinitions>
 
                             <TextBlock Text="Gender" Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
-                            <toolkit:ListPicker SelectedItem="{Binding CurrentUser.Profile.Gender}" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding UserProfileSchema.GenderChoices}" >
+                            <toolkit:ListPicker  SelectionChanged="Gender_SelectionChanged"  x:Name="GenderList" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding UserProfileSchema.GenderChoices}" >
                             </toolkit:ListPicker>
                             <TextBlock HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" Text="Public?"/>
-                            <toolkit:ToggleSwitch IsEnabled="{Binding CurrentUser.Profile.GenderPerm}" Grid.Row="1" Grid.Column="1" Content="" >
+                            <toolkit:ToggleSwitch x:Name="GenderPerm" Checked="GenderPerm_Checked"  Grid.Row="1" Grid.Column="1" Content="" >
                                 <toolkit:ToggleSwitch.Projection>
                                     <PlaneProjection GlobalOffsetY="20"/>
                                 </toolkit:ToggleSwitch.Projection>
@@ -224,8 +229,8 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Text="Date of Birth"  Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
-                        <toolkit:DatePicker Grid.Column="0" Grid.Row="1" Value="{Binding CurrentUser.Profile.DOB}" />
-                            <toolkit:ToggleSwitch IsEnabled="{Binding CurrentUser.Profile.DOBPerm}" Grid.Row="1" Grid.Column="1" Content="" >
+                            <toolkit:DatePicker x:Name="DOBField" Grid.Column="0" Grid.Row="1" ValueChanged="DOBValChanged" />
+                            <toolkit:ToggleSwitch x:Name="DOBPerm" Checked="DOBPerm_Checked"  Grid.Row="1" Grid.Column="1" Content="" >
                             <toolkit:ToggleSwitch.Projection>
                                 <PlaneProjection GlobalOffsetY="10"/>
                             </toolkit:ToggleSwitch.Projection>
@@ -243,10 +248,10 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <TextBlock Text="Ethnicity"  Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
-                        <toolkit:ListPicker SelectedItem="{Binding CurrentUser.Profile.Race}" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding UserProfileSchema.RaceChoices}" >
+                            <TextBlock Text="Ethnicity"   Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
+                            <toolkit:ListPicker  SelectionChanged="Race_SelectionChanged"  x:Name="RaceList" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding UserProfileSchema.RaceChoices}" >
                         </toolkit:ListPicker>
-                            <toolkit:ToggleSwitch IsEnabled="{Binding CurrentUser.Profile.RacePerm}" Grid.Row="1" Grid.Column="1" Content="">
+                            <toolkit:ToggleSwitch x:Name="RacePerm" Checked="RacePerm_Checked"  Grid.Row="1" Grid.Column="1" Content="">
                             <toolkit:ToggleSwitch.Projection>
                                 <PlaneProjection GlobalOffsetY="20"/>
                             </toolkit:ToggleSwitch.Projection>
@@ -264,9 +269,9 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <TextBlock Text="City"  Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
-                        <TextBox Grid.Row="1" Text="{Binding CurrentUser.Profile.City}" />
-                            <toolkit:ToggleSwitch IsEnabled="{Binding CurrentUser.Profile.CityPerm}" Grid.Row="1" Grid.Column="1" Content="">
+                        <TextBlock Text="City" Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
+                            <TextBox Grid.Row="1" x:Name="CityField" TextChanged="CityTextChanged"  />
+                            <toolkit:ToggleSwitch x:Name="CityPerm" Checked="CityPerm_Checked"  Grid.Row="1" Grid.Column="1" Content="">
                             <toolkit:ToggleSwitch.Projection>
                                 <PlaneProjection GlobalOffsetY="20"/>
                             </toolkit:ToggleSwitch.Projection>
@@ -285,8 +290,8 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Text="State"  Grid.Row="0"  Grid.ColumnSpan="2" ></TextBlock>
-                        <TextBox Grid.Row="1" Text="{Binding CurrentUser.Profile.State}" />
-                            <toolkit:ToggleSwitch IsEnabled="{Binding CurrentUser.Profile.StatePerm}" Grid.Row="1" Grid.Column="1" Content="" >
+                            <TextBox Grid.Row="1" x:Name="StateField" TextChanged="StateTextChanged"/>
+                            <toolkit:ToggleSwitch x:Name="StatePerm" Checked="StatePerm_Checked"  Grid.Row="1" Grid.Column="1" Content="" >
                             <toolkit:ToggleSwitch.Projection>
                                 <PlaneProjection GlobalOffsetY="20"/>
                             </toolkit:ToggleSwitch.Projection>
@@ -305,8 +310,8 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Text="Post Code"  Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
-                            <TextBox Grid.Row="1" Text="{Binding CurrentUser.Profile.PostCode}" />
-                            <toolkit:ToggleSwitch IsEnabled="{Binding CurrentUser.Profile.PostCodePerm}" Grid.Row="1" Grid.Column="1" Content="">
+                            <TextBox Grid.Row="1" x:Name="ZipcodeField" TextChanged="ZipcodeTextChanged"/>
+                            <toolkit:ToggleSwitch x:Name="ZipcodePerm" Checked="ZipcodePerm_Checked"  Grid.Row="1" Grid.Column="1" Content="">
                             <toolkit:ToggleSwitch.Projection>
                                 <PlaneProjection GlobalOffsetY="20"/>
                             </toolkit:ToggleSwitch.Projection>
@@ -324,10 +329,10 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <TextBlock Text="Country"  Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
-                            <toolkit:ListPicker SelectedItem="{Binding CurrentUser.Profile.Country}" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding UserProfileSchema.CountryChoices}">
+                            <TextBlock Text="Country"  Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
+                            <toolkit:ListPicker  x:Name="CountryList"  SelectionChanged="Country_SelectionChanged"  Grid.Row="1" Grid.Column="0" ItemsSource="{Binding UserProfileSchema.CountryChoices}">
                         </toolkit:ListPicker>
-                            <toolkit:ToggleSwitch IsEnabled="{Binding CurrentUser.Profile.CountryPerm}" Grid.Row="1" Grid.Column="1" Content="" >
+                            <toolkit:ToggleSwitch x:Name="CountryPerm" Checked="CountryPerm_Checked" Grid.Row="1" Grid.Column="1" Content="" >
                             <toolkit:ToggleSwitch.Projection>
                                 <PlaneProjection GlobalOffsetY="20"/>
                             </toolkit:ToggleSwitch.Projection>
@@ -346,9 +351,9 @@
                         </Grid.RowDefinitions>
 
                             <TextBlock Text="Income" x:Name="IncomeSelect" Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
-                        <toolkit:ListPicker SelectedItem="{Binding CurrentUser.Profile.Income}" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding UserProfileSchema.IncomeChoices}">
+                            <toolkit:ListPicker  SelectionChanged="Income_SelectionChanged"  x:Name="IncomeList"  Grid.Row="1" Grid.Column="0" ItemsSource="{Binding UserProfileSchema.IncomeChoices}">
                         </toolkit:ListPicker>
-                            <toolkit:ToggleSwitch IsEnabled="{Binding CurrentUser.Profile.RacePerm}" Grid.Row="1" Grid.Column="1" Content="" >
+                            <toolkit:ToggleSwitch x:Name="IncomePerm" Checked="IncomePerm_Checked" Grid.Row="1" Grid.Column="1" Content="" >
                             <toolkit:ToggleSwitch.Projection>
                                 <PlaneProjection GlobalOffsetY="20"/>
                             </toolkit:ToggleSwitch.Projection>
@@ -625,7 +630,7 @@
                     </Border>
                 </Grid>
             </controls:PivotItem>
-            <controls:PivotItem Header="prefereces">
+            <controls:PivotItem Header="prefs">
                 <!--ContentPanel - place additional content here-->
                     <ScrollViewer>
                         <StackPanel>

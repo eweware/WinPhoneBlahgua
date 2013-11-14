@@ -84,7 +84,7 @@ namespace WinPhoneBlahgua
             }
         }
 
-        public string UserDescriptionString
+        public string DescriptionString
         {
             get
             {
@@ -250,7 +250,7 @@ namespace WinPhoneBlahgua
             }
         }
 
-        public string UserDescriptionString
+        public string DescriptionString
         {
             get
             {

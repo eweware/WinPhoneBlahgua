@@ -305,7 +305,35 @@ namespace WinPhoneBlahgua
 
         }
 
-        public void UpdateUserProfile(UserProfile theProfile, Profile_callback callback)
+        public void UpdateUserName(string userName, string_callback callback)
+        {
+            RestRequest request = new RestRequest("users/profile/info", Method.PUT);
+
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(new { A = userName});
+
+            apiClient.ExecuteAsync(request, (response) =>
+            {
+                callback("ok");
+            });
+
+        }
+
+        public void DeleteUserImage(string_callback callback)
+        {
+            RestRequest request = new RestRequest("users/images", Method.DELETE);
+
+
+            apiClient.ExecuteAsync(request, (response) =>
+            {
+                callback("ok");
+            });
+
+        }
+
+
+
+        public void UpdateUserProfile(UserProfile theProfile, string_callback callback)
         {
             RestRequest request = new RestRequest("users/profile/info", Method.PUT);
             MemoryStream ms = new MemoryStream();
@@ -320,16 +348,7 @@ namespace WinPhoneBlahgua
 
             apiClient.ExecuteAsync(request, (response) =>
             {
-                UserProfile profile = null;
-                DataContractJsonSerializer des = new DataContractJsonSerializer(typeof(UserProfile));
-                var stream = new MemoryStream(Encoding.UTF8.GetBytes(response.Content));
-                object theObj = des.ReadObject(stream);
-                stream.Close();
-
-                if (theObj != null)
-                    profile = (UserProfile)theObj;
-
-                callback(profile);
+                callback("ok");
             });
 
         }
@@ -461,6 +480,31 @@ namespace WinPhoneBlahgua
 
         }
 
+        public void UploadObjectPhoto(string objectId, string objectType, Stream photoStream, string fileName, string_callback callback)
+        {
+            var request = new RestRequest("images/upload", Method.POST);
+            request.AddHeader("Accept", "*/*");
+            request.AlwaysMultipartFormData = true;
+            request.AddParameter("objectType", objectType);
+            request.AddParameter("objectId", objectId);
+            request.AddParameter("primary", "true");
+            request.AddFile("file", ReadToEnd(photoStream), fileName, "image/jpeg");
+
+            apiClient.ExecuteAsync(request, (response) =>
+            {
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    callback(response.Content);
+                }
+                else
+                {
+                    //error ocured during upload
+                    callback(null);
+                }
+            });
+
+        }
+
         //method for converting stream to byte[]
         public byte[] ReadToEnd(System.IO.Stream stream)
         {
@@ -513,6 +557,51 @@ namespace WinPhoneBlahgua
             apiClient.ExecuteAsync<User>(request, (response) =>
             {
                 callback(response.Data);
+            });
+        }
+
+        public void GetRecoveryEmail(string_callback callback)
+        {
+            RestRequest request = new RestRequest("users/account", Method.GET);
+            apiClient.ExecuteAsync(request, (response) =>
+            {
+                callback(response.Content);
+            });
+        }
+
+        public void SetRecoveryEmail(string newMail, string_callback callback)
+        {
+            RestRequest request = new RestRequest("users/account", Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(new { E = newMail });
+
+            apiClient.ExecuteAsync(request, (response) =>
+            {
+                callback(response.Content);
+            });
+        }
+
+        public void UpdatePassword(string newPassword, string_callback callback)
+        {
+            RestRequest request = new RestRequest("users/update/password", Method.PUT);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(new { P = newPassword });
+
+            apiClient.ExecuteAsync(request, (response) =>
+            {
+                callback(response.Content);
+            });
+        }
+
+        public void RecoverUser(string userName, string email, string_callback callback)
+        {
+            RestRequest request = new RestRequest("users/recover/user", Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(new { U = userName, E = email });
+
+            apiClient.ExecuteAsync(request, (response) =>
+            {
+                callback(response.Content);
             });
         }
 

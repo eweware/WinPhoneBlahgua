@@ -112,6 +112,11 @@
     <Compile Include="Pages\ProfileViewer.xaml.cs">
       <DependentUpon>ProfileViewer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\RadControlsItem1.xaml.cs">
+      <DependentUpon>RadControlsItem1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ViewModels\DataItemViewModel.cs" />
+    <Compile Include="Pages\ViewModels\MainDataViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -164,6 +169,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\ProfileViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\RadControlsItem1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -244,6 +253,7 @@
     <Content Include="Images\uploadplaceholder.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Pages\Images\FrameThumbnail.png" />
     <Content Include="Resources\fontawesome-webfont.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

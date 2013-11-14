@@ -172,7 +172,7 @@
                                     <TextBlock Text="{Binding DownVoteCount}"></TextBlock>
                                 </StackPanel>
                             </Grid>
-                            <TextBlock Grid.Row="1" Text="{Binding UserDescriptionString}"  Foreground="#FF8D8D8D" FontStyle="Italic" FontSize="16" />
+                            <TextBlock Grid.Row="1" Text="{Binding DescriptionString}"  Foreground="#FF8D8D8D" FontStyle="Italic" FontSize="16" />
                             <local:UrlTextBlock Grid.Row="2" Content="{Binding T}" TextWrapping="Wrap" />
                             <Image Grid.Row="3" Margin="9" Source="{Binding ImageURL}" >
                             </Image>
@@ -205,7 +205,7 @@
                             <Image Source="{Binding CurrentBlah.UserImage}" Width="64" Height="64" VerticalAlignment="Top" Margin="0,0,8,0" />
                             <StackPanel Orientation="Vertical">
                                 <TextBlock Text="{Binding CurrentBlah.UserName}" FontFamily="Segoe WP Semibold" FontSize="24" />
-                                <TextBlock Text="{Binding CurrentBlah.UserDescriptionString}" FontSize="16" />
+                                <TextBlock Text="{Binding CurrentBlah.DescriptionString}" FontSize="16" />
                                 <TextBlock Text="{Binding CurrentBlah.ElapsedTimeString}" FontSize="16" FontStyle="Italic" />
                             </StackPanel>
                         </StackPanel>

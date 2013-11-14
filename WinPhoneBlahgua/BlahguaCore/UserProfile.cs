@@ -49,7 +49,7 @@ namespace WinPhoneBlahgua
         public string B { get; set; } // gender
 
         [DataMember]
-        public DateTime C { get; set; } // dob
+        public string C { get; set; } // dob
 
         [DataMember]
         public string D { get; set; } // race
@@ -67,10 +67,8 @@ namespace WinPhoneBlahgua
         public string I { get; set; } // zipcode
 
         [DataMember]
-        public string F { get; set; } // GPS Location
-
-        [DataMember]
         public string J { get; set; }  // country
+
 
         [DataMember]
         public string _id { get; set; }
@@ -82,6 +80,11 @@ namespace WinPhoneBlahgua
         public DateTime u { get; set; }
 
         public static ProfileSchema Schema {get; set; }
+
+        public UserProfile()
+        {
+
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -101,6 +104,15 @@ namespace WinPhoneBlahgua
             }
         }
 
+        public string Nickname
+        {
+            get { return A; }
+            set
+            {
+                A = value;
+                OnPropertyChanged("Nickname");
+            }
+        }
 
 
         public bool GenderPerm
@@ -182,6 +194,16 @@ namespace WinPhoneBlahgua
                 OnPropertyChanged("CountryPerm");
             }
         }
+
+        public bool RacePerm
+        {
+            get { return Race_perm > 0; }
+            set
+            {
+                Race_perm = value ? 2 : 0;
+                OnPropertyChanged("RacePerm");
+            }
+        }
         
 
         public String Gender
@@ -192,9 +214,11 @@ namespace WinPhoneBlahgua
             }
             set
             {
-
-                B = Schema.B.GetKeyForValue(value);
-                OnPropertyChanged("Gender");
+                if (value != Gender)
+                {
+                    B = Schema.B.GetKeyForValue(value);
+                    OnPropertyChanged("Gender");
+                }
             }
         }
 
@@ -206,8 +230,11 @@ namespace WinPhoneBlahgua
             }
             set
             {
-                E = Schema.E.GetKeyForValue(value);
-                OnPropertyChanged("Income");
+                if (value != Income)
+                {
+                    E = Schema.E.GetKeyForValue(value);
+                    OnPropertyChanged("Income");
+                }
             }
         }
 
@@ -219,8 +246,11 @@ namespace WinPhoneBlahgua
             }
             set
             {
-                J = Schema.J.GetKeyForValue(value);
-                OnPropertyChanged("Country");
+                if (value != Country)
+                {
+                    J = Schema.J.GetKeyForValue(value);
+                    OnPropertyChanged("Country");
+                }
             }
         }
 
@@ -233,28 +263,26 @@ namespace WinPhoneBlahgua
             }
             set
             {
-                D = Schema.D.GetKeyForValue(value);
-                OnPropertyChanged("Race");
+                if (value != Race)
+                {
+                    D = Schema.D.GetKeyForValue(value);
+                    OnPropertyChanged("Race");
+                }
             }
         }
 
-        public String GPSLocation
-        {
-            get { return F; }
-            set 
-            { 
-                F = value;
-                OnPropertyChanged("GPSLocation");
-            }
-        }
+       
 
         public String City
         {
             get { return G; }
             set 
-            { 
-                G = value;
-                OnPropertyChanged("City");
+            {
+                if (G != value)
+                {
+                    G = value;
+                    OnPropertyChanged("City");
+                }
             }
         }
 
@@ -262,9 +290,12 @@ namespace WinPhoneBlahgua
         {
             get { return H; }
             set 
-            { 
-                H = value;
-                OnPropertyChanged("State");
+            {
+                if (H != value)
+                {
+                    H = value;
+                    OnPropertyChanged("State");
+                }
             }
         }
 
@@ -272,19 +303,26 @@ namespace WinPhoneBlahgua
         {
             get { return I; }
             set 
-            { 
-                I = value;
-                OnPropertyChanged("Zipcode");
+            {
+                if (I != value)
+                {
+                    I = value;
+                    OnPropertyChanged("Zipcode");
+                }
             }
         }
 
         public DateTime DOB
         {
-            get { return C; }
+            get { return DateTime.Parse(C); }
             set 
-            { 
-                C = value;
-                OnPropertyChanged("DOB");
+            {
+                string newDate = value.ToString("yyyy-MM-dd");
+                if (C != newDate)
+                {
+                    C = newDate;
+                    OnPropertyChanged("DOB");
+                }
             }
         }
     }

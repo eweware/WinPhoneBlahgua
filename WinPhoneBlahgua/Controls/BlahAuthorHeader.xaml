@@ -23,7 +23,7 @@
                 <Image Source="{Binding UserImage, Mode=OneWay}" Width="64" Height="64" VerticalAlignment="Top" Margin="0,0,8,0" />
                 <StackPanel Orientation="Vertical">
                     <TextBlock Text="{Binding UserName, Mode=OneWay}" FontFamily="Segoe WP Semibold" FontSize="24" />
-                    <TextBlock Text="{Binding UserDescriptionString, Mode=OneWay}" TextWrapping="Wrap" FontSize="16" />
+                    <TextBlock Text="{Binding DescriptionString, Mode=OneWay}" TextWrapping="Wrap" FontSize="16" />
                     <ItemsControl x:Name="BadgeListArea" ItemsSource="{Binding Badges, Mode=OneWay}"
                                     ItemTemplate="{StaticResource BadgeItemTemplate}"/>
                 </StackPanel>

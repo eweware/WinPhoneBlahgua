@@ -22,8 +22,15 @@ namespace WinPhoneBlahgua
         private BlahList _postHistory;
         private UserInfoObject _info = null;
         private UserProfile _theProfile = null;
+        private string _recoveryEmail = null;
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+
+        public User()
+        {
+            _theProfile = null;
+        }
 
         protected void OnPropertyChanged(string name)
         {
@@ -41,6 +48,22 @@ namespace WinPhoneBlahgua
             }
         }
 
+        public void DescriptionUpdated()
+        {
+            OnPropertyChanged("DescriptionString");
+        }
+
+        public void RefreshUserImage(string newImage)
+        {
+            if (newImage == "")
+                M = null;
+            else
+            {
+                M = new List<string>();
+                M.Add(newImage);
+            }
+            OnPropertyChanged("UserImage");
+        }
 
 
         public UserProfile Profile
@@ -84,6 +107,26 @@ namespace WinPhoneBlahgua
                 else
                     return "Someone";
             }
+
+            set
+            {
+                if (App.BlahguaAPI.CurrentUserDescription != null)
+                    App.BlahguaAPI.CurrentUserDescription.K = value;
+                OnPropertyChanged("UserName");
+            }
+        }
+
+        public string RecoveryEmail
+        {
+            get
+            {
+                return _recoveryEmail;
+            }
+            set
+            {
+                _recoveryEmail = value;
+                OnPropertyChanged("RecoveryEmail");
+            }
         }
 
         public string UserImage
@@ -93,7 +136,7 @@ namespace WinPhoneBlahgua
                 if (M != null)
                     return App.BlahguaAPI.GetImageURL(M[0], "A");
                 else
-                    return "Images\\unknown-user.png";
+                    return "Images/unknown-user.png";
             }
         }
 
@@ -118,11 +161,6 @@ namespace WinPhoneBlahgua
         {
             get { return _postHistory; }
             set { _postHistory = value; }
-        }
-
-        public string UserDescriptionString
-        {
-            get { return DescriptionString; }
         }
 
         public BadgeList Badges

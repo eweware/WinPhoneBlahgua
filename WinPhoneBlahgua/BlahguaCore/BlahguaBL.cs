@@ -29,7 +29,7 @@ namespace WinPhoneBlahgua
         Channel currentChannel = null;
         BlahCreateRecord createRec = null;
         CommentCreateRecord createCommentRec = null;
-        public UserDescription CurrentUserDescription = null;
+        private UserDescription _userDescription = null;
         string badgeEndpoint;
 
 
@@ -61,6 +61,17 @@ namespace WinPhoneBlahgua
                 {
                     // do nothing for now...
                 }
+            }
+        }
+
+        public UserDescription CurrentUserDescription
+        {
+            get { return _userDescription; }
+            set
+            {
+                _userDescription = value;
+                OnPropertyChanged("CurrentUserDescription");
+                CurrentUser.DescriptionUpdated();
             }
         }
         
@@ -327,6 +338,26 @@ namespace WinPhoneBlahgua
             );
         }
 
+        public void UploadUserImage(System.IO.Stream photo, string fileName, string_callback callback)
+        {
+            BlahguaRest.UploadObjectPhoto(CurrentUser._id, "U", photo, fileName, (newPhotoId) =>
+            {
+                CurrentUser.RefreshUserImage(newPhotoId);
+                callback(newPhotoId);
+            }
+            );
+        }
+
+        public void DeleteUserImage(string_callback callback)
+        {
+            BlahguaRest.DeleteUserImage((theString) =>
+                {
+                    CurrentUser.RefreshUserImage("");
+                    callback(theString);
+                }
+            );
+        }
+
         public void GetBadgeName(string badgeId, string_callback callback)
         {
             if (intBadgeMap.ContainsKey(badgeId))
@@ -424,7 +455,8 @@ namespace WinPhoneBlahgua
                 {
                     theProfile.Nickname_perm = 2;
                     CurrentUser.Profile = theProfile;
-                    callback(theProfile);
+                    if (callback != null)
+                        callback(theProfile);
                 }
             );
         }
@@ -458,14 +490,26 @@ namespace WinPhoneBlahgua
         }
             
 
-        public void UpdateUserProfile(Profile_callback callback)
+        public void UpdateUserProfile(string_callback callback)
         {
-            BlahguaRest.UpdateUserProfile(CurrentUser.Profile, (theProfile) =>
-                {
-                    CurrentUser.Profile = theProfile;
-                    callback(theProfile);
-                }
-            );
+            BlahguaRest.UpdateUserProfile(CurrentUser.Profile, callback);
+        }
+
+        public void UpdateUserName(string userName, string_callback callback)
+        {
+            UserProfile theProfile = CurrentUser.Profile;
+
+            if (theProfile == null)
+            {
+                BlahguaRest.UpdateUserName(userName, callback);
+            }
+            else
+            {
+                theProfile.A = userName;
+                theProfile.Nickname_perm = 2;
+
+                BlahguaRest.UpdateUserProfile(theProfile, callback);
+            }
         }
 
         public void EnsureUserDescription(string_callback callback)
@@ -923,6 +967,7 @@ namespace WinPhoneBlahgua
 
                                     // add the age
                                     AddAgeSchemaInfo();
+                                    UserProfile.Schema = theSchema;
 
                                     // badge names
                                     if (CurrentUser.Badges != null)

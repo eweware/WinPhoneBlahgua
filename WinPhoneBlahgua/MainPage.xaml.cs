@@ -627,7 +627,11 @@ namespace WinPhoneBlahgua
 
         private void UserInfoBtn_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            NavigationService.Navigate(new Uri("/Pages/ProfileViewer.xaml", UriKind.Relative));    
+            App.BlahguaAPI.GetUserProfile((theProfile) =>
+                {
+                    NavigationService.Navigate(new Uri("/Pages/ProfileViewer.xaml", UriKind.Relative));
+                }
+            );
         }
         
         private void NewBlahBtn_Tap(object sender, System.Windows.Input.GestureEventArgs e)

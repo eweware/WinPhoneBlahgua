@@ -11,6 +11,8 @@ using Telerik.Windows.Controls;
 using Telerik.Charting;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
+using Microsoft.Phone.Tasks;
 
 namespace WinPhoneBlahgua
 {
@@ -86,7 +88,6 @@ namespace WinPhoneBlahgua
         }
 
 
-
         private void HandleDeleteComment(object target, EventArgs theArgs)
         {
             if (MessageBox.Show("Are you sure you want to delete this comment?", "confirm delete", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
@@ -106,56 +107,7 @@ namespace WinPhoneBlahgua
             deleteCommentBtn.IsEnabled = (UserCommentList.SelectedItem != null);
         }
 
-        private void HandlePivotUnloaded(object sender, PivotItemEventArgs e)
-        {
-            App.BlahguaAPI.CurrentUser.Profile.PropertyChanged -= Profile_PropertyChanged;
-            ApplicationBar.Buttons.Clear();
-            ApplicationBar.MenuItems.Clear();
-        }
-
-
-        private void OnPivotLoading(object sender, PivotItemEventArgs e)
-        {
-            string newItem = e.Item.Header.ToString();
-
-            if (newItem == "posts")
-            {
-
-                if (postsLoaded)
-                    NoPostsBox.Visibility = Visibility.Collapsed;
-                else
-                {
-                    NoPostsBox.Visibility = Visibility.Visible;
-                    NoPostTextBlock.Text = "loading posts";
-                    NoPostProgress.Visibility = Visibility.Visible;
-                    LoadUserPosts();
-                }
-                
-            }
-            else if (newItem == "comments")
-            {
-
-                if (commentsLoaded)
-                    NoCommentsBox.Visibility = Visibility.Collapsed;
-                else
-                {
-                    NoCommentsBox.Visibility = Visibility.Visible;
-                    NoCommentTextBlock.Text = "loading comments";
-                    NoCommentProgress.Visibility = Visibility.Visible;
-                    LoadUserComments();
-                }
-
-            }
-            else if (newItem == "stats")
-            {
-                if (!statsLoaded)
-                {
-                    NoStatsBox.Visibility = Visibility.Visible;
-                    LoadStats();
-
-                }
-            }
-        }
+        
 
         private void LoadUserComments()
         {
@@ -345,7 +297,6 @@ namespace WinPhoneBlahgua
             // age
             CreateUserDemoChart(AgeChart, "C");
 
-
             // race
             CreateUserDemoChart(RaceChart, "D");
 
@@ -397,13 +348,72 @@ namespace WinPhoneBlahgua
             }
         }
 
+        private void HandlePivotUnloaded(object sender, PivotItemEventArgs e)
+        {
+            ApplicationBar.Buttons.Clear();
+            ApplicationBar.MenuItems.Clear();
+            switch (e.Item.Header.ToString())
+            {
+                case "persona":
+                    App.BlahguaAPI.CurrentUser.PropertyChanged -= User_PropertyChanged;  
+                    break;
+
+
+            }
+        }
+
+
+        private void OnPivotLoading(object sender, PivotItemEventArgs e)
+        {
+            string newItem = e.Item.Header.ToString();
+
+            if (newItem == "posts")
+            {
+
+                if (postsLoaded)
+                    NoPostsBox.Visibility = Visibility.Collapsed;
+                else
+                {
+                    NoPostsBox.Visibility = Visibility.Visible;
+                    NoPostTextBlock.Text = "loading posts";
+                    NoPostProgress.Visibility = Visibility.Visible;
+                    LoadUserPosts();
+                }
+
+            }
+            else if (newItem == "comments")
+            {
+
+                if (commentsLoaded)
+                    NoCommentsBox.Visibility = Visibility.Collapsed;
+                else
+                {
+                    NoCommentsBox.Visibility = Visibility.Visible;
+                    NoCommentTextBlock.Text = "loading comments";
+                    NoCommentProgress.Visibility = Visibility.Visible;
+                    LoadUserComments();
+                }
+
+            }
+            else if (newItem == "stats")
+            {
+                if (!statsLoaded)
+                {
+                    NoStatsBox.Visibility = Visibility.Visible;
+                    LoadStats();
+
+                }
+            }
+        }
+
         private void HandlePivotLoaded(object sender, PivotItemEventArgs e)
         {
             switch (e.Item.Header.ToString())
             {
                 case "persona":
                     ApplicationBar.Buttons.Add(signOutBtn);
-                    ApplicationBar.IsVisible = true;     
+                    ApplicationBar.IsVisible = true;
+                    UpdatePersona();
                     
                     break;
 
@@ -414,6 +424,7 @@ namespace WinPhoneBlahgua
                     break;
 
                 case "demographics":
+                    ApplicationBar.IsVisible = false;
                     UpdateDemographics();
                     break;
 
@@ -443,24 +454,41 @@ namespace WinPhoneBlahgua
             }
         }
 
-        private void UpdateDemographics()
+        private void UpdatePersona()
         {
-            App.BlahguaAPI.GetUserProfile((theProfile) =>
-                {
-                    // update everything by hand
-                    App.BlahguaAPI.CurrentUser.Profile.PropertyChanged += Profile_PropertyChanged;
-                    
-
-
-
-                }
-            );
+            App.BlahguaAPI.CurrentUser.PropertyChanged += User_PropertyChanged;        
         }
 
-        void Profile_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void UpdateDemographics()
+        {
+            UserProfile theProfile = App.BlahguaAPI.CurrentUser.Profile;
+
+            if (theProfile != null)
+            {
+                GenderList.SelectedItem = theProfile.Gender;
+                IncomeList.SelectedItem = theProfile.Income;
+                CountryList.SelectedItem = theProfile.Country;
+                RaceList.SelectedItem = theProfile.Race;
+                CityField.Text = theProfile.City;
+                StateField.Text = theProfile.State;
+                ZipcodeField.Text = theProfile.Zipcode;
+                DOBField.Value = theProfile.DOB;
+
+                GenderPerm.IsChecked = theProfile.GenderPerm;
+                IncomePerm.IsChecked = theProfile.IncomePerm;
+                CountryPerm.IsChecked = theProfile.CountryPerm;
+                RacePerm.IsChecked = theProfile.RacePerm;
+                CityPerm.IsChecked = theProfile.CityPerm;
+                StatePerm.IsChecked = theProfile.StatePerm;
+                ZipcodePerm.IsChecked = theProfile.ZipcodePerm;
+                DOBPerm.IsChecked = theProfile.DOBPerm;
+            }
+        }
+
+        void UpdateProfile()
         {
             // the profile has changed, save and reload the description...
-            App.BlahguaAPI.UpdateUserProfile((theProfile) =>
+            App.BlahguaAPI.UpdateUserProfile((theString) =>
                 {
                     App.BlahguaAPI.GetUserDescription((theDesc) =>
                         {
@@ -469,6 +497,23 @@ namespace WinPhoneBlahgua
                     );
                 }
             );
+        }
+
+        void User_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            // here we are really just saving the user profile..
+            if (e.PropertyName == "UserName")
+            {
+                App.BlahguaAPI.UpdateUserName(App.BlahguaAPI.CurrentUser.UserName, (theString) =>
+                    {
+                        App.BlahguaAPI.GetUserDescription((theDesc) =>
+                            {
+                                // to do - see if we need to rebind or...
+                            }
+                        );
+                    }
+                );
+            }
         }
 
         private void UpdateBadgeArea()
@@ -485,6 +530,262 @@ namespace WinPhoneBlahgua
             }
         }
 
+        private void Country_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if ((App.BlahguaAPI.CurrentUser.Profile != null) && (e.AddedItems.Count == 1))
+            {
+                string newVal = e.AddedItems[0].ToString();
+                if (newVal != App.BlahguaAPI.CurrentUser.Profile.Country)
+                {
+                    App.BlahguaAPI.CurrentUser.Profile.Country = newVal;
+                    UpdateProfile();
+                }
+            }
+        }
+
+        private void CountryPerm_Checked(object sender, RoutedEventArgs e)
+        {
+            if (App.BlahguaAPI.CurrentUser.Profile != null)
+            {
+                bool newVal = (bool)CountryPerm.IsChecked;
+
+                if (newVal != App.BlahguaAPI.CurrentUser.Profile.CountryPerm)
+                {
+                    App.BlahguaAPI.CurrentUser.Profile.CountryPerm = newVal;
+                    UpdateProfile();
+                }
+            }
+        }
+
+        private void Race_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            if ((App.BlahguaAPI.CurrentUser.Profile != null) && (e.AddedItems.Count == 1))
+            {
+                string newVal = e.AddedItems[0].ToString();
+                if (newVal != App.BlahguaAPI.CurrentUser.Profile.Race)
+                {
+                    App.BlahguaAPI.CurrentUser.Profile.Race = newVal;
+                    UpdateProfile();
+                }
+            }
+
+        }
+
+        private void RacePerm_Checked(object sender, RoutedEventArgs e)
+        {
+            if (App.BlahguaAPI.CurrentUser.Profile != null)
+            {
+                bool newVal = (bool)RacePerm.IsChecked;
+
+                if (newVal != App.BlahguaAPI.CurrentUser.Profile.RacePerm)
+                {
+                    App.BlahguaAPI.CurrentUser.Profile.RacePerm = newVal;
+                    UpdateProfile();
+                }
+            }
+        }
+
+        private void Gender_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            if ((App.BlahguaAPI.CurrentUser.Profile != null) && (e.AddedItems.Count == 1))
+            {
+                string newVal = e.AddedItems[0].ToString();
+                if (newVal != App.BlahguaAPI.CurrentUser.Profile.Gender)
+                {
+                    App.BlahguaAPI.CurrentUser.Profile.Gender = newVal;
+                    UpdateProfile();
+                }
+            }
+        }
+
+        private void GenderPerm_Checked(object sender, RoutedEventArgs e)
+        {
+            if (App.BlahguaAPI.CurrentUser.Profile != null)
+            {
+                bool newVal = (bool)GenderPerm.IsChecked;
+
+                if (newVal != App.BlahguaAPI.CurrentUser.Profile.GenderPerm)
+                {
+                    App.BlahguaAPI.CurrentUser.Profile.GenderPerm = newVal;
+                    UpdateProfile();
+                }
+            }
+        }
+
+        private void Income_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if ((App.BlahguaAPI.CurrentUser.Profile != null) && (e.AddedItems.Count == 1))
+            {
+                string newVal = e.AddedItems[0].ToString();
+                if (newVal != App.BlahguaAPI.CurrentUser.Profile.Income)
+                {
+                    App.BlahguaAPI.CurrentUser.Profile.Income = newVal;
+                    UpdateProfile();
+                }
+            }    
+        }
+
+        private void IncomePerm_Checked(object sender, RoutedEventArgs e)
+        {
+            if (App.BlahguaAPI.CurrentUser.Profile != null)
+            {
+                bool newVal = (bool)IncomePerm.IsChecked;
+
+                if (newVal != App.BlahguaAPI.CurrentUser.Profile.IncomePerm)
+                {
+                    App.BlahguaAPI.CurrentUser.Profile.IncomePerm = newVal;
+                    UpdateProfile();
+                }
+            } 
+        }
+
+        private void DOBPerm_Checked(object sender, RoutedEventArgs e)
+        {
+            if (App.BlahguaAPI.CurrentUser.Profile != null)
+            {
+                bool newVal = (bool)DOBPerm.IsChecked;
+
+                if (newVal != App.BlahguaAPI.CurrentUser.Profile.DOBPerm)
+                {
+                    App.BlahguaAPI.CurrentUser.Profile.DOBPerm = newVal;
+                    UpdateProfile();
+                }
+            }
+        }
+
+        private void CityPerm_Checked(object sender, RoutedEventArgs e)
+        {
+            if (App.BlahguaAPI.CurrentUser.Profile != null)
+            {
+                bool newVal = (bool)CityPerm.IsChecked;
+
+                if (newVal != App.BlahguaAPI.CurrentUser.Profile.CityPerm)
+                {
+                    App.BlahguaAPI.CurrentUser.Profile.CityPerm = newVal;
+                    UpdateProfile();
+                }
+            }
+        }
+
+        private void StatePerm_Checked(object sender, RoutedEventArgs e)
+        {
+            if (App.BlahguaAPI.CurrentUser.Profile != null)
+            {
+                bool newVal = (bool)StatePerm.IsChecked;
+
+                if (newVal != App.BlahguaAPI.CurrentUser.Profile.StatePerm)
+                {
+                    App.BlahguaAPI.CurrentUser.Profile.StatePerm = newVal;
+                    UpdateProfile();
+                }
+            }
+        }
+
+        private void ZipcodePerm_Checked(object sender, RoutedEventArgs e)
+        {
+            if (App.BlahguaAPI.CurrentUser.Profile != null)
+            {
+                bool newVal = (bool)ZipcodePerm.IsChecked;
+
+                if (newVal != App.BlahguaAPI.CurrentUser.Profile.ZipcodePerm)
+                {
+                    App.BlahguaAPI.CurrentUser.Profile.ZipcodePerm = newVal;
+                    UpdateProfile();
+                }
+            }
+        }
+
+        private void DOBValChanged(object sender, DateTimeValueChangedEventArgs e)
+        {
+            if ((App.BlahguaAPI.CurrentUser.Profile != null) && (e.NewDateTime != null))
+            {
+                DateTime newVal = (DateTime)e.NewDateTime;
+                if (newVal != App.BlahguaAPI.CurrentUser.Profile.DOB)
+                {
+                    App.BlahguaAPI.CurrentUser.Profile.DOB = newVal;
+                    UpdateProfile();
+                }
+            }
+        }
+
+        private void CityTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (App.BlahguaAPI.CurrentUser.Profile != null)
+            {
+                string newVal = CityField.Text;
+                if (newVal != App.BlahguaAPI.CurrentUser.Profile.City)
+                {
+                    App.BlahguaAPI.CurrentUser.Profile.City = newVal;
+                    UpdateProfile();
+                }
+            }
+        }
+
+        private void StateTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (App.BlahguaAPI.CurrentUser.Profile != null)
+            {
+                string newVal = StateField.Text;
+                if (newVal != App.BlahguaAPI.CurrentUser.Profile.State)
+                {
+                    App.BlahguaAPI.CurrentUser.Profile.State = newVal;
+                    UpdateProfile();
+                }
+            }
+        }
+        private void ZipcodeTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (App.BlahguaAPI.CurrentUser.Profile != null)
+            {
+                string newVal = ZipcodeField.Text;
+                if (newVal != App.BlahguaAPI.CurrentUser.Profile.Zipcode)
+                {
+                    App.BlahguaAPI.CurrentUser.Profile.Zipcode = newVal;
+                    UpdateProfile();
+                }
+            }
+        }
+
+        private void ClearImage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            App.BlahguaAPI.DeleteUserImage((theString) =>
+                {
+
+                }
+             );
+        }
+
+        private void ChangeImage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            PhotoChooserTask photoChooserTask;
+            photoChooserTask = new PhotoChooserTask();
+            photoChooserTask.ShowCamera = true;
+            photoChooserTask.Completed += new EventHandler<PhotoResult>(photoChooserTask_Completed);
+            photoChooserTask.Show();
+        }
+
+        void photoChooserTask_Completed(object sender, PhotoResult e)
+        {
+            if (e.TaskResult == TaskResult.OK)
+            {
+                UploadImageProgress.Visibility = Visibility.Visible;
+                App.BlahguaAPI.UploadUserImage(e.ChosenPhoto, e.OriginalFileName.Substring(e.OriginalFileName.LastIndexOf("\\") + 1), (photoString) =>
+                    {
+                        UploadImageProgress.Visibility = Visibility.Collapsed;
+                        if ((photoString != null) && (photoString.Length > 0))
+                        {
+
+                        }
+                        else
+                        {
+
+                        }
+                    }
+                );
+            }
+        }
 
        
     }
