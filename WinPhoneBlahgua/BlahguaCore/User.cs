@@ -102,10 +102,11 @@ namespace WinPhoneBlahgua
         {
             get
             {
-                if (App.BlahguaAPI.CurrentUserDescription != null)
-                    return App.BlahguaAPI.CurrentUserDescription.K;
-                else
-                    return "Someone";
+                string theName = "Someone";
+                if ((App.BlahguaAPI.CurrentUserDescription != null) && (App.BlahguaAPI.CurrentUserDescription.K != null))
+                    theName = App.BlahguaAPI.CurrentUserDescription.K;
+
+                return theName;
             }
 
             set

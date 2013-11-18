@@ -71,7 +71,8 @@ namespace WinPhoneBlahgua
             {
                 _userDescription = value;
                 OnPropertyChanged("CurrentUserDescription");
-                CurrentUser.DescriptionUpdated();
+                if (CurrentUser != null)
+                    CurrentUser.DescriptionUpdated();
             }
         }
         
@@ -132,6 +133,13 @@ namespace WinPhoneBlahgua
             {
                 settings.Add(setting, val);
             }
+        }
+
+        public void SafeClearSetting(string setting)
+        {
+            IsolatedStorageSettings settings = IsolatedStorageSettings.ApplicationSettings;
+            if (settings.Contains(setting))
+                settings.Remove(setting);
         }
 
         public string UnprocessText(string originalString)
@@ -327,6 +335,22 @@ namespace WinPhoneBlahgua
                                inited = true;
                                callback(true);
                            });
+        }
+
+        public void SetPollVote(PollItem theVote, PollVote_callback callback)
+        {
+            // first, ensure we really have a poll and we are voting on it...
+            if ((CurrentBlah != null) && (CurrentBlah.I != null))
+            {
+                int index = CurrentBlah.I.IndexOf(theVote);
+                BlahguaRest.SetUserPollVote(CurrentBlah._id, index, (thePollVote) =>
+                    {
+                        // need to update everything
+                        CurrentBlah.UpdateUserPollVote(thePollVote);
+                        callback(thePollVote);
+                    }
+                );
+            }
         }
 
         public void UploadPhoto(System.IO.Stream photo, string fileName, string_callback callback)
@@ -921,6 +945,14 @@ namespace WinPhoneBlahgua
             );
         }
 
+        public void ClearAutoLogin()
+        {
+            AutoLogin = false;
+            SafeClearSetting("username");
+            SafeClearSetting("password");
+            SaveSettings();
+        }
+
         public void Register(string userName, string password, bool saveIt, string_callback callBack)
         {
             BlahguaRest.Register(userName, password, (resultStr) =>
@@ -951,9 +983,43 @@ namespace WinPhoneBlahgua
             );
         }
 
-        void PrepareForNewUser(string_callback callBack)
+        void AddChannelsToUser(ChannelList theList, ChannelList_callback theCallback)
+        {
+            Channel curChanel = theList[0];
+            BlahguaRest.AddUserToChannel(curChanel._id, (didItStr) =>
+                {
+                    theList.RemoveAt(0);
+                    if (theList.Count > 0)
+                        AddChannelsToUser(theList, theCallback);
+                    else
+                    {
+                        BlahguaRest.GetUserChannels(theCallback);
+                    }
+                }
+            );
+        }
+
+        void GetOrAddUserChannels(ChannelList_callback callback)
         {
             BlahguaRest.GetUserChannels((chanList) =>
+                {
+                    if ((chanList == null) || (chanList.Count == 0))
+                    {
+                        BlahguaRest.GetPublicChannels((userChanList) =>
+                            {
+                                AddChannelsToUser(userChanList, callback);
+                            }
+                        );
+                    }
+                    else
+                        callback(chanList);
+                }
+            );
+        }
+
+        void PrepareForNewUser(string_callback callBack)
+        {
+            GetOrAddUserChannels((chanList) =>
                 {
                     CurrentChannelList = chanList;
                     CurrentChannel = curChannelList[0];

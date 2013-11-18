@@ -919,6 +919,11 @@ namespace WinPhoneBlahgua
     public class UserPollVote
     {
         public int W {get; set;}
+
+        public UserPollVote()
+        {
+            W = -1;
+        }
     }
 
     public class UserPredictionVote

@@ -73,13 +73,14 @@
                             <TextBlock Text="confirm password" Foreground="{StaticResource PhoneSubtleBrush}"></TextBlock>
                             <PasswordBox Password="{Binding UserPassword2, Mode=TwoWay}"></PasswordBox>
                         </StackPanel>
-                        <CheckBox IsChecked="{Binding NewAccount, Mode=TwoWay}" >Create new Account</CheckBox>
+                        <CheckBox x:Name="NewAccountBox" Unchecked="CheckBox_Checked" Checked="CheckBox_Checked" >Create new Account</CheckBox>
                         <toolkit:ToggleSwitch IsChecked="{Binding Path=AutoLogin, Mode=TwoWay}" Header="remember me" />
                         
                     </StackPanel>
                     <StackPanel Grid.Row="1" VerticalAlignment="Bottom">
                         <ProgressBar x:Name="SignInProgress" IsIndeterminate="True" Foreground="{StaticResource PhoneAccentBrush}" Visibility="Collapsed"></ProgressBar>
-                        <Button Click="DoSignIn">Sign In</Button>
+                        <Button x:Name="SignInBtn" Tap="DoSignIn">Sign In</Button>
+                        <Button x:Name="CreateNewAccountBtn" Tap="DoCreateAccount" Visibility="Collapsed">Create Account</Button>
                     </StackPanel>
 
                 </Grid>

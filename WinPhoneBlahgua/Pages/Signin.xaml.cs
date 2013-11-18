@@ -14,6 +14,8 @@ namespace WinPhoneBlahgua
 {
     public partial class Signin : PhoneApplicationPage
     {
+        bool createNewAccount = false;
+
         public Signin()
         {
             InitializeComponent();
@@ -22,18 +24,44 @@ namespace WinPhoneBlahgua
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            if (App.BlahguaAPI.NewAccount)
+            createNewAccount = (bool)NewAccountBox.IsChecked;
+
+            if (createNewAccount)
+            {
                 AdditionalInfoPanel.Visibility = Visibility.Visible;
+                CreateNewAccountBtn.Visibility = Visibility.Visible;
+                SignInBtn.Visibility = Visibility.Collapsed;
+            }
             else
+            {
                 AdditionalInfoPanel.Visibility = Visibility.Collapsed;
+                CreateNewAccountBtn.Visibility = Visibility.Collapsed;
+                SignInBtn.Visibility = Visibility.Visible;
+            }
         }
 
 
         private void DoSignIn(object sender, EventArgs e)
         {
             SignInProgress.Visibility = Visibility.Visible;
-            if (App.BlahguaAPI.NewAccount)
+            App.BlahguaAPI.SignIn(App.BlahguaAPI.UserName, App.BlahguaAPI.UserPassword, App.BlahguaAPI.AutoLogin, (errMsg) =>
+                {
+                    SignInProgress.Visibility = Visibility.Collapsed;
+                    if (errMsg == null)
+                        HandleUserSignIn();
+                    else
+                        MessageBox.Show("could not register: " + errMsg);
+                }
+            );
+        }
+
+        private void DoCreateAccount(object sender, EventArgs e)
+        {
+            if (App.BlahguaAPI.UserPassword != App.BlahguaAPI.UserPassword2)
+                MessageBox.Show("Passwords must match");
+            else
             {
+                SignInProgress.Visibility = Visibility.Visible;
                 App.BlahguaAPI.Register(App.BlahguaAPI.UserName, App.BlahguaAPI.UserPassword, App.BlahguaAPI.AutoLogin, (errMsg) =>
                     {
                         SignInProgress.Visibility = Visibility.Collapsed;
@@ -44,19 +72,9 @@ namespace WinPhoneBlahgua
                     }
                 );
             }
-            else
-            {
-                App.BlahguaAPI.SignIn(App.BlahguaAPI.UserName, App.BlahguaAPI.UserPassword, App.BlahguaAPI.AutoLogin, (errMsg) =>
-                    {
-                        SignInProgress.Visibility = Visibility.Collapsed;
-                        if (errMsg == null)
-                            HandleUserSignIn();
-                        else
-                            MessageBox.Show("could not register: " + errMsg);
-                    }
-                );
-            }
         }
+
+
 
         private void HandleUserSignIn()
         {

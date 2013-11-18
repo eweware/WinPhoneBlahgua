@@ -83,7 +83,14 @@ namespace WinPhoneBlahgua
 
         public UserProfile()
         {
-
+            A = null;
+            B = "-1";
+            D = "-1";
+            E = "-1";
+            G = null;
+            H = null;
+            I = null;
+            J = "-1";
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -209,8 +216,11 @@ namespace WinPhoneBlahgua
         public String Gender
         {
             get 
-            { 
-                return Schema.B.DT[B];
+            {
+                if (B != null)
+                    return Schema.B.DT[B];
+                else
+                    return Schema.B.DT["-1"];
             }
             set
             {
@@ -226,7 +236,10 @@ namespace WinPhoneBlahgua
         {
             get
             {
-                return Schema.E.DT[E];
+                if (E != null)
+                    return Schema.E.DT[E];
+                else
+                    return Schema.E.DT["-1"];
             }
             set
             {
@@ -242,7 +255,10 @@ namespace WinPhoneBlahgua
         {
             get
             {
-                return Schema.J.DT[J];
+                if (J != null)
+                    return Schema.J.DT[J];
+                else
+                    return Schema.J.DT["-1"];
             }
             set
             {
@@ -259,7 +275,10 @@ namespace WinPhoneBlahgua
         {
             get
             {
-                return Schema.D.DT[D];
+                if (D != null)
+                    return Schema.D.DT[D];
+                else
+                    return Schema.D.DT["-1"];
             }
             set
             {
@@ -275,7 +294,13 @@ namespace WinPhoneBlahgua
 
         public String City
         {
-            get { return G; }
+            get 
+            {
+                if (G != null)
+                    return G;
+                else
+                    return "";
+            }
             set 
             {
                 if (G != value)
@@ -288,7 +313,13 @@ namespace WinPhoneBlahgua
 
         public String State
         {
-            get { return H; }
+            get
+            {
+                if (H != null)
+                    return H;
+                else
+                    return "";
+            }
             set 
             {
                 if (H != value)
@@ -301,7 +332,13 @@ namespace WinPhoneBlahgua
 
         public String Zipcode
         {
-            get { return I; }
+            get
+            {
+                if (I != null)
+                    return I;
+                else
+                    return "";
+            }
             set 
             {
                 if (I != value)
@@ -312,12 +349,18 @@ namespace WinPhoneBlahgua
             }
         }
 
-        public DateTime DOB
+        public DateTime? DOB
         {
-            get { return DateTime.Parse(C); }
+            get 
+            {
+                if (C != null)
+                    return DateTime.Parse(C);
+                else
+                    return null;
+            }
             set 
             {
-                string newDate = value.ToString("yyyy-MM-dd");
+                string newDate = ((DateTime)value).ToString("yyyy-MM-dd");
                 if (C != newDate)
                 {
                     C = newDate;

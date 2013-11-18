@@ -85,7 +85,7 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Column="0" Text="&#xf096;" FontFamily="/Resources/fontawesome-webfont.ttf#FontAwesome" VerticalAlignment="Center" FontSize="24"  />
+                <TextBlock Tap="PollVote_Tap"  Grid.Column="0" Text="&#xf096;" FontFamily="/Resources/fontawesome-webfont.ttf#FontAwesome" VerticalAlignment="Center" FontSize="24"  />
                 <StackPanel Grid.Column="1" Orientation="Horizontal">
                     <Rectangle Fill="{StaticResource PhoneAccentBrush}" Width="250" Height="32" VerticalAlignment="Center"></Rectangle>
                     <TextBlock Margin="8 0 0 0" Text="&#xf059;" VerticalAlignment="Center" FontSize="13"  />
@@ -104,7 +104,7 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Column="0" Text="{Binding VoteString}" FontFamily="/Resources/fontawesome-webfont.ttf#FontAwesome" VerticalAlignment="Center" FontSize="24"  />
+                <TextBlock Foreground="Gray" Grid.Column="0" Text="{Binding VoteString}" FontFamily="/Resources/fontawesome-webfont.ttf#FontAwesome" VerticalAlignment="Center" FontSize="24"  />
                 <StackPanel Grid.Column="1" Orientation="Horizontal">
                     <Rectangle Fill="{StaticResource PhoneAccentBrush}" Width="{Binding ComputedWidth}" Height="32" VerticalAlignment="Center"></Rectangle>
                     <TextBlock Margin="8 0 0 0" Text="{Binding VotePercent}" VerticalAlignment="Center" FontSize="13"  />
@@ -178,9 +178,7 @@
                             </Image>
                         </Grid>
                     </Grid>
-                    <Grid Grid.Row="1" Margin="0 12 0 0">
-                        <ListBox x:Name="SubComments"></ListBox>   
-                    </Grid>
+                    
                 </Grid>
             </Border>
         </DataTemplate>

@@ -50,7 +50,7 @@ namespace WinPhoneBlahgua
         public BlahguaRESTservice()
         {
 #if DEBUG
-            usingQA = false;// true;
+            usingQA = true;
 #endif
             if (usingQA)
             {
@@ -248,6 +248,18 @@ namespace WinPhoneBlahgua
                 callback(blahList);
             });
         }
+
+        public void AddUserToChannel(string channelId, string_callback callback)
+        {
+            RestRequest request = new RestRequest("userGroups", Method.POST);
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(new { G = channelId });
+
+            apiClient.ExecuteAsync(request, (response) =>
+            {
+                callback(response.Content);
+            });
+        }
                
         public void GetPublicChannels(ChannelList_callback callback)
         {
@@ -382,7 +394,10 @@ namespace WinPhoneBlahgua
 
             apiClient.ExecuteAsync(request, (response) =>
             {
-                callback(response.Content);
+                if (response.Content == "")
+                    callback("");
+                else
+                    callback(response.StatusDescription);
             });
 
         }
@@ -403,9 +418,12 @@ namespace WinPhoneBlahgua
             RestRequest request = new RestRequest("users", Method.POST);
             request.RequestFormat = DataFormat.Json;
             request.AddBody(new { N = userName, pwd = passWord });
-            apiClient.ExecuteAsync(request, (response) =>
+            apiClient.ExecuteAsync<User>(request, (response) =>
             {
-                callback(response.Content);
+                if (response.Data == null)
+                    callback(response.StatusDescription);
+                else
+                    callback("");
             });
 
         }
@@ -616,10 +634,15 @@ namespace WinPhoneBlahgua
 
         public void SetUserPollVote(string blahId, int theOption, PollVote_callback callback)
         {
-            RestRequest request = new RestRequest("blahs/" + blahId + "/pollVote" + theOption, Method.PUT);
-            apiClient.ExecuteAsync<UserPollVote>(request, (response) =>
+            RestRequest request = new RestRequest("blahs/" + blahId + "/pollVote/" + theOption, Method.PUT);
+            apiClient.ExecuteAsync(request, (response) =>
             {
-                callback(response.Data);
+                if (response.StatusCode == HttpStatusCode.NoContent)
+                {
+                    GetUserPollVote(blahId, callback);
+                }
+                else
+                    callback(null);
             });
         }
 

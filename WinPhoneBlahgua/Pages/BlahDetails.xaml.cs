@@ -220,6 +220,10 @@ namespace WinPhoneBlahgua
         {
             App.BlahguaAPI.GetUserPollVote((theVote) =>
                 {
+                    if ((theVote != null) && (theVote.W > -1))
+                    {
+                        PollItemList.ItemTemplate = (DataTemplate)Resources["PollVotedTemplate"];
+                    }
                     ((Storyboard)Resources["ShowPollAnimation"]).Begin();
                 }
             );
@@ -734,6 +738,17 @@ namespace WinPhoneBlahgua
         private void AllCommentList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             UpdateCommentButtons();
+        }
+
+        private void PollVote_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            PollItem newVote = (PollItem)((TextBlock)sender).DataContext;
+
+            App.BlahguaAPI.SetPollVote(newVote, (resultStr) =>
+                {
+                    PollItemList.ItemTemplate = (DataTemplate)Resources["PollVotedTemplate"];
+                }
+            );
         }
 
         

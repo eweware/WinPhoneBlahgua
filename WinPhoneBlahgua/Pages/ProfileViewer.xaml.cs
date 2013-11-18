@@ -25,6 +25,7 @@ namespace WinPhoneBlahgua
         private bool commentsLoaded = false;
         private bool postsLoaded = false;
         private bool statsLoaded = false;
+        private bool isDemoPopulated = false;
 
         public ProfileViewer()
         {
@@ -81,6 +82,7 @@ namespace WinPhoneBlahgua
         {
             App.BlahguaAPI.SignOut((theStr) =>
                 {
+
                     NavigationService.GoBack();
                 }
             );
@@ -465,6 +467,7 @@ namespace WinPhoneBlahgua
 
             if (theProfile != null)
             {
+                isDemoPopulated = false;
                 GenderList.SelectedItem = theProfile.Gender;
                 IncomeList.SelectedItem = theProfile.Income;
                 CountryList.SelectedItem = theProfile.Country;
@@ -482,6 +485,7 @@ namespace WinPhoneBlahgua
                 StatePerm.IsChecked = theProfile.StatePerm;
                 ZipcodePerm.IsChecked = theProfile.ZipcodePerm;
                 DOBPerm.IsChecked = theProfile.DOBPerm;
+                isDemoPopulated = true;
             }
         }
 
@@ -532,7 +536,7 @@ namespace WinPhoneBlahgua
 
         private void Country_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if ((App.BlahguaAPI.CurrentUser.Profile != null) && (e.AddedItems.Count == 1))
+            if (isDemoPopulated && (App.BlahguaAPI.CurrentUser.Profile != null) && (e.AddedItems.Count == 1))
             {
                 string newVal = e.AddedItems[0].ToString();
                 if (newVal != App.BlahguaAPI.CurrentUser.Profile.Country)
@@ -545,7 +549,7 @@ namespace WinPhoneBlahgua
 
         private void CountryPerm_Checked(object sender, RoutedEventArgs e)
         {
-            if (App.BlahguaAPI.CurrentUser.Profile != null)
+            if (isDemoPopulated && (App.BlahguaAPI.CurrentUser.Profile != null))
             {
                 bool newVal = (bool)CountryPerm.IsChecked;
 
@@ -560,7 +564,7 @@ namespace WinPhoneBlahgua
         private void Race_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
-            if ((App.BlahguaAPI.CurrentUser.Profile != null) && (e.AddedItems.Count == 1))
+            if (isDemoPopulated && (App.BlahguaAPI.CurrentUser.Profile != null) && (e.AddedItems.Count == 1))
             {
                 string newVal = e.AddedItems[0].ToString();
                 if (newVal != App.BlahguaAPI.CurrentUser.Profile.Race)
@@ -574,7 +578,7 @@ namespace WinPhoneBlahgua
 
         private void RacePerm_Checked(object sender, RoutedEventArgs e)
         {
-            if (App.BlahguaAPI.CurrentUser.Profile != null)
+            if (isDemoPopulated && (App.BlahguaAPI.CurrentUser.Profile != null))
             {
                 bool newVal = (bool)RacePerm.IsChecked;
 
@@ -589,7 +593,7 @@ namespace WinPhoneBlahgua
         private void Gender_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
-            if ((App.BlahguaAPI.CurrentUser.Profile != null) && (e.AddedItems.Count == 1))
+            if (isDemoPopulated && (App.BlahguaAPI.CurrentUser.Profile != null) && (e.AddedItems.Count == 1))
             {
                 string newVal = e.AddedItems[0].ToString();
                 if (newVal != App.BlahguaAPI.CurrentUser.Profile.Gender)
@@ -602,7 +606,7 @@ namespace WinPhoneBlahgua
 
         private void GenderPerm_Checked(object sender, RoutedEventArgs e)
         {
-            if (App.BlahguaAPI.CurrentUser.Profile != null)
+            if (isDemoPopulated && (App.BlahguaAPI.CurrentUser.Profile != null))
             {
                 bool newVal = (bool)GenderPerm.IsChecked;
 
@@ -616,7 +620,7 @@ namespace WinPhoneBlahgua
 
         private void Income_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if ((App.BlahguaAPI.CurrentUser.Profile != null) && (e.AddedItems.Count == 1))
+            if (isDemoPopulated && (App.BlahguaAPI.CurrentUser.Profile != null) && (e.AddedItems.Count == 1))
             {
                 string newVal = e.AddedItems[0].ToString();
                 if (newVal != App.BlahguaAPI.CurrentUser.Profile.Income)
@@ -629,7 +633,7 @@ namespace WinPhoneBlahgua
 
         private void IncomePerm_Checked(object sender, RoutedEventArgs e)
         {
-            if (App.BlahguaAPI.CurrentUser.Profile != null)
+            if (isDemoPopulated && (App.BlahguaAPI.CurrentUser.Profile != null))
             {
                 bool newVal = (bool)IncomePerm.IsChecked;
 
@@ -643,7 +647,7 @@ namespace WinPhoneBlahgua
 
         private void DOBPerm_Checked(object sender, RoutedEventArgs e)
         {
-            if (App.BlahguaAPI.CurrentUser.Profile != null)
+            if (isDemoPopulated && (App.BlahguaAPI.CurrentUser.Profile != null))
             {
                 bool newVal = (bool)DOBPerm.IsChecked;
 
@@ -657,7 +661,7 @@ namespace WinPhoneBlahgua
 
         private void CityPerm_Checked(object sender, RoutedEventArgs e)
         {
-            if (App.BlahguaAPI.CurrentUser.Profile != null)
+            if (isDemoPopulated && (App.BlahguaAPI.CurrentUser.Profile != null))
             {
                 bool newVal = (bool)CityPerm.IsChecked;
 
@@ -671,7 +675,7 @@ namespace WinPhoneBlahgua
 
         private void StatePerm_Checked(object sender, RoutedEventArgs e)
         {
-            if (App.BlahguaAPI.CurrentUser.Profile != null)
+            if (isDemoPopulated && (App.BlahguaAPI.CurrentUser.Profile != null))
             {
                 bool newVal = (bool)StatePerm.IsChecked;
 
@@ -685,7 +689,7 @@ namespace WinPhoneBlahgua
 
         private void ZipcodePerm_Checked(object sender, RoutedEventArgs e)
         {
-            if (App.BlahguaAPI.CurrentUser.Profile != null)
+            if (isDemoPopulated && (App.BlahguaAPI.CurrentUser.Profile != null))
             {
                 bool newVal = (bool)ZipcodePerm.IsChecked;
 
@@ -699,7 +703,7 @@ namespace WinPhoneBlahgua
 
         private void DOBValChanged(object sender, DateTimeValueChangedEventArgs e)
         {
-            if ((App.BlahguaAPI.CurrentUser.Profile != null) && (e.NewDateTime != null))
+            if (isDemoPopulated && (App.BlahguaAPI.CurrentUser.Profile != null) && (e.NewDateTime != null))
             {
                 DateTime newVal = (DateTime)e.NewDateTime;
                 if (newVal != App.BlahguaAPI.CurrentUser.Profile.DOB)
@@ -712,7 +716,7 @@ namespace WinPhoneBlahgua
 
         private void CityTextChanged(object sender, TextChangedEventArgs e)
         {
-            if (App.BlahguaAPI.CurrentUser.Profile != null)
+            if (isDemoPopulated && (App.BlahguaAPI.CurrentUser.Profile != null))
             {
                 string newVal = CityField.Text;
                 if (newVal != App.BlahguaAPI.CurrentUser.Profile.City)
@@ -725,7 +729,7 @@ namespace WinPhoneBlahgua
 
         private void StateTextChanged(object sender, TextChangedEventArgs e)
         {
-            if (App.BlahguaAPI.CurrentUser.Profile != null)
+            if (isDemoPopulated && (App.BlahguaAPI.CurrentUser.Profile != null))
             {
                 string newVal = StateField.Text;
                 if (newVal != App.BlahguaAPI.CurrentUser.Profile.State)
@@ -737,7 +741,7 @@ namespace WinPhoneBlahgua
         }
         private void ZipcodeTextChanged(object sender, TextChangedEventArgs e)
         {
-            if (App.BlahguaAPI.CurrentUser.Profile != null)
+            if (isDemoPopulated && (App.BlahguaAPI.CurrentUser.Profile != null))
             {
                 string newVal = ZipcodeField.Text;
                 if (newVal != App.BlahguaAPI.CurrentUser.Profile.Zipcode)
