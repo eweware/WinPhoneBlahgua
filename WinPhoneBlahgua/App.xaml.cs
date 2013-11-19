@@ -13,6 +13,7 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 
+
 namespace WinPhoneBlahgua
 {
     public partial class App : Application
@@ -50,6 +51,8 @@ namespace WinPhoneBlahgua
 
             
             BlahguaAPI = new BlahguaAPIObject();
+
+            
            
 
         }
@@ -65,18 +68,25 @@ namespace WinPhoneBlahgua
         // This code will not execute when the application is first launched
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
+            BlahguaAPI.EnsureSignin();
+            BlahguaAPI.StartSigninTimer();
         }
 
         // Code to execute when the application is deactivated (sent to background)
         // This code will not execute when the application is closing
         private void Application_Deactivated(object sender, DeactivatedEventArgs e)
         {
+            BlahguaAPI.StopSigninTimer();
         }
 
         // Code to execute when the application is closing (eg, user hit Back)
         // This code will not execute when the application is deactivated
         private void Application_Closing(object sender, ClosingEventArgs e)
         {
+            BlahguaAPI.SignOut((theObj) =>
+                {
+                }
+            );
         }
 
         // Code to execute if a navigation fails

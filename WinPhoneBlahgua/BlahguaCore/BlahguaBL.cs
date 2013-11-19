@@ -6,7 +6,7 @@ using System.ComponentModel;
 using Microsoft.Phone.Tasks;
 using System.IO.IsolatedStorage;
 using RestSharp;
-
+using System.Windows.Threading;
 
 namespace WinPhoneBlahgua
 {
@@ -30,6 +30,8 @@ namespace WinPhoneBlahgua
         BlahCreateRecord createRec = null;
         CommentCreateRecord createCommentRec = null;
         private UserDescription _userDescription = null;
+        DispatcherTimer signinTimer;
+
         string badgeEndpoint;
 
 
@@ -81,6 +83,44 @@ namespace WinPhoneBlahgua
         {
             BlahguaRest = new BlahguaRESTservice();
             NewBlahToInsert = null;
+            signinTimer = new DispatcherTimer();
+            signinTimer.Interval = new TimeSpan(0, 2, 0);
+            signinTimer.Tick += signinTimer_Tick;
+            signinTimer.Start();
+        }
+
+        public void StopSigninTimer()
+        {
+            signinTimer.Stop();
+        }
+
+        public void StartSigninTimer()
+        {
+            signinTimer.Start();
+        }
+
+        public void EnsureSignin()
+        {
+            if (CurrentUser != null)
+            {
+                BlahguaRest.CheckUserSignIn((theResult) =>
+                {
+                    if (theResult == false)
+                    {
+                        BlahguaRest.SignIn(UserName, UserPassword, (resultStr) =>
+                        {
+
+                        }
+                        );
+                    }
+                }
+                );
+            }
+        }
+
+        void signinTimer_Tick(object sender, EventArgs e)
+        {
+            EnsureSignin();   
         }
 
         SavedUserInfo GetSavedUserInfo()
@@ -945,6 +985,8 @@ namespace WinPhoneBlahgua
                 {
                     if (resultStr == "")
                     {
+                        UserName = userName;
+                        UserPassword = password;
                         if (saveIt)
                         {
                             AutoLogin = true;

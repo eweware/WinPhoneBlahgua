@@ -35,6 +35,7 @@ namespace WinPhoneBlahgua
     public delegate void ProfileSchema_callback(ProfileSchema theResult);
     public delegate void ProfileSchemaWrapper_callback(ProfileSchemaWrapper theResult);
     public delegate void Profile_callback(UserProfile theResult);
+    public delegate void bool_callback(bool theResult);
 
 
     public class BlahguaRESTservice
@@ -398,6 +399,20 @@ namespace WinPhoneBlahgua
                     callback("");
                 else
                     callback(response.StatusDescription);
+            });
+
+        }
+
+        public void CheckUserSignIn(bool_callback callback)
+        {
+            RestRequest request = new RestRequest("users/login/check", Method.GET);
+
+            apiClient.ExecuteAsync<SigninStatus>(request, (response) =>
+            {
+                if ((response.Data != null) && (response.Data.loggedIn == "Y"))
+                    callback(true);
+                else
+                    callback(false);
             });
 
         }
