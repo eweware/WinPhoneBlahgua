@@ -123,7 +123,7 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Column="0" Text="{Binding VoteString}" FontFamily="/Resources/fontawesome-webfont.ttf#FontAwesome" VerticalAlignment="Center" FontSize="24"  />
+                <TextBlock Tap="PredictVote_Tap" Grid.Column="0" Text="{Binding VoteString}" FontFamily="/Resources/fontawesome-webfont.ttf#FontAwesome" VerticalAlignment="Center" FontSize="24"  />
                 <StackPanel Grid.Column="1" Orientation="Horizontal">
                     <Rectangle Fill="{StaticResource PhoneAccentBrush}" Width="{Binding ComputedWidth}" Height="32" VerticalAlignment="Center"></Rectangle>
                     <TextBlock Margin="8 0 0 0" Text="{Binding VotePercent}" VerticalAlignment="Center" FontSize="13"  />
@@ -132,7 +132,27 @@
             </Grid>
         </DataTemplate>
 
-       
+        <DataTemplate x:Key="PredictVotedTemplate">
+            <Grid Margin="0 0 0 16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="24"/>
+                    <ColumnDefinition Width="432"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Foreground="Gray" Grid.Column="0" Text="{Binding VoteString}" FontFamily="/Resources/fontawesome-webfont.ttf#FontAwesome" VerticalAlignment="Center" FontSize="24"  />
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Rectangle Fill="{StaticResource PhoneAccentBrush}" Width="{Binding ComputedWidth}" Height="32" VerticalAlignment="Center"></Rectangle>
+                    <TextBlock Margin="8 0 0 0" Text="{Binding VotePercent}" VerticalAlignment="Center" FontSize="13"  />
+                </StackPanel>
+                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding G}" VerticalAlignment="Center" TextWrapping="Wrap" Margin="12 0 0 0" FontSize="16"/>
+            </Grid>
+        </DataTemplate>
+        
+
+
 
         <DataTemplate x:Name="CommentTemplate">
             <Border BorderBrush="{StaticResource PhoneBorderBrush}" BorderThickness="0,0,0,1" Margin="0,0,0,8">
@@ -242,7 +262,7 @@
                                 <TextBlock x:Name="PredictElapsedTimeBox" Text="(23 days from now"/>
                                 <ItemsControl x:Name="WillHappenItems" ItemTemplate="{StaticResource PredictTemplate}"
                                                />
-                                <ItemsControl x:Name="AllreadyHappenedItems" ItemTemplate="{StaticResource PredictTemplate}"
+                                <ItemsControl x:Name="AlreadyHappenedItems" ItemTemplate="{StaticResource PredictTemplate}"
                                                />
 
                             </StackPanel>

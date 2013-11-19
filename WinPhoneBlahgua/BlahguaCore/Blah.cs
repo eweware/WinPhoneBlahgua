@@ -259,6 +259,7 @@ namespace WinPhoneBlahgua
         private int _totalVotes = 0;
         private int _itemVotes = 0;
         private bool _isUserVote = false;
+        private string expVote = "";
 
 
         public PollItem(string theText)
@@ -266,18 +267,27 @@ namespace WinPhoneBlahgua
             G = theText;
         }
 
-        public PollItem(string theText, int numVotes, int maxVotes, int totalVotes, bool isUserVote)
+        public PollItem(string theText, int numVotes, int maxVotes, int totalVotes, bool isUserVote, string eVote = "")
         {
             G = theText;
             _maxVotes = maxVotes;
             _itemVotes = numVotes;
             _isUserVote = isUserVote;
+            _totalVotes = totalVotes;
+            expVote = eVote;
         }
 
         public int MaxVotes
         {
             get { return _maxVotes; }
             set { _maxVotes = value; }
+        }
+
+        
+
+        public string PredictVoteStr
+        {
+            get { return expVote; }
         }
 
         public int TotalVotes
@@ -1049,6 +1059,14 @@ namespace WinPhoneBlahgua
             L = null;
         }
 
+        public bool IsPredictionExpired
+        {
+            get
+            {
+                return E < DateTime.Now;
+            }
+        }
+
         public string ConversionString
         {
             get
@@ -1099,14 +1117,14 @@ namespace WinPhoneBlahgua
             int totalVotes = _4 + _5 + _6;
             int maxVote = Math.Max(Math.Max(_4, _5), _6);
             _predictionItems = new PollItemList();
-            _predictionItems.Add(new PollItem("I agree", _4, maxVote, totalVotes, false));
-            _predictionItems.Add(new PollItem("I disagree", _5, maxVote, totalVotes, false));
-            _predictionItems.Add(new PollItem("It is unclear", _6, maxVote, totalVotes, false));
+            _predictionItems.Add(new PollItem("I agree", _4, maxVote, totalVotes, false, "y"));
+            _predictionItems.Add(new PollItem("I disagree", _5, maxVote, totalVotes, false, "n"));
+            _predictionItems.Add(new PollItem("It is unclear", _6, maxVote, totalVotes, false, "u"));
 
             _expPredictionItems = new PollItemList();
-            _expPredictionItems.Add(new PollItem("The prediction was right", _1, maxExpVote, totalExpVotes, false));
-            _expPredictionItems.Add(new PollItem("The prediction was wrong", _2, maxExpVote, totalExpVotes, false));
-            _expPredictionItems.Add(new PollItem("It is unclear", _3, maxExpVote, totalExpVotes, false));
+            _expPredictionItems.Add(new PollItem("The prediction was right", _1, maxExpVote, totalExpVotes, false, "y"));
+            _expPredictionItems.Add(new PollItem("The prediction was wrong", _2, maxExpVote, totalExpVotes, false, "n"));
+            _expPredictionItems.Add(new PollItem("It is unclear", _3, maxExpVote, totalExpVotes, false, "u"));
 
 
             if (theVote == null)

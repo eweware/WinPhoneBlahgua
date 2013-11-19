@@ -27,13 +27,21 @@
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
             <TextBlock Text="ADD BADGES" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Text="email authority" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock Text="email badge" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <StackPanel x:Name="EmailArea">
-                <TextBlock TextWrapping="Wrap" Text="The email authority can provide badges based on an email address.  Your address is sent to the badge authority directly, and is never sent to blahgua or stored on blahgua servers." FontStyle="Italic" />
+                <TextBlock TextWrapping="Wrap" FontStyle="Italic" >
+                	<Run Text="Badges add credibility to content by letting users attach verified facts about themselves (e.g. I work at Microsoft, I am in Chicago, etc.). "/>
+                	<LineBreak/>
+                	<Run Text="Badges are issued by third-party sources and our technology ensures that the information used to get your badges is not shared with blahgua. "/>
+                	<LineBreak/>
+                	<Run Text="Currently only email-based badges are issued, but there are more to come!"/>
+                	<LineBreak/>
+                	<Run/>
+                </TextBlock>
                 <TextBlock Margin="0 16 0 0" Text="email address" />
                 <TextBox x:Name="EmailField" InputScope="EmailSmtpAddress" />
                 <Button x:Name="SubmitBtn"  Tap="DoSubmitEmail" HorizontalAlignment="Right">Submit</Button>

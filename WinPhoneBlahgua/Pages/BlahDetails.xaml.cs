@@ -240,7 +240,7 @@ namespace WinPhoneBlahgua
                         PredictDateBox.Text = "happening by " + curBlah.E.ToShortDateString();
                         PredictElapsedTimeBox.Text = "(" + Utilities.ElapsedDateString(curBlah.E) + ")";
                         WillHappenItems.Visibility = Visibility.Visible;
-                        AllreadyHappenedItems.Visibility = Visibility.Collapsed;
+                        AlreadyHappenedItems.Visibility = Visibility.Collapsed;
                         WillHappenItems.ItemsSource = curBlah.PredictionItems;
                     }
                     else
@@ -249,8 +249,8 @@ namespace WinPhoneBlahgua
                         PredictDateBox.Text = "should have happened on " + curBlah.E.ToShortDateString();
                         PredictElapsedTimeBox.Text = "(" + Utilities.ElapsedDateString(curBlah.E) + ")";
                         WillHappenItems.Visibility = Visibility.Visible;
-                        AllreadyHappenedItems.Visibility = Visibility.Collapsed;
-                        AllreadyHappenedItems.ItemsSource = curBlah.ExpPredictionItems;
+                        AlreadyHappenedItems.Visibility = Visibility.Collapsed;
+                        AlreadyHappenedItems.ItemsSource = curBlah.ExpPredictionItems;
                     }
 
                     ((Storyboard)Resources["ShowPredictionAnimation"]).Begin();
@@ -747,6 +747,27 @@ namespace WinPhoneBlahgua
             App.BlahguaAPI.SetPollVote(newVote, (resultStr) =>
                 {
                     PollItemList.ItemTemplate = (DataTemplate)Resources["PollVotedTemplate"];
+                }
+            );
+        }
+
+        private void PredictVote_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            PollItem newVote = (PollItem)((TextBlock)sender).DataContext;
+
+            App.BlahguaAPI.SetPredictionVote(newVote, (resultStr) =>
+                {
+                     if (App.BlahguaAPI.CurrentBlah.IsPredictionExpired)
+                     {
+                         AlreadyHappenedItems.ItemsSource = App.BlahguaAPI.CurrentBlah.ExpPredictionItems;
+                         AlreadyHappenedItems.ItemTemplate = (DataTemplate)Resources["PredictVotedTemplate"];
+                     }
+                     else
+                     {
+                        WillHappenItems.ItemsSource = App.BlahguaAPI.CurrentBlah.PredictionItems;
+                        WillHappenItems.ItemTemplate = (DataTemplate)Resources["PredictVotedTemplate"];
+                     }
+
                 }
             );
         }

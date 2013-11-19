@@ -337,21 +337,7 @@ namespace WinPhoneBlahgua
                            });
         }
 
-        public void SetPollVote(PollItem theVote, PollVote_callback callback)
-        {
-            // first, ensure we really have a poll and we are voting on it...
-            if ((CurrentBlah != null) && (CurrentBlah.I != null))
-            {
-                int index = CurrentBlah.I.IndexOf(theVote);
-                BlahguaRest.SetUserPollVote(CurrentBlah._id, index, (thePollVote) =>
-                    {
-                        // need to update everything
-                        CurrentBlah.UpdateUserPollVote(thePollVote);
-                        callback(thePollVote);
-                    }
-                );
-            }
-        }
+        
 
         public void UploadPhoto(System.IO.Stream photo, string fileName, string_callback callback)
         {
@@ -787,11 +773,6 @@ namespace WinPhoneBlahgua
                 callback(null);
         }
 
-        public void SetUserPollVote(int theOption, PollVote_callback callback)
-        {
-            BlahguaRest.SetUserPollVote(CurrentBlah._id, theOption, callback);
-        }
-
         public void LoadUserStatsInfo(UserInfo_callback callback)
         {
             DateTime endDate = DateTime.Today;
@@ -879,19 +860,65 @@ namespace WinPhoneBlahgua
                 callback(null);
         }
 
-        public void SetUserPredictionVote(string userVote, PredictionVote_callback callback)
+        public void SetPollVote(PollItem theVote, PollVote_callback callback)
         {
-            BlahguaRest.SetUserPredictionVote(CurrentBlah._id, userVote, false, callback);
+            // first, ensure we really have a poll and we are voting on it...
+            if ((CurrentBlah != null) && (CurrentBlah.I != null))
+            {
+                int index = CurrentBlah.I.IndexOf(theVote);
+                BlahguaRest.SetUserPollVote(CurrentBlah._id, index, (thePollVote) =>
+                {
+                    // need to update everything
+                    if (thePollVote != null)
+                    {
+                        CurrentBlah.J[thePollVote.W]++;
+                        CurrentBlah.UpdateUserPollVote(thePollVote);
+                    }
+                    callback(thePollVote);
+                }
+                );
+            }
         }
 
-        public void SetUserExpPredictionVote(string userVote, PredictionVote_callback callback)
+        public void SetPredictionVote(PollItem userVote, PredictionVote_callback callback)
         {
-            BlahguaRest.SetUserPredictionVote(CurrentBlah._id, userVote, true, callback);
+            string voteStr = userVote.PredictVoteStr;
+            bool isExpired = CurrentBlah.IsPredictionExpired;
+
+            BlahguaRest.SetUserPredictionVote(CurrentBlah._id, voteStr, isExpired, (thePred) =>
+                {
+                    if (thePred != null)
+                    {
+                        switch (voteStr)
+                        {
+                            case "y":
+                                if (isExpired)
+                                    CurrentBlah._1++;
+                                else
+                                    CurrentBlah._4++;
+                                break;
+                            case "n":
+                                if (isExpired)
+                                    CurrentBlah._2++;
+                                else
+                                    CurrentBlah._5++;
+                                break;
+                            case "u":
+                                if (isExpired)
+                                    CurrentBlah._3++;
+                                else
+                                    CurrentBlah._6++;
+                                break;
+                        }
+
+                        CurrentBlah.UpdateUserPredictionVote(thePred);
+                    }
+                    callback(thePred);
+                }
+            );
         }
 
-
-  
-
+        
         CommentList ThreadComments(CommentList comments)
         {
             CommentList threadedList = new CommentList();

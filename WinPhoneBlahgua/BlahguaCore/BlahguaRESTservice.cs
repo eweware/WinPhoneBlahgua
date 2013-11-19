@@ -665,7 +665,12 @@ namespace WinPhoneBlahgua
                 request.AddBody(new { t = "pre", v = theVote });
             apiClient.ExecuteAsync<UserPredictionVote>(request, (response) =>
             {
-                callback(response.Data);
+                if (response.StatusCode == HttpStatusCode.NoContent)
+                {
+                    GetUserPredictionVote(blahId, callback);
+                }
+                else
+                    callback(null);
             });
         }
 
