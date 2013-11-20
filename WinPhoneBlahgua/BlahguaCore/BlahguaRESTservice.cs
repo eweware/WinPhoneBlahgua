@@ -448,9 +448,18 @@ namespace WinPhoneBlahgua
             RestRequest request = new RestRequest("blahs", Method.POST);
             request.RequestFormat = DataFormat.Json;
             request.AddBody(theBlah);
-            apiClient.ExecuteAsync<Blah>(request, (response) =>
+            apiClient.ExecuteAsync(request, (response) =>
             {
-                callback(response.Data);
+                Blah newBlah = null;
+                DataContractJsonSerializer des = new DataContractJsonSerializer(typeof(Blah));
+                var stream = new MemoryStream(Encoding.UTF8.GetBytes(response.Content));
+                object theObj = des.ReadObject(stream);
+                stream.Close();
+
+                if (theObj != null)
+                    newBlah = (Blah)theObj;
+
+                callback(newBlah);
             });
         }
 

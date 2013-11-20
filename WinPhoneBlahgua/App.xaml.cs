@@ -12,10 +12,25 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-
+using System.Windows.Data;
 
 namespace WinPhoneBlahgua
 {
+
+    public sealed class BooleanToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo language)
+        {
+            return (value is bool && (bool)value) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo language)
+        {
+            return value is Visibility && (Visibility)value == Visibility.Visible;
+        }
+    }
+
+
     public partial class App : Application
     {
         /// <summary>

@@ -147,7 +147,7 @@
 
                 <StackPanel Grid.Row="0" Orientation="Vertical">
                     <TextBlock Text="comment"/>
-                    <TextBox Text="{Binding CreateCommentRecord.Text, Mode=TwoWay}" MinHeight="128" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" MaxLength="2048" InputScope="Text" AcceptsReturn="True"></TextBox>
+                    <TextBox x:Name="CommentTextField" Text="{Binding CreateCommentRecord.Text, Mode=TwoWay}" MinHeight="128" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" MaxLength="2048" InputScope="Text" AcceptsReturn="True"></TextBox>
                 </StackPanel>
                 <StackPanel Grid.Row="1" Orientation="Vertical" Visibility="Visible">
                     <TextBlock Text="Images"/>
@@ -177,7 +177,7 @@
     </Grid>
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="False" Opacity=".8">
-            <shell:ApplicationBarIconButton x:Name="CreateCommentBtn" IconUri="/Images/Icons/appbar.add.rest.png" Click="DoCreateClick" Text="create"/>
+            <shell:ApplicationBarIconButton x:Name="CreateBtn" IconUri="/Images/Icons/appbar.add.rest.png" Click="DoCreateClick" Text="create"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

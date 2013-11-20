@@ -487,17 +487,23 @@ namespace WinPhoneBlahgua
                 {
                     if (theComment != null)
                     {
+                        CurrentBlah.C++;
                         CreateCommentRecord = new CommentCreateRecord();
-                        if (CurrentBlah.Comments == null)
-                            CurrentBlah.Comments = new CommentList();
-                        theComment.T = UnprocessText(theComment.T);
-                        CurrentBlah.Comments.Add(theComment);
+                        LoadBlahComments((commentList) =>
+                            {
+                                callback(theComment);
+                            }
+                        );
+                        
                     }
-                    callback(theComment);
+                    else 
+                        callback(theComment);
                 }
             );
 
         }
+
+       
 
         private void _intGetUserProfile(Profile_callback callback)
         {
@@ -746,7 +752,7 @@ namespace WinPhoneBlahgua
                         BlahguaRest.GetCommentAuthorDescriptions(authorIds, (descList) =>
                             {
                                 ApplyAuthorDescriptions(comments, descList);
-                                comments = ThreadComments(comments);
+                                comments = ThreadComments(comments, true);
                                 currentBlah.Comments = comments;
                                 callback(comments);
 
@@ -958,25 +964,56 @@ namespace WinPhoneBlahgua
             );
         }
 
+        void AddCommentAndChildren(CommentList flatTree, Comment theComment, int indentLevel)
+        {
+            theComment.IndentLevel = indentLevel;
+            flatTree.Add(theComment);
+            if (theComment.subComments != null)
+            {
+                foreach (Comment curComment in theComment.subComments)
+                {
+                    AddCommentAndChildren(flatTree, curComment, indentLevel + 1);
+                }
+            }
+        }
+
         
-        CommentList ThreadComments(CommentList comments)
+        CommentList ThreadComments(CommentList comments, bool init)
         {
             CommentList threadedList = new CommentList();
-            foreach (Comment curComment in comments)
+            CommentList flatTree = new CommentList();
+
+            if (init)
             {
-                if (curComment.CID != null)
+                foreach (Comment curComment in comments)
                 {
-                    Comment parent = comments.First(comment => comment._id == curComment.CID);
-                    if (parent.subComments == null)
-                        parent.subComments = new CommentList();
-                    parent.subComments.Add(curComment);
+                    if (curComment.CID != null)
+                    {
+                        Comment parent = comments.First(comment => comment._id == curComment.CID);
+                        if (parent.subComments == null)
+                            parent.subComments = new CommentList();
+                        parent.subComments.Add(curComment);
+                    }
+                    else
+                    {
+                        threadedList.Add(curComment);
+                    }
                 }
-                else
+            }
+            else
+            {
+                foreach (Comment curComment in comments)
                 {
                     threadedList.Add(curComment);
                 }
+            }  
+
+            foreach (Comment curComment in threadedList)
+            {
+                AddCommentAndChildren(flatTree, curComment, 0);
             }
-            return threadedList;
+
+            return flatTree;
         }
 
         public void SignIn(string userName, string password, bool saveIt, string_callback callBack)

@@ -88,6 +88,9 @@
       <DependentUpon>BadgeElement.xaml</DependentUpon>
     </Compile>
     <Compile Include="BlahguaCore\Blah.cs" />
+    <Compile Include="Controls\CommentItem.xaml.cs">
+      <DependentUpon>CommentItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\BadgingPage.xaml.cs">
       <DependentUpon>BadgingPage.xaml</DependentUpon>
     </Compile>
@@ -144,6 +147,10 @@
     <Page Include="Controls\BadgeElement.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CommentItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\BadgingPage.xaml">
       <SubType>Designer</SubType>

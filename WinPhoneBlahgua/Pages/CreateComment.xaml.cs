@@ -19,14 +19,15 @@ namespace WinPhoneBlahgua
         public CreateComment()
         {
             InitializeComponent();
-
+            if (CreateBtn == null)
+                CreateBtn = (ApplicationBarIconButton)this.ApplicationBar.Buttons[0];
             SelectedBadgesList.SummaryForSelectedItemsDelegate = SummarizeItems;
-            CreateCommentBtn.IsEnabled = false;
+            CreateBtn.IsEnabled = false;
 
             App.BlahguaAPI.EnsureUserDescription((desc) =>
             {
                 this.DataContext = App.BlahguaAPI;
-                CreateCommentBtn.IsEnabled = true;
+                CreateBtn.IsEnabled = true;
             }
              );
 
@@ -35,7 +36,10 @@ namespace WinPhoneBlahgua
 
         void CreateComment_Loaded(object sender, RoutedEventArgs e)
         {
-            //this.DataContext = App.BlahguaAPI;
+            if ((App.BlahguaAPI.CurrentUser.Badges != null) && (App.BlahguaAPI.CurrentUser.Badges.Count  >  0))
+                SelectedBadgesList.Visibility = Visibility.Visible;
+            else
+                SelectedBadgesList.Visibility = Visibility.Collapsed;
         }
 
 
@@ -140,6 +144,7 @@ namespace WinPhoneBlahgua
             {
                 // handle create comment failed
                 MessageBox.Show("Your comment was not created.  Please try again or come back another time.");
+                CommentTextField.IsEnabled = true;
             }
 
         }
@@ -167,6 +172,9 @@ namespace WinPhoneBlahgua
 
         private void DoCreateClick(object sender, EventArgs e)
         {
+            CommentTextField.IsEnabled = false;
+            App.BlahguaAPI.CreateCommentRecord.T = CommentTextField.Text;
+            SelectedBadgesList.Focus();
             App.BlahguaAPI.CreateComment(OnCreateCommentOK);
         }
     }

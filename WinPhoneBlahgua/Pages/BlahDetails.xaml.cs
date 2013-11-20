@@ -14,6 +14,7 @@ using Microsoft.Phone.Shell;
 using System.Windows.Media.Imaging;
 using Telerik.Windows.Controls;
 using Telerik.Charting;
+using System.Windows.Data;
 
 namespace WinPhoneBlahgua
 {
@@ -133,13 +134,23 @@ namespace WinPhoneBlahgua
             demoteBtn.IconUri = new Uri("/Images/Icons/white_demote.png", UriKind.Relative);
             Blah curBlah = App.BlahguaAPI.CurrentBlah;
 
+            if (curBlah.C > 0)
+            {
+                AllCommentList.Visibility = Visibility.Visible;
+                NoCommentBox.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                AllCommentList.Visibility = Visibility.Collapsed;
+                NoCommentBox.Visibility = Visibility.Visible;
+            }
+
+
             if (App.BlahguaAPI.CurrentUser == null)
             {
                 promoteBtn.IsEnabled = false;
                 demoteBtn.IsEnabled = false;
                 commentBtn.IsEnabled = false;
-
-
             }
             else
             {
@@ -182,9 +193,14 @@ namespace WinPhoneBlahgua
 
             // update the text
             if (currentPage == "summary")
+            {
                 UpdateSummaryButtons();
+            }
             else if (currentPage == "comments")
+            {
+                AllCommentList.ItemsSource = App.BlahguaAPI.CurrentBlah.Comments;
                 UpdateCommentButtons();
+            }
             else if (currentPage == "stats")
                 UpdateStatsPage();
             
@@ -737,6 +753,20 @@ namespace WinPhoneBlahgua
 
         private void AllCommentList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            ListBoxItem curItem;
+
+            foreach (Comment oldComment in e.RemovedItems)
+            {
+                curItem = (ListBoxItem)AllCommentList.ItemContainerGenerator.ContainerFromItem(oldComment);
+                if (curItem != null)
+                    curItem.Background = new SolidColorBrush(Colors.Transparent);
+            }
+
+            foreach (Comment newComment in e.AddedItems)
+            {
+                curItem = (ListBoxItem)AllCommentList.ItemContainerGenerator.ContainerFromItem(newComment);
+                curItem.Background = new SolidColorBrush(Color.FromArgb(128,0,0,0));
+            }
             UpdateCommentButtons();
         }
 

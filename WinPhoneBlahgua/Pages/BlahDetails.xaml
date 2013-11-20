@@ -155,52 +155,7 @@
 
 
         <DataTemplate x:Name="CommentTemplate">
-            <Border BorderBrush="{StaticResource PhoneBorderBrush}" BorderThickness="0,0,0,1" Margin="0,0,0,8">
-                <Grid Margin="0 0 0 8">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                    </Grid.RowDefinitions>
-                    <Grid Grid.Row="0" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Image Source="{Binding AuthorImage}" Width="48" Height="48" VerticalAlignment="Top" />
-                        <Grid  Margin="8,0,0,0" Grid.Column="1">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto"></RowDefinition>
-                                <RowDefinition Height="auto"></RowDefinition>
-                                <RowDefinition Height="auto"></RowDefinition>
-                                <RowDefinition Height="auto"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <Grid Grid.Row="0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="auto" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="{Binding AuthorName}">
-                                    <TextBlock.Foreground>
-                                        <SolidColorBrush Color="{StaticResource PhoneAccentColor}"/>
-                                    </TextBlock.Foreground></TextBlock>
-                                <TextBlock Grid.Column="1" Margin="8 0 0 0" HorizontalAlignment="Left" Text="{Binding ElapsedTimeString}" Foreground="#FF8D8D8D" FontStyle="Italic" FontSize="16" VerticalAlignment="Bottom"></TextBlock>
-                                <StackPanel Margin="8 0 0 0" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                                    <Image Source="/Images/Icons/promote.png" Width="24" Height="24" VerticalAlignment="Top"></Image>
-                                    <TextBlock Text="{Binding UpVoteCount}" Margin="0 0 8 0"></TextBlock>
-                                    <Image Source="/Images/Icons/demote.png" Width="24" Height="24" VerticalAlignment="Top"></Image>
-                                    <TextBlock Text="{Binding DownVoteCount}"></TextBlock>
-                                </StackPanel>
-                            </Grid>
-                            <TextBlock Grid.Row="1" Text="{Binding DescriptionString}"  Foreground="#FF8D8D8D" FontStyle="Italic" FontSize="16" />
-                            <local:UrlTextBlock Grid.Row="2" Content="{Binding T}" TextWrapping="Wrap" />
-                            <Image Grid.Row="3" Margin="9" Source="{Binding ImageURL}" >
-                            </Image>
-                        </Grid>
-                    </Grid>
-                    
-                </Grid>
-            </Border>
+            <local:CommentItem x:Name="CommentRenderer" />    
         </DataTemplate>
         
         </phone:PhoneApplicationPage.Resources>
@@ -319,7 +274,7 @@
                                     </chart:RadCartesianChart.VerticalAxis>
                             </chart:RadCartesianChart>
 
-                                <TextBlock Text="promotes and demotes" Margin="0 16 0 0" />
+                                <TextBlock Text="votes" Margin="0 16 0 0" />
                                 <chart:RadCartesianChart x:Name="VoteChart" Height="200" EmptyContent="No votes yet">
                                     <chart:RadCartesianChart.Palette>
                                         <chart:ChartPalette>

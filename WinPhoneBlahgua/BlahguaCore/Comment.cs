@@ -160,6 +160,7 @@ namespace WinPhoneBlahgua
         public string d { get; set; }
         public List<string> _m { get; set; }
         public int uv { get; set; }
+        private int _indentLevel;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -179,12 +180,36 @@ namespace WinPhoneBlahgua
             }
         }
 
+        public bool HasComments
+        {
+            get { return ((subComments != null) && (subComments.Count > 0)); }
+        }
+
         public Comment()
         {
             U = 0;
             D = 0;
             uv = 0;
+            _indentLevel = 0;
         }
+
+        public double IndentWidth
+        {
+            get { return _indentLevel * 8; }
+        }
+
+        public int IndentLevel
+        {
+            get { return _indentLevel; }
+            set 
+            {  
+                _indentLevel = value;
+                OnPropertyChanged("IndentLevel");
+                OnPropertyChanged("IndentWidth");
+            }
+        }
+
+
 
         public string AuthorName
         {

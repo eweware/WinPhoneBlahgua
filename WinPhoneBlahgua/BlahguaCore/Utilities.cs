@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+
 namespace WinPhoneBlahgua
 {
     public static class DateTimeJavaScript
@@ -16,6 +17,7 @@ namespace WinPhoneBlahgua
         }
     }
 
+    
     public class Utilities
     {
 

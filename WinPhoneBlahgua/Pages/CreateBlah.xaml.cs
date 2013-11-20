@@ -26,6 +26,10 @@ namespace WinPhoneBlahgua
                 App.BlahguaAPI.CreateRecord = new BlahCreateRecord();
 
             SelectedBadgesList.SummaryForSelectedItemsDelegate = SummarizeItems;
+            if ((App.BlahguaAPI.CurrentUser.Badges != null) && (App.BlahguaAPI.CurrentUser.Badges.Count > 0))
+                SelectedBadgesList.Visibility = Visibility.Visible;
+            else
+                SelectedBadgesList.Visibility = Visibility.Collapsed;
 
             App.BlahguaAPI.EnsureUserDescription((desc) => 
                 {
@@ -41,18 +45,18 @@ namespace WinPhoneBlahgua
         {
             if (newBlah != null)
             {
-                
 
+                App.BlahguaAPI.NewBlahToInsert = newBlah;
+
+                NavigationService.GoBack();
             }
             else
             {
-                // handle create blah failed
+                MessageBox.Show("Unable to create the blah.  Please try again.  If the problem persists, go ahead and try at a different time.");
 
             }
 
-            App.BlahguaAPI.NewBlahToInsert = newBlah;
 
-            NavigationService.GoBack();
 
         }
 
@@ -276,6 +280,7 @@ namespace WinPhoneBlahgua
 
         private void DoCreateClick(object sender, EventArgs e)
         {
+            SelectedBadgesList.Focus();
             App.BlahguaAPI.CreateBlah(OnCreateBlahOK);
         }
 
