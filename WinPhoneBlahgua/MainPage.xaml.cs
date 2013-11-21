@@ -123,7 +123,7 @@ namespace WinPhoneBlahgua
                 InsertAdditionalBlahs();
                 AtScrollEnd = false;
                 inboxCounter++;
-                if (inboxCounter >= 10)
+                if (inboxCounter >= 5)
                 {
                     BlahRollItem curBlah;
                     double bottom = 0;
@@ -411,19 +411,27 @@ namespace WinPhoneBlahgua
 
         void DoServiceInited(bool didIt)
         {
-            if (App.BlahguaAPI.CurrentUser != null)
+            if (didIt)
             {
-                UserInfoBtn.Visibility = Visibility.Visible;
-                NewBlahBtn.Visibility = Visibility.Visible;
-                SignInBtn.Visibility = Visibility.Collapsed;
+                if (App.BlahguaAPI.CurrentUser != null)
+                {
+                    UserInfoBtn.Visibility = Visibility.Visible;
+                    NewBlahBtn.Visibility = Visibility.Visible;
+                    SignInBtn.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    UserInfoBtn.Visibility = Visibility.Collapsed;
+                    NewBlahBtn.Visibility = Visibility.Collapsed;
+                    SignInBtn.Visibility = Visibility.Visible;
+                }
+                this.DataContext = App.BlahguaAPI;
             }
             else
             {
-                UserInfoBtn.Visibility = Visibility.Collapsed;
-                NewBlahBtn.Visibility = Visibility.Collapsed;
-                SignInBtn.Visibility = Visibility.Visible;
+                LoadingBox.Visibility = Visibility.Collapsed;
+                ConnectFailure.Visibility = Visibility.Visible;
             }
-            this.DataContext = App.BlahguaAPI;
         }
 
         void OnChannelChanged()

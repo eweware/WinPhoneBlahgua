@@ -327,37 +327,44 @@ namespace WinPhoneBlahgua
             {
                 BlahguaRest.GetChannelTypes((cTypeList) =>
                 {
-                    curChannelTypes = cTypeList;
-
-                    BlahguaRest.GetBlahTypes((bTypeList) =>
+                    if (cTypeList != null)
                     {
-                        blahTypeList = bTypeList;
-                        blahTypeList.Remove(blahTypeList.First(i => i.N == "ad"));
+                        curChannelTypes = cTypeList;
 
-                        if (AutoLogin)
+                        BlahguaRest.GetBlahTypes((bTypeList) =>
                         {
-                            SavedUserInfo info = GetSavedUserInfo();
-                            if (info.UserName != "")
-                            {
-                                SignIn(info.UserName, info.Password, true, (theErrStr) =>
-                                    {
-                                        if (theErrStr == null)
-                                        {
-                                            inited = true;
-                                            callBack(true);
-                                        }
-                                        else
-                                            CompletePublicSignin(callBack);
-                                    }
-                                );
-                            }
-                            else 
-                                CompletePublicSignin(callBack);
-                        }
-                        else
-                            CompletePublicSignin(callBack);  
+                            blahTypeList = bTypeList;
+                            blahTypeList.Remove(blahTypeList.First(i => i.N == "ad"));
 
-                    });
+                            if (AutoLogin)
+                            {
+                                SavedUserInfo info = GetSavedUserInfo();
+                                if (info.UserName != "")
+                                {
+                                    SignIn(info.UserName, info.Password, true, (theErrStr) =>
+                                        {
+                                            if (theErrStr == null)
+                                            {
+                                                inited = true;
+                                                callBack(true);
+                                            }
+                                            else
+                                                CompletePublicSignin(callBack);
+                                        }
+                                    );
+                                }
+                                else
+                                    CompletePublicSignin(callBack);
+                            }
+                            else
+                                CompletePublicSignin(callBack);
+
+                        });
+                    }
+                    else
+                    {
+                        callBack(false);
+                    }
                 });
             }
             else

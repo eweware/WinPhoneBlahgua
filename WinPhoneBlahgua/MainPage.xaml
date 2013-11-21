@@ -253,6 +253,16 @@
                 <ProgressBar Width="200" Height="15" IsIndeterminate="True" />
             </StackPanel>
         </Border>
+        <Grid x:Name="ConnectFailure" Canvas.ZIndex="1000" Visibility="Collapsed">
+            <Rectangle Fill="#80000000"  />
+            <Border  Margin="16 8 8 8" Padding="24 16" BorderBrush="#80FFFFFF" BorderThickness="1" CornerRadius="8" Background="#80000000" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Sorry, we were unable to connect to the blahgua servers." Foreground="{StaticResource BrushBlahguaWhite}" TextWrapping="Wrap" />
+                    <TextBlock Margin="0 24" Text="Please exit the application and try again later." Foreground="{StaticResource BrushBlahguaWhite}" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+        </Grid>
+           
     </Grid>
 
 </phone:PhoneApplicationPage>
