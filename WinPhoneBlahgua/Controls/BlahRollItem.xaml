@@ -16,14 +16,16 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Border x:Name="TopBorder" CornerRadius="8,8,0,0" BorderThickness="0,8,0,0" BorderBrush="Black">
+        <Border x:Name="TopBorder" CornerRadius="8,8,0,0" BorderThickness="1,8,1,1" BorderBrush="Red">
             <Grid>
                 <Image x:Name="BlahImage" Stretch="UniformToFill"/>
-                <Rectangle x:Name="BlahBackground"  Fill="Red"/>
+                <Rectangle x:Name="BlahBackground"  Fill="{StaticResource BrushBlahguaWhite}"/>
                 <Line x:Name="OwnedBlahIndicator" X1="0" X2="100" Y1="1" Y2="1" Stroke="Green" Stretch="Fill" StrokeDashArray="1 1 1 1" StrokeThickness="8" VerticalAlignment="Bottom" />
             </Grid>
         </Border>
-        <TextBlock x:Name="TextArea" Padding="4" TextWrapping="Wrap" FontFamily="Segoe WP SemiLight">This is a  test.  This is only</TextBlock>
+        <TextBlock  x:Name="TextArea" Padding="4 12 4 0" TextWrapping="Wrap" VerticalAlignment="Center" FontFamily="Segoe WP SemiLight" Foreground="{StaticResource BrushBlahguaBlack}" Text="This is a  test.  This is only a test.  " RenderTransformOrigin="0.5,0.5">
+
+        </TextBlock>
         <Image x:Name="BadgeIcon" Source="/Images/badge_standalone_30x31.png" Width="24" Height="24" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
         <Image x:Name="NewBlahIcon" Source="/Images/newblah.png" Width="24" Height="24" HorizontalAlignment="Left" VerticalAlignment="Bottom" />
 

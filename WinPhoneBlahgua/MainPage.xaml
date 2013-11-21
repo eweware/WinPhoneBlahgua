@@ -38,7 +38,7 @@
             </toolkit:NavigationOutTransition.Forward>
         </toolkit:NavigationOutTransition>
     </toolkit:TransitionService.NavigationOutTransition>
-    
+
     <phone:PhoneApplicationPage.Resources>
         <DataTemplate x:Name="ChannelItemTemplate">
             <StackPanel Orientation="Horizontal" Background="Transparent" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
@@ -169,14 +169,14 @@
         </Storyboard>
 
         <Storyboard x:Name="AnimateTextFadeOut" Completed="FadeOut_Completed" >
-        <DoubleAnimation BeginTime="0:0:0.0" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:1.0"/>
-        <ObjectAnimationUsingKeyFrames BeginTime="0:0:1.0" Storyboard.TargetProperty="Visibility">
-            <DiscreteObjectKeyFrame KeyTime="0">
-                <DiscreteObjectKeyFrame.Value>
-                    <Visibility>Collapsed</Visibility>
-                </DiscreteObjectKeyFrame.Value>
-            </DiscreteObjectKeyFrame>
-        </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimation BeginTime="0:0:0.0" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:1.0"/>
+            <ObjectAnimationUsingKeyFrames BeginTime="0:0:1.0" Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Collapsed</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
             <DoubleAnimation BeginTime="0:0:0.0" Storyboard.TargetProperty="Opacity" From=".8" To="0" Duration="0:0:1.0"/>
             <ObjectAnimationUsingKeyFrames BeginTime="0:0:1.0" Storyboard.TargetProperty="Visibility">
                 <DiscreteObjectKeyFrame KeyTime="0">
@@ -191,7 +191,13 @@
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="#FFEEEEEE">
+    <Grid x:Name="LayoutRoot">
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FFC9CCD0" Offset="0"/>
+                <GradientStop Color="#FFE5E4EA" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -231,8 +237,8 @@
                         <PlaneProjection GlobalOffsetY="-8"/>
                     </TextBlock.Projection></TextBlock>
             </Button>
-            <Image x:Name="UserInfoBtn" Width="48" Height="48" Grid.Column="2"  Visibility="Collapsed" Source="{Binding CurrentUser.UserImage}" Tap="UserInfoBtn_Tap">
-          
+            <Image x:Name="UserInfoBtn" Width="48" Height="48" Grid.Column="2"  Visibility="Collapsed" Source="{Binding CurrentUser.UserImage}" Tap="UserInfoBtn_Tap" ImageFailed="UserImageLoadFailed">
+
             </Image>
 
 
@@ -243,8 +249,8 @@
         </ScrollViewer>
         <Border x:Name="LoadingBox"  Margin="0 200 0 0" Padding="24 24" BorderBrush="#80FFFFFF" BorderThickness="1" CornerRadius="8" Background="#80000000" HorizontalAlignment="Center" VerticalAlignment="Top">
             <StackPanel Orientation="Vertical">
-            <TextBlock  Text="loading" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Foreground="{StaticResource BrushBlahguaWhite}" />
-            <ProgressBar Width="200" Height="15" IsIndeterminate="True" />
+                <TextBlock  Text="loading" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Foreground="{StaticResource BrushBlahguaWhite}" />
+                <ProgressBar Width="200" Height="15" IsIndeterminate="True" />
             </StackPanel>
         </Border>
     </Grid>

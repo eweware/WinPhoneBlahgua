@@ -66,17 +66,17 @@
     		</Style>
         
     		<!-- colors -->
-    		<Color x:Key="BaseColorSays"    >#667DB5E3</Color>
-    		<Color x:Key="BaseColorLeaks"   >#66F87858</Color>
-    		<Color x:Key="BaseColorPolls"   >#66F8B800</Color>
-    		<Color x:Key="BaseColorPredicts">#66FAFA64</Color>
-    		<Color x:Key="BaseColorAsks"    >#667AD000</Color>
+            <Color x:Key="BaseColorSays"    >#B03D7DAB</Color>
+            <Color x:Key="BaseColorLeaks"   >#B0D34343</Color>
+            <Color x:Key="BaseColorPolls"   >#B0F58D4B</Color>
+            <Color x:Key="BaseColorPredicts">#B0483950</Color>
+            <Color x:Key="BaseColorAsks"    >#B0477C48</Color>
 
-    		<Color x:Key="HighlightColorSays"     >#ff7DB5E3</Color>
-    		<Color x:Key="HighlightColorLeaks"    >#ffF87858</Color>
-    		<Color x:Key="HighlightColorPolls"    >#FFF8B800</Color>
-    		<Color x:Key="HighlightColorPredicts" >#ffFAFA64</Color>
-    		<Color x:Key="HighlightColorAsks"     >#ff7AD000</Color>
+            <Color x:Key="HighlightColorSays"     >#ff3D7DAB</Color>
+            <Color x:Key="HighlightColorLeaks"    >#ffD34343</Color>
+            <Color x:Key="HighlightColorPolls"    >#FFF58D4B</Color>
+            <Color x:Key="HighlightColorPredicts" >#ff483950</Color>
+            <Color x:Key="HighlightColorAsks"     >#ff477C48</Color>
 
     		<Color x:Key="ColorBlahguaWhite">#ffF5F4F0</Color>
     		<Color x:Key="ColorBlahguaBlack">#ff202020</Color>

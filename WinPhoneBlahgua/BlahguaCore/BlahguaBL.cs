@@ -1141,18 +1141,22 @@ namespace WinPhoneBlahgua
                                     AddAgeSchemaInfo();
                                     UserProfile.Schema = theSchema;
 
-                                    // badge names
-                                    if (CurrentUser.Badges != null)
-                                    {
-                                        foreach (BadgeReference curBadge in CurrentUser.Badges)
+                                    GetUserProfile((theProfile) =>
                                         {
-                                            //curBadge.UpdateBadgeName();
-                                        }
-                                    }
+                                            // badge names
+                                            if (CurrentUser.Badges != null)
+                                            {
+                                                foreach (BadgeReference curBadge in CurrentUser.Badges)
+                                                {
+                                                    //curBadge.UpdateBadgeName();
+                                                }
+                                            }
 
-                                    EnsureUserDescription((theDesc) =>
-                                        {
-                                            callBack(null);
+                                            EnsureUserDescription((theDesc) =>
+                                                {
+                                                    callBack(null);
+                                                }
+                                            );
                                         }
                                     );
                                 }

@@ -70,6 +70,14 @@
 			<Grid/>
 		</DataTemplate>
 
+        <DataTemplate x:Key="HiddenChartTemplate">
+            <Border x:Name="NoStatsBox"  Margin="16 8 8 8" Padding="24 16" BorderBrush="#80FFFFFF" BorderThickness="1" CornerRadius="8" Background="#80000000" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+
         <DataTemplate x:Key="LargeHeaderTemplate">
             <TextBlock Text="{Binding}" FontSize="36" />
         </DataTemplate>
@@ -299,7 +307,7 @@
                                         <chart:DateTimeContinuousAxis LabelFitMode="None" LabelInterval="2"  LabelFormat="MM-dd"/>
                                     </chart:RadCartesianChart.HorizontalAxis>
                                     <chart:RadCartesianChart.VerticalAxis>
-                                        <chart:LinearAxis LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
+                                        <chart:LinearAxis Minimum="0"  LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
                                     </chart:RadCartesianChart.VerticalAxis>
                                 </chart:RadCartesianChart>
 
@@ -309,7 +317,7 @@
                                         <chart:DateTimeContinuousAxis LabelFitMode="None" LabelInterval="2"  LabelFormat="MM-dd"/>
                                     </chart:RadCartesianChart.HorizontalAxis>
                                     <chart:RadCartesianChart.VerticalAxis>
-                                        <chart:LinearAxis LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
+                                        <chart:LinearAxis Minimum="0"  LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
                                     </chart:RadCartesianChart.VerticalAxis>
                                 </chart:RadCartesianChart>
 
@@ -319,7 +327,7 @@
                                         <chart:DateTimeContinuousAxis LabelFitMode="None" LabelInterval="2" LabelFormat="MM-dd"/>
                                     </chart:RadCartesianChart.HorizontalAxis>
                                     <chart:RadCartesianChart.VerticalAxis>
-                                        <chart:LinearAxis LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
+                                        <chart:LinearAxis Minimum="0"  LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
                                     </chart:RadCartesianChart.VerticalAxis>
                                 </chart:RadCartesianChart>
 
@@ -329,7 +337,8 @@
                             <TextBlock FontSize="11" TextWrapping="Wrap" Text="How various demographics responded to this post." />
                             <StackPanel x:Name="DemoCharts">
                                     <TextBlock Text="gender" Margin="0 16 0 0" />
-                                    <chart:RadCartesianChart x:Name="GenderChart" Height="300" EmptyContent="No votes in the last week">
+                                    <chart:RadCartesianChart x:Name="GenderChart" Height="300" 
+                                                             EmptyContent="No votes in the last week">
                                         <chart:RadCartesianChart.Palette>
                                             <chart:ChartPalette>
                                                 <chart:ChartPalette.GlobalEntries>

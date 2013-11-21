@@ -65,36 +65,36 @@
 
         <DataTemplate x:Key="UserCommentTemplate">
             <Border BorderThickness="0,0,0,1" BorderBrush="#FF727272">
-            <Grid Margin="0 10 0 10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <TextBlock Text="{Binding T}" FontSize="20" TextWrapping="Wrap" />
-                <Image Source="{Binding ImageURL}" Grid.Column="1" Grid.Row="0" Width="64" Margin="8 0 0 0" />
-                
-                <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                <Grid Margin="0 10 0 10">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+
                     </Grid.ColumnDefinitions>
-                    <StackPanel Orientation="Horizontal" Grid.Column="0">
-                        <TextBlock Text="open post" FontSize="20" Foreground="Blue" TextAlignment="Center" Margin="3"/>
-                        <Image Width="25" Source="/Images/Icons/black_promote.png" Margin="8 0 0 0"/>
-                        <TextBlock Text="{Binding UpVoteCount}" />
-                        <Image Width="25" Source="/Images/Icons/black_demote.png"  Margin="8 0 0 0"/>
-                        <TextBlock Text="{Binding DownVoteCount}" />
-                    </StackPanel>
-                    <TextBlock Grid.Column="1" Text="{Binding ElapsedTimeString}" FontSize="16" FontStyle="Italic" HorizontalAlignment="Right" />
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="{Binding T}" Foreground="{StaticResource BrushBlahguaWhite}"  FontSize="20" TextWrapping="Wrap" />
+                    <Image Source="{Binding ImageURL}" Grid.Column="1" Grid.Row="0" Width="64" Margin="8 0 0 0" />
+
+                    <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal" Grid.Column="0">
+                            <TextBlock Text="open post" FontSize="20" Foreground="Blue" TextAlignment="Center" Margin="3"/>
+                            <Image Width="25" Source="/Images/Icons/black_promote.png" Margin="8 0 0 0"/>
+                            <TextBlock Text="{Binding UpVoteCount}" Foreground="{StaticResource BrushBlahguaBlack}"  />
+                            <Image Width="25" Source="/Images/Icons/black_demote.png"  Margin="8 0 0 0"/>
+                            <TextBlock Text="{Binding DownVoteCount}" Foreground="{StaticResource BrushBlahguaBlack}" />
+                        </StackPanel>
+                        <TextBlock Foreground="{StaticResource BrushBlahguaWhite}" Grid.Column="1" Text="{Binding ElapsedTimeString}" FontSize="16" FontStyle="Italic" HorizontalAlignment="Right" />
+                    </Grid>
+
                 </Grid>
-               
-            </Grid>
             </Border>
         </DataTemplate>
 
@@ -110,7 +110,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <TextBlock Text="{Binding T}" FontSize="20" TextWrapping="Wrap" />
+                    <TextBlock Text="{Binding T}" FontSize="20" TextWrapping="Wrap" Foreground="{StaticResource BrushBlahguaWhite}" />
                     <Image Source="{Binding ImageURL}" Grid.Column="1" Grid.Row="0" Width="64" />
 
                     <Grid Grid.Row="1" Grid.ColumnSpan="2">
@@ -132,53 +132,67 @@
                             <TextBlock FontSize="16"  VerticalAlignment="Center" Foreground="{StaticResource BrushBlahguaBlack}" Text="{Binding C}" />
                         </StackPanel>
                     </Grid>
-                    <TextBlock Grid.Row="2" Grid.ColumnSpan="3" Text="{Binding ElapsedTimeString}" FontSize="16" FontStyle="Italic" />
+                    <TextBlock Grid.Row="2" Grid.ColumnSpan="3" Text="{Binding ElapsedTimeString}" Foreground="{StaticResource BrushBlahguaWhite}" FontSize="16" FontStyle="Italic" />
                 </Grid>
             </Border>
         </DataTemplate>
 
+        <DataTemplate x:Key="HiddenChartTemplate">
+            <Border x:Name="NoStatsBox"  Margin="16 8 8 8" Padding="24 16" BorderBrush="#80FFFFFF" BorderThickness="1" CornerRadius="8" Background="#80000000" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="{Binding}" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+        </DataTemplate>
 
 
     </phone:PhoneApplicationPage.Resources>
 
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" >
-        <Grid.Background>
-            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                <GradientStop Color="#FF7DBFE3" Offset="0.55"/>
-                <GradientStop Color="#FF7AD000" Offset="0.734"/>
-            </LinearGradientBrush>
-        </Grid.Background>
+    <Grid x:Name="LayoutRoot" Background="Transparent" >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <Canvas Width="480" Height="800" VerticalAlignment="Top" IsHitTestVisible="False" Grid.RowSpan="2">
+            <Image  Width="800" Height="800"  x:Name="BackgroundImage" Canvas.Top="0"  Canvas.Left="0"   Stretch="UniformToFill"  Source="/Images/bkgnds/profile.jpg" />
+            <Image  Width="800" Height="800"  x:Name="BackgroundImage2" Canvas.Top="0"  Canvas.Left="480"  Stretch="UniformToFill" Visibility="Collapsed" Source="/Images/bkgnds/profile.jpg" />
+            <Rectangle x:Name="BackgroundScreen" Width="480" Height="800" Canvas.Top="0" Canvas.Left="0">
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#7F000000" Offset="0"/>
+                        <GradientStop Color="#7FFFFFFF" Offset="1"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+
+        </Canvas>
 
         <!--TitlePanel contains the name of the application and page title-->
         <local:BlahAuthorHeader Grid.Row="0" x:Name="UserHeader"  Margin="0 0 0 0" 
                                 DataContext="{Binding CurrentUser}" >
         </local:BlahAuthorHeader>
-        <controls:Pivot x:Name="SignInPivot" Grid.Row="1"  LoadedPivotItem="HandlePivotLoaded" UnloadedPivotItem="HandlePivotUnloaded" LoadingPivotItem="OnPivotLoading" >
+        <controls:Pivot x:Name="ProfilePivot" Grid.Row="1"  LoadedPivotItem="HandlePivotLoaded" UnloadedPivotItem="HandlePivotUnloaded" LoadingPivotItem="OnPivotLoading" >
             <!--Pivot item one-->
             <controls:PivotItem Header="persona">
                 <!--ContentPanel - place additional content here-->
                 <ScrollViewer>
                     <StackPanel>
-                            <TextBlock Text="nickname" VerticalAlignment="Center" />
+                        <TextBlock Text="nickname" VerticalAlignment="Center" />
                         <TextBox Text="{Binding CurrentUser.UserName, Mode=TwoWay}" />
 
-                            <TextBlock Text="user image" VerticalAlignment="Center" />
-                            
+                        <TextBlock Text="user image" VerticalAlignment="Center" />
+
                         <Grid>
                             <Image Source="{Binding CurrentUser.UserImage}" Width="256" Margin="8" />
 
                             <ProgressBar Width="256" x:Name="UploadImageProgress" IsIndeterminate="True" Visibility="Collapsed" />
                         </Grid>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Button Tap="ClearImage_Tap">remove</Button>
-                                <Button Tap="ChangeImage_Tap">change</Button>
-                            </StackPanel>
+                            <Button Tap="ClearImage_Tap">remove</Button>
+                            <Button Tap="ChangeImage_Tap">change</Button>
+                        </StackPanel>
 
                     </StackPanel>
                 </ScrollViewer>
@@ -195,7 +209,7 @@
             <controls:PivotItem Name="DemoPivot" Header="demographics">
                 <!--ContentPanel - place additional content here-->
                 <ScrollViewer>
-                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Vertical">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
@@ -219,156 +233,156 @@
 
 
                         <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="138" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="138" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
 
-                        <TextBlock Text="Date of Birth"  Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
+                            <TextBlock Text="Date of Birth"  Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
                             <toolkit:DatePicker x:Name="DOBField" Grid.Column="0" Grid.Row="1" ValueChanged="DOBValChanged" />
                             <toolkit:ToggleSwitch x:Name="DOBPerm" Checked="DOBPerm_Checked"  Grid.Row="1" Grid.Column="1" Content="" >
-                            <toolkit:ToggleSwitch.Projection>
-                                <PlaneProjection GlobalOffsetY="10"/>
-                            </toolkit:ToggleSwitch.Projection>
-                        </toolkit:ToggleSwitch>
-                    </Grid>
+                                <toolkit:ToggleSwitch.Projection>
+                                    <PlaneProjection GlobalOffsetY="10"/>
+                                </toolkit:ToggleSwitch.Projection>
+                            </toolkit:ToggleSwitch>
+                        </Grid>
 
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="138" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="138" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
 
                             <TextBlock Text="Ethnicity"   Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
                             <toolkit:ListPicker  SelectionChanged="Race_SelectionChanged"  x:Name="RaceList" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding UserProfileSchema.RaceChoices}" >
-                        </toolkit:ListPicker>
+                            </toolkit:ListPicker>
                             <toolkit:ToggleSwitch x:Name="RacePerm" Checked="RacePerm_Checked"  Grid.Row="1" Grid.Column="1" Content="">
-                            <toolkit:ToggleSwitch.Projection>
-                                <PlaneProjection GlobalOffsetY="20"/>
-                            </toolkit:ToggleSwitch.Projection>
-                        </toolkit:ToggleSwitch>
-                    </Grid>
+                                <toolkit:ToggleSwitch.Projection>
+                                    <PlaneProjection GlobalOffsetY="20"/>
+                                </toolkit:ToggleSwitch.Projection>
+                            </toolkit:ToggleSwitch>
+                        </Grid>
 
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="138" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="138" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
 
-                        <TextBlock Text="City" Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
+                            <TextBlock Text="City" Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
                             <TextBox Grid.Row="1" x:Name="CityField" TextChanged="CityTextChanged"  />
                             <toolkit:ToggleSwitch x:Name="CityPerm" Checked="CityPerm_Checked"  Grid.Row="1" Grid.Column="1" Content="">
-                            <toolkit:ToggleSwitch.Projection>
-                                <PlaneProjection GlobalOffsetY="20"/>
-                            </toolkit:ToggleSwitch.Projection>
-                        </toolkit:ToggleSwitch>
-                    </Grid>
+                                <toolkit:ToggleSwitch.Projection>
+                                    <PlaneProjection GlobalOffsetY="20"/>
+                                </toolkit:ToggleSwitch.Projection>
+                            </toolkit:ToggleSwitch>
+                        </Grid>
 
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="138" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="138" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
 
-                        <TextBlock Text="State"  Grid.Row="0"  Grid.ColumnSpan="2" ></TextBlock>
+                            <TextBlock Text="State"  Grid.Row="0"  Grid.ColumnSpan="2" ></TextBlock>
                             <TextBox Grid.Row="1" x:Name="StateField" TextChanged="StateTextChanged"/>
                             <toolkit:ToggleSwitch x:Name="StatePerm" Checked="StatePerm_Checked"  Grid.Row="1" Grid.Column="1" Content="" >
-                            <toolkit:ToggleSwitch.Projection>
-                                <PlaneProjection GlobalOffsetY="20"/>
-                            </toolkit:ToggleSwitch.Projection>
-                        </toolkit:ToggleSwitch>
-                    </Grid>
+                                <toolkit:ToggleSwitch.Projection>
+                                    <PlaneProjection GlobalOffsetY="20"/>
+                                </toolkit:ToggleSwitch.Projection>
+                            </toolkit:ToggleSwitch>
+                        </Grid>
 
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="138" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="138" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
 
-                        <TextBlock Text="Post Code"  Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
+                            <TextBlock Text="Post Code"  Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
                             <TextBox Grid.Row="1" x:Name="ZipcodeField" TextChanged="ZipcodeTextChanged"/>
                             <toolkit:ToggleSwitch x:Name="ZipcodePerm" Checked="ZipcodePerm_Checked"  Grid.Row="1" Grid.Column="1" Content="">
-                            <toolkit:ToggleSwitch.Projection>
-                                <PlaneProjection GlobalOffsetY="20"/>
-                            </toolkit:ToggleSwitch.Projection>
-                        </toolkit:ToggleSwitch>
-                    </Grid>
+                                <toolkit:ToggleSwitch.Projection>
+                                    <PlaneProjection GlobalOffsetY="20"/>
+                                </toolkit:ToggleSwitch.Projection>
+                            </toolkit:ToggleSwitch>
+                        </Grid>
 
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="138" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="138" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
 
                             <TextBlock Text="Country"  Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
                             <toolkit:ListPicker  x:Name="CountryList"  SelectionChanged="Country_SelectionChanged"  Grid.Row="1" Grid.Column="0" ItemsSource="{Binding UserProfileSchema.CountryChoices}">
-                        </toolkit:ListPicker>
+                            </toolkit:ListPicker>
                             <toolkit:ToggleSwitch x:Name="CountryPerm" Checked="CountryPerm_Checked" Grid.Row="1" Grid.Column="1" Content="" >
-                            <toolkit:ToggleSwitch.Projection>
-                                <PlaneProjection GlobalOffsetY="20"/>
-                            </toolkit:ToggleSwitch.Projection>
-                        </toolkit:ToggleSwitch>
-                    </Grid>
+                                <toolkit:ToggleSwitch.Projection>
+                                    <PlaneProjection GlobalOffsetY="20"/>
+                                </toolkit:ToggleSwitch.Projection>
+                            </toolkit:ToggleSwitch>
+                        </Grid>
 
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="138" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="138" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
 
                             <TextBlock Text="Income" x:Name="IncomeSelect" Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
                             <toolkit:ListPicker  SelectionChanged="Income_SelectionChanged"  x:Name="IncomeList"  Grid.Row="1" Grid.Column="0" ItemsSource="{Binding UserProfileSchema.IncomeChoices}">
-                        </toolkit:ListPicker>
+                            </toolkit:ListPicker>
                             <toolkit:ToggleSwitch x:Name="IncomePerm" Checked="IncomePerm_Checked" Grid.Row="1" Grid.Column="1" Content="" >
-                            <toolkit:ToggleSwitch.Projection>
-                                <PlaneProjection GlobalOffsetY="20"/>
-                            </toolkit:ToggleSwitch.Projection>
-                        </toolkit:ToggleSwitch>
-                    </Grid>
+                                <toolkit:ToggleSwitch.Projection>
+                                    <PlaneProjection GlobalOffsetY="20"/>
+                                </toolkit:ToggleSwitch.Projection>
+                            </toolkit:ToggleSwitch>
+                        </Grid>
 
 
-                </StackPanel>
+                    </StackPanel>
                 </ScrollViewer>
             </controls:PivotItem>
 
             <controls:PivotItem Header="posts">
                 <!--ContentPanel - place additional content here-->
                 <Grid>
-                    <ListBox  x:Name="UserPostList" ItemsSource="{Binding CurrentUser.PostHistory}"  Margin="0 0 0 72"
+                    <ListBox  SelectionChanged="UserPostList_SelectionChanged"  x:Name="UserPostList" ItemsSource="{Binding CurrentUser.PostHistory}"  Margin="0 0 0 72"
                         ItemTemplate="{StaticResource UserPostTemplate}"
                         VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
                         <ListBox.ItemContainerStyle>
@@ -389,7 +403,7 @@
             <controls:PivotItem Header="comments">
                 <!--ContentPanel - place additional content here-->
                 <Grid>
-                    <ListBox  x:Name="UserCommentList"  Margin="0 0 0 72"
+                    <ListBox  x:Name="UserCommentList"  Margin="0 0 0 72" SelectionChanged="UserCommentList_SelectionChanged"
                         ItemTemplate="{StaticResource UserCommentTemplate}"
                               ItemsSource="{Binding CurrentUser.CommentHistory}"
                          VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
@@ -407,7 +421,7 @@
                     </Border>
                 </Grid>
             </controls:PivotItem>
-            
+
             <controls:PivotItem Header="stats">
                 <!--ContentPanel - place additional content here-->
                 <Grid>
@@ -417,7 +431,7 @@
                                               HeaderTemplate="{StaticResource LargeHeaderTemplate}" Style="{StaticResource CompactExpanderTemplate}">
                                 <chart:RadCartesianChart x:Name="StandingChart" Height="200">
                                     <chart:RadCartesianChart.HorizontalAxis>
-                                        <chart:LinearAxis />
+                                        <chart:LinearAxis Maximum="1" LabelFormat="P0" LabelInterval="2" />
                                     </chart:RadCartesianChart.HorizontalAxis>
                                     <chart:RadCartesianChart.VerticalAxis>
                                         <chart:CategoricalAxis>
@@ -426,7 +440,7 @@
                                     </chart:RadCartesianChart.VerticalAxis>
                                 </chart:RadCartesianChart>
                             </toolkit:ExpanderView>
-                            
+
                             <toolkit:ExpanderView Header="your activity" Margin="0 0 0 16" IsExpanded="True"
                                               HeaderTemplate="{StaticResource LargeHeaderTemplate}" Style="{StaticResource CompactExpanderTemplate}">
                                 <TextBlock Text="impression count" Margin="0 16 0 0" />
@@ -491,7 +505,7 @@
                                         <chart:LinearAxis LineStroke="{StaticResource PhoneDisabledBrush}" LineThickness="2"/>
                                     </chart:RadCartesianChart.VerticalAxis>
                                 </chart:RadCartesianChart>
-                                
+
                                 <TextBlock Text="impressions" Margin="0 16 0 0" />
                                 <chart:RadCartesianChart x:Name="ViewChart" Height="200" EmptyContent="No impressions in the last week">
                                     <chart:RadCartesianChart.HorizontalAxis>
@@ -618,7 +632,7 @@
                                     </chart:RadCartesianChart>
                                 </StackPanel>
 
-                                
+
                             </toolkit:ExpanderView>
                         </StackPanel>
                     </ScrollViewer>
@@ -632,20 +646,20 @@
             </controls:PivotItem>
             <controls:PivotItem Header="prefs">
                 <!--ContentPanel - place additional content here-->
-                    <ScrollViewer>
-                        <StackPanel>
-                            <TextBlock Text="user name" />
-                            <TextBlock x:Name="UserName" Text="{Binding CurrentUser.AccountName}" FontSize="24" Margin="8 0 0 15"/>
-                            <TextBlock Text="password" />
-                            <Button HorizontalAlignment="Center"  Margin="16">change password</Button>
-                            <TextBlock Text="recovery email" VerticalAlignment="Center" />
-                            <TextBlock x:Name="recover" Text="{Binding CurrentUser.RecoveryEmail}" FontSize="24" />
-                            <Button HorizontalAlignment="Center"  Margin="16">set recovery email</Button>
-                        
+                <ScrollViewer>
+                    <StackPanel>
+                        <TextBlock Text="user name" />
+                        <TextBlock x:Name="UserName" Text="{Binding CurrentUser.AccountName}" FontSize="24" Margin="8 0 0 15"/>
+                        <TextBlock Text="password" />
+                        <Button HorizontalAlignment="Center"  Margin="16">change password</Button>
+                        <TextBlock Text="recovery email" VerticalAlignment="Center" />
+                        <TextBlock x:Name="recover" Text="{Binding CurrentUser.RecoveryEmail}" FontSize="24" />
+                        <Button HorizontalAlignment="Center"  Margin="16">set recovery email</Button>
+
                         <toolkit:ToggleSwitch Header="profanity filter" />
                         <toolkit:ToggleSwitch Header="flagged content filter" />
                     </StackPanel>
-                    </ScrollViewer>
+                </ScrollViewer>
 
             </controls:PivotItem>
 

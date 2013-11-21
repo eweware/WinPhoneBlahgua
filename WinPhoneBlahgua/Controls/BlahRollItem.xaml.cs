@@ -16,6 +16,9 @@ namespace WinPhoneBlahgua
     {
         private static float minTextSize = 12;
         private static float maxTextSize = 72;
+        private static float smallText = 16;
+        private static float medText = 36;
+        private static float largeText = 52;
         public InboxBlah BlahData {get; set;}
 
         public bool IsAnimating { get; set; }
@@ -32,7 +35,7 @@ namespace WinPhoneBlahgua
         public void Initialize(InboxBlah theBlah)
         {
             BlahData = theBlah;
-            BlahBackground.Fill = GetBlahFrameBrush(BlahData);
+            //BlahBackground.Fill = GetBlahFrameBrush(BlahData);
             TopBorder.BorderBrush = GetBlahFrameBrush(BlahData);
             User curUser = App.BlahguaAPI.CurrentUser;
 
@@ -42,7 +45,7 @@ namespace WinPhoneBlahgua
             }
             else
                 ((Grid)OwnedBlahIndicator.Parent).Children.Remove(OwnedBlahIndicator);
-            BlahBackground.Opacity = .4;
+            //BlahBackground.Opacity = .4;
             if (theBlah.B == null)
                 BadgeIcon.Visibility = Visibility.Collapsed;
             
@@ -74,7 +77,7 @@ namespace WinPhoneBlahgua
             if ((BlahData.T != null) && (BlahData.T != ""))
             {
                 BlahBackground.Opacity = .8;
-                TextArea.Foreground = (Brush)App.Current.Resources["BrushBlahguaWhite"];
+                TextArea.Foreground = (Brush)App.Current.Resources["BrushBlahguaBlack"];
                 BlahBackground.Visibility = Visibility.Collapsed;
                 TextArea.Visibility = Visibility.Collapsed;
             }
@@ -108,7 +111,6 @@ namespace WinPhoneBlahgua
                     newBrush =  (Brush)App.Current.Resources["BaseBrushSays"];
                     break;
             }
-
 
             return newBrush;
         }
@@ -144,6 +146,21 @@ namespace WinPhoneBlahgua
 
         public void ScaleTextToFit()
         {
+            switch (BlahData.displaySize)
+            {
+                case 3:
+                    TextArea.FontSize = smallText;
+                    break;
+                case 2:
+                    TextArea.FontSize = medText;
+                    break;
+                case 1:
+                    TextArea.FontSize = largeText;
+                    break;
+
+            }
+            TextArea.TextTrimming = TextTrimming.WordEllipsis;
+            /*
             float curFontSize = minTextSize;
             double lastSize = 0;
             TextArea.FontSize = curFontSize;
@@ -170,6 +187,7 @@ namespace WinPhoneBlahgua
             curFontSize--;
             TextArea.FontSize = curFontSize;
             TextArea.TextTrimming = TextTrimming.WordEllipsis;
+             */
 
         }
     }

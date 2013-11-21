@@ -8,7 +8,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System.ComponentModel;
-
+using Microsoft.Phone.Tasks;
 
 namespace WinPhoneBlahgua
 {
@@ -79,6 +79,17 @@ namespace WinPhoneBlahgua
         private void HandleUserSignIn()
         {
             NavigationService.GoBack();
+        }
+
+        private void HyperlinkButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            EmailComposeTask emailComposeTask = new EmailComposeTask();
+
+            emailComposeTask.Subject = "feedback on blahgua";
+            emailComposeTask.Body = "";
+            emailComposeTask.To = "admin@blahgua.com";
+
+            emailComposeTask.Show();    
         }
     }
 }

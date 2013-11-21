@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using Telerik.Windows.Controls;
 using Telerik.Charting;
 using System.Windows.Data;
+using System.Reflection;
 
 namespace WinPhoneBlahgua
 {
@@ -190,46 +191,53 @@ namespace WinPhoneBlahgua
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-
-            // update the text
-            if (currentPage == "summary")
-            {
-                UpdateSummaryButtons();
-            }
-            else if (currentPage == "comments")
+            if (currentPage == "comments")
             {
                 AllCommentList.ItemsSource = App.BlahguaAPI.CurrentBlah.Comments;
-                UpdateCommentButtons();
             }
-            else if (currentPage == "stats")
-                UpdateStatsPage();
-            
+
+            // update the text
+            UpdateButtonsForPage();
+          
         }
 
         void SetBlahBackground()
         {
             Brush newBrush;
+            string defaultImg;
 
             switch (App.BlahguaAPI.CurrentBlah.TypeName)
             {
                 case "leaks":
                     newBrush = (Brush)App.Current.Resources["BaseBrushLeaks"];
+                    defaultImg = "/Images/bkgnds/leaks.jpg";
                     break;
                 case "polls":
-                    newBrush = (Brush)App.Current.Resources["BaseBrushPolls"]; 
+                    newBrush = (Brush)App.Current.Resources["BaseBrushPolls"];
+                    defaultImg = "/Images/bkgnds/polls.jpg";
                     break;
                 case "asks":
+                    defaultImg = "/Images/bkgnds/asks.jpg";
                     newBrush = (Brush)App.Current.Resources["BaseBrushAsks"]; 
                     break;
                 case "predicts":
-                    newBrush = (Brush)App.Current.Resources["BaseBrushPredicts"]; 
+                    newBrush = (Brush)App.Current.Resources["BaseBrushPredicts"];
+                    defaultImg = "/Images/bkgnds/predicts.jpg";
                     break;
                 default:
-                    newBrush = (Brush)App.Current.Resources["BaseBrushSays"]; 
+                    newBrush = (Brush)App.Current.Resources["BaseBrushSays"];
+                    defaultImg = "/Images/bkgnds/says.jpg";
                     break;
             }
 
             BackgroundScreen.Fill = newBrush;
+
+            if (App.BlahguaAPI.CurrentBlah.ImageURL == null)
+            {
+                ImageSource defaultSrc = new BitmapImage(new Uri(defaultImg, UriKind.Relative));
+                BackgroundImage.Source = defaultSrc;
+                BackgroundImage2.Source = defaultSrc;
+            }
         }
 
         private void HandlePollInit()
@@ -436,64 +444,97 @@ namespace WinPhoneBlahgua
             // views
             if (stats.HasViews)
             {
+                maxVal = 0;
                 newSeries = new SplineAreaSeries();
                 for (int i = 0; i < stats.Count; i++)
                 {
                     newPoint = new CategoricalDataPoint();
                     newPoint.Value = stats.Impressions[i];
+                    if (newPoint.Value > maxVal)
+                        maxVal = (int)newPoint.Value;
                     newPoint.Category = stats[i].StatDate;
                     newSeries.DataPoints.Add(newPoint);
                 }
+
                 ViewChart.Series.Add(newSeries);
+                maxVal += 2;
+                if (maxVal < 5)
+                    maxVal = 5;
+                double step = (double)maxVal / 5;
+                ((LinearAxis)ViewChart.VerticalAxis).MajorStep = (int)Math.Round(step);
+                ((LinearAxis)ViewChart.VerticalAxis).Maximum = (int)maxVal;
             }
 
             // opens
             if (stats.HasOpens)
             {
+                maxVal = 0;
                 newSeries = new SplineAreaSeries();
                 for (int i = 0; i < stats.Count; i++)
                 {
                     newPoint = new CategoricalDataPoint();
                     newPoint.Value = stats.Opens[i];
+                    if (newPoint.Value > maxVal)
+                        maxVal = (int)newPoint.Value;
                     newPoint.Category = stats[i].StatDate;
                     newSeries.DataPoints.Add(newPoint);
                 }
                 OpenChart.Series.Add(newSeries);
+                maxVal += 2;
+                if (maxVal < 5)
+                    maxVal = 5;
+                double step = (double)maxVal / 5;
+                ((LinearAxis)OpenChart.VerticalAxis).MajorStep = (int)Math.Round(step);
+                ((LinearAxis)OpenChart.VerticalAxis).Maximum = (int)maxVal;
             }
  
 
             // comments
             if (stats.HasComments)
             {
+                maxVal = 0;
                 newSeries = new SplineAreaSeries();
                 for (int i = 0; i < stats.Count; i++)
                 {
                     newPoint = new CategoricalDataPoint();
                     newPoint.Value = stats.Comments[i];
+                    if (newPoint.Value > maxVal)
+                        maxVal = (int)newPoint.Value;
                     newPoint.Category = stats[i].StatDate;
                     newSeries.DataPoints.Add(newPoint);
                 }
                 CommentChart.Series.Add(newSeries);
+                maxVal += 2;
+                if (maxVal < 5)
+                    maxVal = 5;
+                double step = (double)maxVal / 5;
+                ((LinearAxis)CommentChart.VerticalAxis).MajorStep = (int)Math.Round(step);
+                ((LinearAxis)CommentChart.VerticalAxis).Maximum = (int)maxVal;
             }
 
             // gender
             if (App.BlahguaAPI.CurrentUser != null)
             {
-                CreateDemoChart(GenderChart, "B");
+                UserProfile profile = App.BlahguaAPI.CurrentUser.Profile;
 
-                // age
-                CreateDemoChart(AgeChart, "C");
+                if (profile != null)
+                {
+                    CreateDemoChart(GenderChart, "B");
+
+                    // age
+                    CreateDemoChart(AgeChart, "C");
 
 
-                // race
-                CreateDemoChart(RaceChart, "D");
+                    // race
+                    CreateDemoChart(RaceChart, "D");
 
 
-                // income
-                CreateDemoChart(IncomeChart, "E");
+                    // income
+                    CreateDemoChart(IncomeChart, "E");
 
-                // country
-                CreateDemoChart(CountryChart, "J");
+                    // country
+                    CreateDemoChart(CountryChart, "J");
+                }
                 
             }
 
@@ -501,40 +542,70 @@ namespace WinPhoneBlahgua
 
         private void CreateDemoChart(RadCartesianChart theChart, string demoProp)
         {
-            Dictionary<string, string> curDict = App.BlahguaAPI.UserProfileSchema.GetTypesForProperty(demoProp);
+            bool visible = false;
 
-            CategoricalDataPoint promotePoint, demotePoint;
-            CategoricalSeries promoteSeries = new BarSeries();
-            CategoricalSeries demoteSeries = new BarSeries();
-            Blah curBlah = App.BlahguaAPI.CurrentBlah;
-            DemoProfileSummaryRecord upVotes = curBlah._d._u;
-            DemoProfileSummaryRecord downVotes = curBlah._d._d;
-
-            promoteSeries.CombineMode = ChartSeriesCombineMode.Stack;
-            demoteSeries.CombineMode = ChartSeriesCombineMode.Stack;
-            int maxVal = 0;
-            foreach (string curVal in curDict.Keys)
+            if ((App.BlahguaAPI.CurrentUser != null) &&
+                (App.BlahguaAPI.CurrentUser.Profile != null))
             {
-                promotePoint = new CategoricalDataPoint();
-                promotePoint.Category = curDict[curVal];
-                promotePoint.Value = upVotes.GetPropertyValue(demoProp, curVal);// curBlah._d._u.B.GetValue(curVal);
-                promoteSeries.DataPoints.Add(promotePoint);
-
-
-                demotePoint = new CategoricalDataPoint();
-                demotePoint.Category = curDict[curVal];
-                demotePoint.Value = downVotes.GetPropertyValue(demoProp, curVal);
-                demoteSeries.DataPoints.Add(demotePoint);
-
-                if ((promotePoint.Value + demotePoint.Value) > maxVal)
-                    maxVal = (int)(promotePoint.Value + demotePoint.Value);
+                UserProfile  theProfile = App.BlahguaAPI.CurrentUser.Profile;
+                PropertyInfo theProp = theProfile.GetType().GetProperty(demoProp);
+                if (theProp != null)
+                {
+                    string theVal = (string)theProp.GetValue(theProfile, null);
+                    if (theVal != "-1")
+                        visible = true;
+                }
             }
-            if (maxVal > 0)
+
+            if (visible)
             {
-                maxVal += 2;
-                ((LinearAxis)theChart.VerticalAxis).Maximum = maxVal;
-                theChart.Series.Add(promoteSeries);
-                theChart.Series.Add(demoteSeries);
+                Dictionary<string, string> curDict = App.BlahguaAPI.UserProfileSchema.GetTypesForProperty(demoProp);
+
+                CategoricalDataPoint promotePoint, demotePoint;
+                CategoricalSeries promoteSeries = new BarSeries();
+                CategoricalSeries demoteSeries = new BarSeries();
+                Blah curBlah = App.BlahguaAPI.CurrentBlah;
+                DemoProfileSummaryRecord upVotes = curBlah._d._u;
+                DemoProfileSummaryRecord downVotes = curBlah._d._d;
+
+                promoteSeries.CombineMode = ChartSeriesCombineMode.Stack;
+                demoteSeries.CombineMode = ChartSeriesCombineMode.Stack;
+                int maxVal = 0;
+                foreach (string curVal in curDict.Keys)
+                {
+                    promotePoint = new CategoricalDataPoint();
+                    promotePoint.Category = curDict[curVal];
+                    promotePoint.Value = upVotes.GetPropertyValue(demoProp, curVal);// curBlah._d._u.B.GetValue(curVal);
+                    promoteSeries.DataPoints.Add(promotePoint);
+
+
+                    demotePoint = new CategoricalDataPoint();
+                    demotePoint.Category = curDict[curVal];
+                    demotePoint.Value = downVotes.GetPropertyValue(demoProp, curVal);
+                    demoteSeries.DataPoints.Add(demotePoint);
+
+                    if ((promotePoint.Value + demotePoint.Value) > maxVal)
+                        maxVal = (int)(promotePoint.Value + demotePoint.Value);
+                }
+                if (maxVal > 0)
+                {
+                    maxVal += 2;
+                    if (maxVal < 5)
+                        maxVal = 5;
+                    ((LinearAxis)theChart.VerticalAxis).Maximum = maxVal;
+                    if (maxVal < 5)
+                        maxVal = 5;
+                    double step = (double)maxVal / 5;
+                    ((LinearAxis)theChart.VerticalAxis).MajorStep = (int)Math.Round(step);
+
+                    theChart.Series.Add(promoteSeries);
+                    theChart.Series.Add(demoteSeries);
+                }
+            }
+            else
+            {
+                theChart.EmptyContent = "Set this attribute in your profile to see it for others.";
+                theChart.EmptyContentTemplate = (DataTemplate)Resources["HiddenChartTemplate"];
             }
         }
 
@@ -683,9 +754,10 @@ namespace WinPhoneBlahgua
             Canvas.SetLeft(BackgroundImage, -320);
         }
 
-        private void HandlePivotLoaded(object sender, PivotItemEventArgs e)
+        private void UpdateButtonsForPage()
         {
-            currentPage = e.Item.Header.ToString();
+            ApplicationBar.Buttons.Clear();
+            ApplicationBar.MenuItems.Clear();
             if (App.BlahguaAPI.CurrentUser != null)
             {
                 switch (currentPage)
@@ -730,6 +802,12 @@ namespace WinPhoneBlahgua
                 if (currentPage == "stats")
                     UpdateStatsPage();
             }
+        }
+
+        private void HandlePivotLoaded(object sender, PivotItemEventArgs e)
+        {
+            currentPage = e.Item.Header.ToString();
+            UpdateButtonsForPage();
         }
 
         private void HandlePivotUnloaded(object sender, PivotItemEventArgs e)

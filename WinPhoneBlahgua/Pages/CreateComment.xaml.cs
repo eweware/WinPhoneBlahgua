@@ -102,7 +102,7 @@ namespace WinPhoneBlahgua
                             ImagesPanel.Children.Remove(newBar);
                             App.BlahguaAPI.CreateCommentRecord.M = new List<string>();
                             App.BlahguaAPI.CreateCommentRecord.M.Add(photoString);
-                            BackgroundImage.Source = new BitmapImage(new Uri(App.BlahguaAPI.GetImageURL(photoString, "D"), UriKind.Absolute));
+                            //BackgroundImage.Source = new BitmapImage(new Uri(App.BlahguaAPI.GetImageURL(photoString, "D"), UriKind.Absolute));
                         }
                         else
                             ClearImages();

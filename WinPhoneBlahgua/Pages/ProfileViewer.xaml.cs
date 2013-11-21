@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using Microsoft.Phone.Tasks;
+using System.Reflection;
+
 
 namespace WinPhoneBlahgua
 {
@@ -26,7 +28,7 @@ namespace WinPhoneBlahgua
         private bool postsLoaded = false;
         private bool statsLoaded = false;
         private bool isDemoPopulated = false;
-
+        private string currentPage;
         public ProfileViewer()
         {
             InitializeComponent();
@@ -35,6 +37,7 @@ namespace WinPhoneBlahgua
             commentsLoaded = false;
             postsLoaded = false;
             statsLoaded = false;
+            currentPage = "persona";
 
             this.ApplicationBar = new ApplicationBar();
             this.ApplicationBar.IsVisible = false;
@@ -172,12 +175,17 @@ namespace WinPhoneBlahgua
 
             // views
             bool hasVotes = false;
+            int maxVal;
 
+
+            maxVal = 0;
             newSeries = new SplineAreaSeries();
             for (int i = 0; i < userInfo.DayCount; i++)
             {
                 newPoint = new CategoricalDataPoint();
                 newPoint.Value = userInfo.UserViews(i);
+                if (newPoint.Value > maxVal)
+                    maxVal = (int)newPoint.Value;
                 if (newPoint.Value > 0)
                     hasVotes = true;
                 newPoint.Category = userInfo.StatDate(i);
@@ -185,112 +193,179 @@ namespace WinPhoneBlahgua
             }
             
             if (hasVotes)
+            {
                 UserViewChart.Series.Add(newSeries);
+                maxVal += 2;
+                if (maxVal < 5)
+                    maxVal = 5;
+                double step = (double)maxVal / 5;
+                ((LinearAxis)UserViewChart.VerticalAxis).MajorStep = (int)Math.Round(step);
+                ((LinearAxis)UserViewChart.VerticalAxis).Maximum = (int)maxVal;
+            }
             
 
             // opens
+            maxVal = 0;
             hasVotes = false;
             newSeries = new SplineAreaSeries();
             for (int i = 0; i < userInfo.DayCount; i++)
             {
                 newPoint = new CategoricalDataPoint();
                 newPoint.Value = userInfo.UserOpens(i);
+                if (newPoint.Value > maxVal)
+                    maxVal = (int)newPoint.Value;
                 if (newPoint.Value > 0)
                     hasVotes = true;
                 newPoint.Category = userInfo.StatDate(i);
                 newSeries.DataPoints.Add(newPoint);
             }
             if (hasVotes)
+            {
                 UserOpenChart.Series.Add(newSeries);
+                maxVal += 2;
+                if (maxVal < 5)
+                    maxVal = 5;
+                double step = (double)maxVal / 5;
+                ((LinearAxis)UserOpenChart.VerticalAxis).MajorStep = (int)Math.Round(step);
+                ((LinearAxis)UserOpenChart.VerticalAxis).Maximum = (int)maxVal;
+            }
             
 
             // created
+            maxVal = 0;
             hasVotes = false;
             newSeries = new SplineAreaSeries();
             for (int i = 0; i < userInfo.DayCount; i++)
             {
                 newPoint = new CategoricalDataPoint();
                 newPoint.Value = userInfo.UserCreates(i);
+                if (newPoint.Value > maxVal)
+                    maxVal = (int)newPoint.Value;
                 if (newPoint.Value > 0)
                     hasVotes = true;
                 newPoint.Category = userInfo.StatDate(i);
                 newSeries.DataPoints.Add(newPoint);
             }
             if (hasVotes)
+            {
                 PostsCreatedChart.Series.Add(newSeries);
+                maxVal += 2;
+                if (maxVal < 5)
+                    maxVal = 5;
+                double step = (double)maxVal / 5;
+                ((LinearAxis)PostsCreatedChart.VerticalAxis).MajorStep = (int)Math.Round(step);
+                ((LinearAxis)PostsCreatedChart.VerticalAxis).Maximum = (int)maxVal;
+            }
             
 
 
             // comments
+            maxVal = 0;
             hasVotes = false;
             newSeries = new SplineAreaSeries();
             for (int i = 0; i < userInfo.DayCount; i++)
             {
                 newPoint = new CategoricalDataPoint();
                 newPoint.Value = userInfo.UserComments(i);
+                if (newPoint.Value > maxVal)
+                    maxVal = (int)newPoint.Value;
                 if (newPoint.Value > 0)
                     hasVotes = true;
                 newPoint.Category = userInfo.StatDate(i);
                 newSeries.DataPoints.Add(newPoint);
             }
             if (hasVotes)
+            {
                 CommentsCreatedChart.Series.Add(newSeries);
+                maxVal += 2;
+                if (maxVal < 5)
+                    maxVal = 5;
+                double step = (double)maxVal / 5;
+                ((LinearAxis)CommentsCreatedChart.VerticalAxis).MajorStep = (int)Math.Round(step);
+                ((LinearAxis)CommentsCreatedChart.VerticalAxis).Maximum = (int)maxVal;
+            }
             
 
-            // audience stats
-            hasVotes = false;
-
-            if (hasVotes)
-            { }
-
-
             // views
+            maxVal = 0;
             hasVotes = false;
             newSeries = new SplineAreaSeries();
             for (int i = 0; i < userInfo.DayCount; i++)
             {
                 newPoint = new CategoricalDataPoint();
                 newPoint.Value = userInfo.Views(i);
+                if (newPoint.Value > maxVal)
+                    maxVal = (int)newPoint.Value;
                 if (newPoint.Value > 0)
                     hasVotes = true;
                 newPoint.Category = userInfo.StatDate(i);
                 newSeries.DataPoints.Add(newPoint);
             }
             if (hasVotes)
+            {
                 ViewChart.Series.Add(newSeries);
+                maxVal += 2;
+                if (maxVal < 5)
+                    maxVal = 5;
+                double step = (double)maxVal / 5;
+                ((LinearAxis)ViewChart.VerticalAxis).MajorStep = (int)Math.Round(step);
+                ((LinearAxis)ViewChart.VerticalAxis).Maximum = (int)maxVal;
+            }
             
 
             // opens
+            maxVal = 0;
             hasVotes = false;
             newSeries = new SplineAreaSeries();
             for (int i = 0; i < userInfo.DayCount; i++)
             {
                 newPoint = new CategoricalDataPoint();
                 newPoint.Value = userInfo.Opens(i);
+                if (newPoint.Value > maxVal)
+                    maxVal = (int)newPoint.Value;
                 if (newPoint.Value > 0)
                     hasVotes = true;
                 newPoint.Category = userInfo.StatDate(i);
                 newSeries.DataPoints.Add(newPoint);
             }
             if (hasVotes)
+            {
                 OpenChart.Series.Add(newSeries);
+                maxVal += 2;
+                if (maxVal < 5)
+                    maxVal = 5;
+                double step = (double)maxVal / 5;
+                ((LinearAxis)OpenChart.VerticalAxis).MajorStep = (int)Math.Round(step);
+                ((LinearAxis)OpenChart.VerticalAxis).Maximum = (int)maxVal;
+            }
             
 
 
             // comments
+            maxVal = 0;
             hasVotes = false;
             newSeries = new SplineAreaSeries();
             for (int i = 0; i < userInfo.DayCount; i++)
             {
                 newPoint = new CategoricalDataPoint();
                 newPoint.Value = userInfo.Comments(i);
+                if (newPoint.Value > maxVal)
+                    maxVal = (int)newPoint.Value;
                 if (newPoint.Value > 0)
                     hasVotes = true;
                 newPoint.Category = userInfo.StatDate(i);
                 newSeries.DataPoints.Add(newPoint);
             }
             if (hasVotes)
+            {
                 CommentChart.Series.Add(newSeries);
+                maxVal += 2;
+                if (maxVal < 5)
+                    maxVal = 5;
+                double step = (double)maxVal / 5;
+                ((LinearAxis)CommentChart.VerticalAxis).MajorStep = (int)Math.Round(step);
+                ((LinearAxis)CommentChart.VerticalAxis).Maximum = (int)maxVal;
+            }
             
 
             // gender
@@ -313,40 +388,63 @@ namespace WinPhoneBlahgua
 
         private void CreateUserDemoChart(RadCartesianChart theChart, string demoProp)
         {
-            Dictionary<string, string> curDict = App.BlahguaAPI.UserProfileSchema.GetTypesForProperty(demoProp);
+            bool visible = false;
 
-            CategoricalDataPoint promotePoint, demotePoint;
-            CategoricalSeries promoteSeries = new BarSeries();
-            CategoricalSeries demoteSeries = new BarSeries();
-            UserInfoObject curInfo = App.BlahguaAPI.CurrentUser.UserInfo;
-            DemoProfileSummaryRecord upVotes = curInfo._d._u;
-            DemoProfileSummaryRecord downVotes = curInfo._d._d;
-            promoteSeries.CombineMode = ChartSeriesCombineMode.Stack;
-            demoteSeries.CombineMode = ChartSeriesCombineMode.Stack;
-
-            int maxVal = 0;
-            foreach (string curVal in curDict.Keys)
+            if ((App.BlahguaAPI.CurrentUser != null) &&
+                (App.BlahguaAPI.CurrentUser.Profile != null))
             {
-                promotePoint = new CategoricalDataPoint();
-                promotePoint.Category = curDict[curVal];
-                promotePoint.Value = upVotes.GetPropertyValue(demoProp, curVal);// curBlah._d._u.B.GetValue(curVal);
-                promoteSeries.DataPoints.Add(promotePoint);
-
-
-                demotePoint = new CategoricalDataPoint();
-                demotePoint.Category = curDict[curVal];
-                demotePoint.Value = downVotes.GetPropertyValue(demoProp, curVal);
-                demoteSeries.DataPoints.Add(demotePoint);
-
-                if ((promotePoint.Value + demotePoint.Value) > maxVal)
-                    maxVal = (int)(promotePoint.Value + demotePoint.Value);
+                UserProfile  theProfile = App.BlahguaAPI.CurrentUser.Profile;
+                PropertyInfo theProp = theProfile.GetType().GetProperty(demoProp);
+                if (theProp != null)
+                {
+                    string theVal = (string)theProp.GetValue(theProfile, null);
+                    if (theVal != "-1")
+                        visible = true;
+                }
             }
-            if (maxVal > 0)
+
+            if (visible)
             {
-                maxVal += 2;
-                ((LinearAxis)theChart.VerticalAxis).Maximum = maxVal;
-                theChart.Series.Add(promoteSeries);
-                theChart.Series.Add(demoteSeries);
+                Dictionary<string, string> curDict = App.BlahguaAPI.UserProfileSchema.GetTypesForProperty(demoProp);
+
+                CategoricalDataPoint promotePoint, demotePoint;
+                CategoricalSeries promoteSeries = new BarSeries();
+                CategoricalSeries demoteSeries = new BarSeries();
+                UserInfoObject curInfo = App.BlahguaAPI.CurrentUser.UserInfo;
+                DemoProfileSummaryRecord upVotes = curInfo._d._u;
+                DemoProfileSummaryRecord downVotes = curInfo._d._d;
+                promoteSeries.CombineMode = ChartSeriesCombineMode.Stack;
+                demoteSeries.CombineMode = ChartSeriesCombineMode.Stack;
+
+                int maxVal = 0;
+                foreach (string curVal in curDict.Keys)
+                {
+                    promotePoint = new CategoricalDataPoint();
+                    promotePoint.Category = curDict[curVal];
+                    promotePoint.Value = upVotes.GetPropertyValue(demoProp, curVal);// curBlah._d._u.B.GetValue(curVal);
+                    promoteSeries.DataPoints.Add(promotePoint);
+
+
+                    demotePoint = new CategoricalDataPoint();
+                    demotePoint.Category = curDict[curVal];
+                    demotePoint.Value = downVotes.GetPropertyValue(demoProp, curVal);
+                    demoteSeries.DataPoints.Add(demotePoint);
+
+                    if ((promotePoint.Value + demotePoint.Value) > maxVal)
+                        maxVal = (int)(promotePoint.Value + demotePoint.Value);
+                }
+                if (maxVal > 0)
+                {
+                    maxVal += 2;
+                    ((LinearAxis)theChart.VerticalAxis).Maximum = maxVal;
+                    theChart.Series.Add(promoteSeries);
+                    theChart.Series.Add(demoteSeries);
+                }
+            }
+            else
+            {
+                theChart.EmptyContent = "Set this attribute in your profile to see it for others.";
+                theChart.EmptyContentTemplate = (DataTemplate)Resources["HiddenChartTemplate"];
             }
         }
 
@@ -406,11 +504,121 @@ namespace WinPhoneBlahgua
 
                 }
             }
+
+            // backgrounds
+            if ((newItem == "persona") && (currentPage == "prefs"))
+            {
+                // wrap around
+                BackgroundImage2.Visibility = Visibility.Visible;
+
+                Storyboard sb = new Storyboard();
+                DoubleAnimation db1 = new DoubleAnimation();
+                DoubleAnimation db2 = new DoubleAnimation();
+                ExponentialEase ease = new ExponentialEase();
+                ease.Exponent = 5;
+                ease.EasingMode = EasingMode.EaseIn;
+
+                db1.EasingFunction = ease;
+                db1.BeginTime = TimeSpan.FromSeconds(0);
+                db1.Duration = TimeSpan.FromSeconds(.5);
+                db1.To = -800;
+                Storyboard.SetTarget(db1, BackgroundImage);
+                Storyboard.SetTargetProperty(db1, new PropertyPath("(Canvas.Left)"));
+                sb.Children.Add(db1);
+
+                db2.EasingFunction = ease;
+                db2.BeginTime = TimeSpan.FromSeconds(0);
+                db2.Duration = TimeSpan.FromSeconds(.5);
+                db2.To = 0;
+                Storyboard.SetTarget(db2, BackgroundImage2);
+                Storyboard.SetTargetProperty(db2, new PropertyPath("(Canvas.Left)"));
+                sb.Children.Add(db2);
+
+                sb.Completed += sbWrap_Completed;
+                sb.Begin();
+            }
+            else if ((newItem == "prefs") && (currentPage == "persona"))
+            {
+                // back up
+                // wrap around
+                BackgroundImage2.Visibility = Visibility.Visible;
+
+                Storyboard sb = new Storyboard();
+                DoubleAnimation db1 = new DoubleAnimation();
+                DoubleAnimation db2 = new DoubleAnimation();
+                ExponentialEase ease = new ExponentialEase();
+                ease.Exponent = 5;
+                ease.EasingMode = EasingMode.EaseIn;
+
+                db1.EasingFunction = ease;
+                db1.BeginTime = TimeSpan.FromSeconds(0);
+                db1.Duration = TimeSpan.FromSeconds(.5);
+                db1.From = -800;
+                db1.To = -320;
+                Storyboard.SetTarget(db1, BackgroundImage);
+                Storyboard.SetTargetProperty(db1, new PropertyPath("(Canvas.Left)"));
+                sb.Children.Add(db1);
+
+                db2.EasingFunction = ease;
+                db2.BeginTime = TimeSpan.FromSeconds(0);
+                db2.Duration = TimeSpan.FromSeconds(.5);
+                db2.From = 0;
+                db2.To = 480;
+                Storyboard.SetTarget(db2, BackgroundImage2);
+                Storyboard.SetTargetProperty(db2, new PropertyPath("(Canvas.Left)"));
+                sb.Children.Add(db2);
+
+                sb.Completed += sbBackWrap_Completed;
+                sb.Begin();
+
+            }
+            else
+            {
+                // do the background
+                Storyboard sb = new Storyboard();
+                DoubleAnimation db = new DoubleAnimation();
+                double targetVal = 0;
+                double maxScroll = -320;
+                double offset;
+
+                if (ProfilePivot.Items.Count() > 1)
+                    offset = maxScroll / (ProfilePivot.Items.Count() - 1);
+                else
+                    offset = 0;
+                ExponentialEase ease = new ExponentialEase();
+                ease.Exponent = 5;
+                ease.EasingMode = EasingMode.EaseIn;
+
+                targetVal = offset * ProfilePivot.Items.IndexOf(e.Item);
+                db.EasingFunction = ease;
+                db.BeginTime = TimeSpan.FromSeconds(0);
+                db.Duration = TimeSpan.FromSeconds(.5);
+                db.To = targetVal;
+                Storyboard.SetTarget(db, BackgroundImage);
+                Storyboard.SetTargetProperty(db, new PropertyPath("(Canvas.Left)"));
+                sb.Children.Add(db);
+                sb.Begin();
+            }
+        }
+
+        void sbWrap_Completed(object sender, EventArgs e)
+        {
+            BackgroundImage2.Visibility = Visibility.Collapsed;
+            Canvas.SetLeft(BackgroundImage2, 480);
+            Canvas.SetLeft(BackgroundImage, 0);
+        }
+
+        void sbBackWrap_Completed(object sender, EventArgs e)
+        {
+            BackgroundImage2.Visibility = Visibility.Collapsed;
+            Canvas.SetLeft(BackgroundImage2, 480);
+            Canvas.SetLeft(BackgroundImage, -320);
         }
 
         private void HandlePivotLoaded(object sender, PivotItemEventArgs e)
         {
-            switch (e.Item.Header.ToString())
+            currentPage = e.Item.Header.ToString();
+            switch (currentPage)
             {
                 case "persona":
                     ApplicationBar.Buttons.Add(signOutBtn);
@@ -789,6 +997,43 @@ namespace WinPhoneBlahgua
                     }
                 );
             }
+        }
+
+        private void UserCommentList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ListBoxItem curItem;
+
+            foreach (Comment oldComment in e.RemovedItems)
+            {
+                curItem = (ListBoxItem)UserCommentList.ItemContainerGenerator.ContainerFromItem(oldComment);
+                if (curItem != null)
+                    curItem.Background = new SolidColorBrush(Colors.Transparent);
+            }
+
+            foreach (Comment newComment in e.AddedItems)
+            {
+                curItem = (ListBoxItem)UserCommentList.ItemContainerGenerator.ContainerFromItem(newComment);
+                curItem.Background = new SolidColorBrush(Color.FromArgb(128, 0, 0, 0));
+            }
+        }
+
+        private void UserPostList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ListBoxItem curItem;
+
+            foreach (Blah oldBlah in e.RemovedItems)
+            {
+                curItem = (ListBoxItem)UserPostList.ItemContainerGenerator.ContainerFromItem(oldBlah);
+                if (curItem != null)
+                    curItem.Background = new SolidColorBrush(Colors.Transparent);
+            }
+
+            foreach (Blah newBlah in e.AddedItems)
+            {
+                curItem = (ListBoxItem)UserPostList.ItemContainerGenerator.ContainerFromItem(newBlah);
+                curItem.Background = new SolidColorBrush(Color.FromArgb(128, 0, 0, 0));
+            }
+
         }
 
        

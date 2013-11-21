@@ -13,6 +13,7 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using System.Windows.Threading;
 using System.ComponentModel;
+using System.Windows.Media.Imaging;
 
 
 namespace WinPhoneBlahgua
@@ -733,6 +734,11 @@ namespace WinPhoneBlahgua
             targetBlah = null;
             BlahAnimateTimer.Stop();
             MaybeAnimateElement();
+        }
+
+        private void UserImageLoadFailed(object sender, ExceptionRoutedEventArgs e)
+        {
+            UserInfoBtn.Source = new BitmapImage(new Uri("/Images/unknown-user.png", UriKind.Relative));
         }
     }
 
