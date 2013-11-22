@@ -31,6 +31,7 @@ namespace WinPhoneBlahgua
         CommentCreateRecord createCommentRec = null;
         private UserDescription _userDescription = null;
         DispatcherTimer signinTimer;
+        private string _recoveryEmail;
 
         string badgeEndpoint;
 
@@ -45,6 +46,53 @@ namespace WinPhoneBlahgua
         public Blah NewBlahToInsert { get; set; }
         private Dictionary<string, string> intBadgeMap = new Dictionary<string,string>();
         private ProfileSchema _profileSchema = null;
+        private bool _filterProfanity = true;
+        private bool _filterFlaggedContent = true;
+
+        public string RecoveryEmail
+        {
+            get { return _recoveryEmail; }
+            set
+            {
+                if (value != _recoveryEmail)
+                {
+                    _recoveryEmail = value;
+                    BlahguaRest.SetRecoveryEmail(value, (theString) =>
+                        {
+                            OnPropertyChanged("RecoveryEmail");
+                        }
+                    );
+                    
+                }
+            }
+        }
+
+
+        public bool FilterProfanity
+        {
+            get { return _filterProfanity; }
+            set
+            {
+                _filterProfanity = value;
+                OnPropertyChanged("FilterProfanity");
+            }
+        }
+
+
+
+        public bool FilterFlaggedContent
+        {
+            get { return _filterFlaggedContent; }
+            set
+            {
+                _filterFlaggedContent = value;
+                OnPropertyChanged("FilterFlaggedContent");
+            }
+        }
+
+
+
+
 
         public delegate void BlahguaInit_callback(bool didIt);
 
@@ -140,11 +188,15 @@ namespace WinPhoneBlahgua
         void LoadSettings()
         {
             AutoLogin = (bool)SafeLoadSetting("AutoLogin", true);
+            FilterProfanity = (bool)SafeLoadSetting("FilterProfanity", true);
+            FilterFlaggedContent = (bool)SafeLoadSetting("FilterFlaggedContent", true);
         }
 
         void SaveSettings()
         {
             SafeSaveSetting("AutoLogin", AutoLogin);
+            SafeSaveSetting("FilterProfanity", FilterProfanity);
+            SafeSaveSetting("FilterFlaggedContent", FilterFlaggedContent);
         }
 
         public object SafeLoadSetting(string setting, object defVal)
@@ -187,7 +239,13 @@ namespace WinPhoneBlahgua
             if (originalString == null)
                 return null;
             else
-                return originalString.Replace("[_r;", "\n");
+            {
+                string finalString =  originalString.Replace("[_r;", "\n");
+                if (FilterProfanity)
+                    finalString = Utilities.MaskProfanity(finalString);
+
+                return finalString;
+            }
         }
 
         public string ProcessText(string originalString)
@@ -1191,6 +1249,26 @@ namespace WinPhoneBlahgua
             _profileSchema.C.DT = newDict;
 
         }
+
+        public void GetRecoveryEmail(string_callback callback)
+        {
+            BlahguaRest.GetRecoveryEmail((theString) =>
+                {
+                    if (theString != _recoveryEmail)
+                    {
+                        _recoveryEmail = theString;
+                        OnPropertyChanged("RecoveryEmail");
+                    }
+                    callback(theString);
+                }
+            );
+        }
+
+        public void SetRecoveryEmail(string emailAddress, string_callback callback)
+        {
+            BlahguaRest.SetRecoveryEmail(emailAddress, callback);
+        }
+
 
     }
 }

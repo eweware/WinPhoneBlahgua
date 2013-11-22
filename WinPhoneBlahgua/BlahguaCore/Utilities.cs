@@ -20,6 +20,32 @@ namespace WinPhoneBlahgua
     
     public class Utilities
     {
+        public static List<KeyValuePair<string, string>> BadWordList = null;
+
+        public static string MaskProfanity(string sourceStr)
+        {
+            string destStr = sourceStr;
+
+            if (BadWordList == null)
+                InitBadWordList();
+
+            foreach (KeyValuePair<string, string> badWord in BadWordList)
+            {
+                destStr.Replace(badWord.Key, badWord.Value);
+            }
+
+            return destStr;
+        }
+
+        private static void InitBadWordList()
+        {
+            BadWordList = new List<KeyValuePair<string,string>>();
+            BadWordList.Add(new KeyValuePair<string,string>("fuck", "f***"));
+            BadWordList.Add(new KeyValuePair<string,string>("shit", "f***"));
+            BadWordList.Add(new KeyValuePair<string,string>("cunt", "f***"));
+            BadWordList.Add(new KeyValuePair<string,string>("bitch", "f***"));
+            BadWordList.Add(new KeyValuePair<string,string>("fucker", "f***er"));
+        }
 
         public static string CreateDateString(DateTime theDate, bool omitDay)
         {

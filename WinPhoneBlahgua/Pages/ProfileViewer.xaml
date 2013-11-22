@@ -656,8 +656,8 @@
                         <TextBlock x:Name="recover" Text="{Binding CurrentUser.RecoveryEmail}" FontSize="24" />
                         <Button HorizontalAlignment="Center"  Margin="16">set recovery email</Button>
 
-                        <toolkit:ToggleSwitch Header="profanity filter" />
-                        <toolkit:ToggleSwitch Header="flagged content filter" />
+                        <toolkit:ToggleSwitch Header="profanity filter" IsChecked="{Binding FilterProfanity, Mode=TwoWay}" />
+                        <toolkit:ToggleSwitch Header="flagged content filter" IsChecked="{Binding FilterProfanity, Mode=TwoWay}" />
                     </StackPanel>
                 </ScrollViewer>
 

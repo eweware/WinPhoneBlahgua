@@ -29,6 +29,8 @@ namespace WinPhoneBlahgua
         private bool statsLoaded = false;
         private bool isDemoPopulated = false;
         private string currentPage;
+        
+
         public ProfileViewer()
         {
             InitializeComponent();
@@ -654,14 +656,24 @@ namespace WinPhoneBlahgua
                     ApplicationBar.IsVisible = false;        
                     break;
 
-                case "account":
-                    ApplicationBar.IsVisible = false;        
+                case "prefs":
+                    ApplicationBar.IsVisible = false;
+                    UpdatePrefs();
                     break;
 
                 default:
                     ApplicationBar.IsVisible = false;     
                     break;
             }
+        }
+
+        private void UpdatePrefs()
+        {
+            App.BlahguaAPI.GetRecoveryEmail((theEmail) =>
+                {
+                    // don't need to do anything actually
+                }
+            );
         }
 
         private void UpdatePersona()
