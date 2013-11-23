@@ -652,7 +652,7 @@
                         <TextBlock x:Name="UserName" Text="{Binding CurrentUser.AccountName}" FontSize="24" Margin="8 0 0 15"/>
                         <TextBlock Text="password" />
                         <Button HorizontalAlignment="Center"  Margin="16">change password</Button>
-                        <TextBlock Text="recovery email" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding RecoveryEmail}" VerticalAlignment="Center" />
                         <TextBlock x:Name="recover" Text="{Binding CurrentUser.RecoveryEmail}" FontSize="24" />
                         <Button HorizontalAlignment="Center"  Margin="16">set recovery email</Button>
 
