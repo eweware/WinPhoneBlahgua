@@ -105,9 +105,10 @@ namespace WinPhoneBlahgua
 
                 //sb.SpeedRatio = 3;
                 sb.Begin();
+                SetBlahBackground(newType.N);
             }
 
-            SetBlahBackground();
+            
 
         }
 
@@ -224,11 +225,11 @@ namespace WinPhoneBlahgua
         }
 
 
-        void SetBlahBackground()
+        void SetBlahBackground(string newType)
         {
             Brush newBrush;
 
-            switch (App.BlahguaAPI.CreateRecord.BlahType.N)
+            switch (newType)
             {
                 case "leaks":
                     newBrush = (Brush)App.Current.Resources["BaseBrushLeaks"];

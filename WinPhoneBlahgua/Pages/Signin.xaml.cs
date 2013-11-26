@@ -9,6 +9,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System.ComponentModel;
 using Microsoft.Phone.Tasks;
+using Telerik.Windows.Controls;
 
 namespace WinPhoneBlahgua
 {
@@ -90,6 +91,22 @@ namespace WinPhoneBlahgua
             emailComposeTask.To = "admin@blahgua.com";
 
             emailComposeTask.Show();    
+        }
+
+        private void Recover_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            InputPromptSettings settings = new InputPromptSettings();
+            settings.Field1Mode = InputMode.Text;
+            settings.Field2Mode = InputMode.Text;
+            RadInputPrompt.Show(settings, "Please enter username and email address", closedHandler: (args) =>
+            {
+                    App.BlahguaAPI.UpdatePassword(args.Text, (theResult) =>
+                    {
+                        MessageBox.Show("Check the email for a recovery link.");
+                    }
+                );
+            }
+            );
         }
     }
 }

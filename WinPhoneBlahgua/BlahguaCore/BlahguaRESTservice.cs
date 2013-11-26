@@ -605,9 +605,12 @@ namespace WinPhoneBlahgua
         public void GetRecoveryEmail(string_callback callback)
         {
             RestRequest request = new RestRequest("users/account", Method.GET);
-            apiClient.ExecuteAsync(request, (response) =>
+            apiClient.ExecuteAsync<RecoveryInfo>(request, (response) =>
             {
-                callback(response.Content);
+                if (response.Data != null)
+                    callback(response.Data.E);
+                else
+                    callback(null);
             });
         }
 
@@ -619,7 +622,7 @@ namespace WinPhoneBlahgua
 
             apiClient.ExecuteAsync(request, (response) =>
             {
-                callback(response.Content);
+                callback(newMail);
             });
         }
 

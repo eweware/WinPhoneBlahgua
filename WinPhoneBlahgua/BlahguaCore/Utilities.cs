@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using System.Text.RegularExpressions;
 
 namespace WinPhoneBlahgua
 {
@@ -31,7 +31,8 @@ namespace WinPhoneBlahgua
 
             foreach (KeyValuePair<string, string> badWord in BadWordList)
             {
-                destStr.Replace(badWord.Key, badWord.Value);
+                string strWord = "\\b" + badWord.Key + "\\b";
+                destStr = Regex.Replace(destStr, strWord, badWord.Value, RegexOptions.IgnoreCase);
             }
 
             return destStr;
@@ -41,10 +42,14 @@ namespace WinPhoneBlahgua
         {
             BadWordList = new List<KeyValuePair<string,string>>();
             BadWordList.Add(new KeyValuePair<string,string>("fuck", "f***"));
-            BadWordList.Add(new KeyValuePair<string,string>("shit", "f***"));
-            BadWordList.Add(new KeyValuePair<string,string>("cunt", "f***"));
-            BadWordList.Add(new KeyValuePair<string,string>("bitch", "f***"));
+            BadWordList.Add(new KeyValuePair<string,string>("shit", "sh**"));
+            BadWordList.Add(new KeyValuePair<string,string>("cunt", "c***"));
+            BadWordList.Add(new KeyValuePair<string,string>("bitch", "b***"));
             BadWordList.Add(new KeyValuePair<string,string>("fucker", "f***er"));
+            BadWordList.Add(new KeyValuePair<string, string>("fucked", "f**ed"));
+            BadWordList.Add(new KeyValuePair<string, string>("fucker", "f***er"));
+            BadWordList.Add(new KeyValuePair<string, string>("shithead", "sh**head"));
+            BadWordList.Add(new KeyValuePair<string, string>("nigger", "n*****"));
         }
 
         public static string CreateDateString(DateTime theDate, bool omitDay)

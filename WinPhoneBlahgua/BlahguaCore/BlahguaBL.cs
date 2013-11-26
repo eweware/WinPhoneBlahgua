@@ -1266,8 +1266,32 @@ namespace WinPhoneBlahgua
 
         public void SetRecoveryEmail(string emailAddress, string_callback callback)
         {
-            BlahguaRest.SetRecoveryEmail(emailAddress, callback);
+            BlahguaRest.SetRecoveryEmail(emailAddress, (resultStr) => 
+                {
+                    CurrentUser.RecoveryEmail = resultStr;
+                    callback(resultStr);
+                }
+            );
         }
+
+        public void UpdatePassword(string newPassword, string_callback callback)
+        {
+            BlahguaRest.UpdatePassword(newPassword, (resultStr) =>
+            {
+                callback(resultStr);
+            }
+           );
+        }
+
+        public void RecoverUser(string userName, string email, string_callback callback)
+        {
+            BlahguaRest.RecoverUser(userName, email, (resultStr) =>
+                {
+                    callback(resultStr);
+                }
+           );
+        }
+
 
 
     }

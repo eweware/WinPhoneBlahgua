@@ -12,4 +12,9 @@ namespace WinPhoneBlahgua
         public string loggedIn { get; set; }
         public int S { get; set; }
     }
+
+    public class RecoveryInfo
+    {
+        public string E { get; set; }
+    }
 }

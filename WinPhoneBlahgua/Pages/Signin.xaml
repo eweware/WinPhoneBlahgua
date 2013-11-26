@@ -134,6 +134,11 @@
                 <StackPanel>
                     <TextBlock Text="Questions, comments, feedback?  Use the feedback channel in blahgua itself, or send us an email." TextWrapping="Wrap" />
                     <TextBlock Margin="0 20 0 0" FontSize="24" HorizontalAlignment="Center" TextDecorations="Underline" Text="admin@blahgua.com" Tap="HyperlinkButton_Tap" />
+                    <TextBlock Margin="0 40 0 0" FontSize="24" HorizontalAlignment="Left">
+                        <TextBlock.Text>Forgot Password?</TextBlock.Text>
+                    </TextBlock>
+                    <TextBlock Text="Tap the 'recover account' button below to request a recovery email.  You will be sent an email with a link to log on to the web client.  You can then change your password there on the web client, and use that same password in the app." TextWrapping="Wrap" />
+                    <Button Margin="0 20" HorizontalAlignment="Center" Content="Recover Account" Tap="Recover_Tap"/>
                 </StackPanel>
             </controls:PivotItem>
         </controls:Pivot>

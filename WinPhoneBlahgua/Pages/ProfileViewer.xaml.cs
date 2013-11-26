@@ -1048,6 +1048,40 @@ namespace WinPhoneBlahgua
 
         }
 
+        private void ChangePassword_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            InputPromptSettings settings = new InputPromptSettings();
+            settings.Field1Mode = InputMode.Password;
+            settings.Field2Mode = InputMode.Password;
+            RadInputPrompt.Show(settings, "Please enter new password", closedHandler: (args) =>
+                {
+                    if (args.Text != args.Text2)
+                        MessageBox.Show("Passwords do not match.");
+                    else
+                        App.BlahguaAPI.UpdatePassword(args.Text, (theResult) =>
+                            {
+
+                            }
+                    );
+                }
+            );
+        }
+
+        private void RecoveryInfo_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            InputPromptSettings settings = new InputPromptSettings();
+            settings.Field1Mode = InputMode.Text;
+            RadInputPrompt.Show(settings, "Please enter recovery email (leave blank to clear)", closedHandler: (args) =>
+            {
+                App.BlahguaAPI.SetRecoveryEmail(args.Text, (resultStr) =>
+                    {
+                        
+                    }
+                );
+            }
+            );
+        }
+
        
     }
 }

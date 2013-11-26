@@ -105,7 +105,7 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <TextBox MaxLength="64" Text="{Binding G, Mode=TwoWay}" />
+                <TextBox MaxLength="64" Text="{Binding G, Mode=TwoWay}" InputScope="Text" />
                 <TextBlock Grid.Column="1" FontFamily="/Resources/fontawesome-webfont.ttf#FontAwesome" Text="&#xf057;" FontSize="36" 
                            VerticalAlignment="Top" Margin="0,14,0,0" Tap="PollItem_Tap"></TextBlock>
             </Grid>
