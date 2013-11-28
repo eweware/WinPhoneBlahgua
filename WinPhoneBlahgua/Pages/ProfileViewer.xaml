@@ -63,6 +63,11 @@
             <TextBlock Text="{Binding }" FontSize="36" />
         </DataTemplate>
 
+        <DataTemplate x:Key="DemographicItemTemplate">
+            <TextBlock Text="{Binding }" FontSize="36" />
+        </DataTemplate>
+
+
         <DataTemplate x:Key="UserCommentTemplate">
             <Border BorderThickness="0,0,0,1" BorderBrush="#FF727272">
                 <Grid Margin="0 10 0 10">
@@ -221,7 +226,7 @@
                             </Grid.RowDefinitions>
 
                             <TextBlock Text="Gender" Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
-                            <toolkit:ListPicker  SelectionChanged="Gender_SelectionChanged"  x:Name="GenderList" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding UserProfileSchema.GenderChoices}" >
+                            <toolkit:ListPicker   SelectionChanged="Gender_SelectionChanged"  x:Name="GenderList" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding UserProfileSchema.GenderChoices}" >
                             </toolkit:ListPicker>
                             <TextBlock HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" Text="Public?"/>
                             <toolkit:ToggleSwitch x:Name="GenderPerm" Checked="GenderPerm_Checked"  Grid.Row="1" Grid.Column="1" Content="" >
@@ -263,7 +268,7 @@
                             </Grid.RowDefinitions>
 
                             <TextBlock Text="Ethnicity"   Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
-                            <toolkit:ListPicker  SelectionChanged="Race_SelectionChanged"  x:Name="RaceList" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding UserProfileSchema.RaceChoices}" >
+                            <toolkit:ListPicker  FullModeItemTemplate="{StaticResource DemographicItemTemplate}" SelectionChanged="Race_SelectionChanged"  x:Name="RaceList" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding UserProfileSchema.RaceChoices}" >
                             </toolkit:ListPicker>
                             <toolkit:ToggleSwitch x:Name="RacePerm" Checked="RacePerm_Checked"  Grid.Row="1" Grid.Column="1" Content="">
                                 <toolkit:ToggleSwitch.Projection>
@@ -344,7 +349,7 @@
                             </Grid.RowDefinitions>
 
                             <TextBlock Text="Country"  Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
-                            <toolkit:ListPicker  x:Name="CountryList"  SelectionChanged="Country_SelectionChanged"  Grid.Row="1" Grid.Column="0" ItemsSource="{Binding UserProfileSchema.CountryChoices}">
+                            <toolkit:ListPicker FullModeItemTemplate="{StaticResource DemographicItemTemplate}" x:Name="CountryList"  SelectionChanged="Country_SelectionChanged"  Grid.Row="1" Grid.Column="0" ItemsSource="{Binding UserProfileSchema.CountryChoices}">
                             </toolkit:ListPicker>
                             <toolkit:ToggleSwitch x:Name="CountryPerm" Checked="CountryPerm_Checked" Grid.Row="1" Grid.Column="1" Content="" >
                                 <toolkit:ToggleSwitch.Projection>
@@ -365,7 +370,7 @@
                             </Grid.RowDefinitions>
 
                             <TextBlock Text="Income" x:Name="IncomeSelect" Grid.Row="0" Grid.ColumnSpan="2" ></TextBlock>
-                            <toolkit:ListPicker  SelectionChanged="Income_SelectionChanged"  x:Name="IncomeList"  Grid.Row="1" Grid.Column="0" ItemsSource="{Binding UserProfileSchema.IncomeChoices}">
+                            <toolkit:ListPicker FullModeItemTemplate="{StaticResource DemographicItemTemplate}" SelectionChanged="Income_SelectionChanged"  x:Name="IncomeList"  Grid.Row="1" Grid.Column="0" ItemsSource="{Binding UserProfileSchema.IncomeChoices}">
                             </toolkit:ListPicker>
                             <toolkit:ToggleSwitch x:Name="IncomePerm" Checked="IncomePerm_Checked" Grid.Row="1" Grid.Column="1" Content="" >
                                 <toolkit:ToggleSwitch.Projection>

@@ -14,8 +14,6 @@ namespace WinPhoneBlahgua
 {
     public partial class BlahRollItem : UserControl
     {
-        private static float minTextSize = 12;
-        private static float maxTextSize = 72;
         private static float smallText = 16;
         private static float medText = 36;
         private static float largeText = 52;

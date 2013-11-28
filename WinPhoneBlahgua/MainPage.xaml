@@ -52,10 +52,10 @@
         <DataTemplate x:Name="ChannelFullModeItemTemplate">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="32"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Image Source="{Binding ChannelImageUrl}"/>
+                <Image Source="{Binding ChannelImageUrl}" Width="64" VerticalAlignment="Top" Margin="0 0 12 0" Stretch="Uniform"/>
                 <StackPanel Grid.Column="1" Margin="0,0,0,16">
                     <TextBlock FontSize="36" TextWrapping="NoWrap" Text="{Binding N}"/>
                     <TextBlock FontSize="18" TextWrapping="Wrap" Text="{Binding D}"/>

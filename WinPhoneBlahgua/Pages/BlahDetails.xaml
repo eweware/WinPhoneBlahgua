@@ -63,8 +63,13 @@
 
            
         </Storyboard>
+        <DataTemplate x:Name="GreenPalette">
+            <Rectangle Fill="Green"/>
+        </DataTemplate>
 
-
+        <DataTemplate x:Name="RedPalette">
+            <Rectangle Fill="Red"/>
+        </DataTemplate>
 
         <DataTemplate x:Key="HeaderTemplate">
 			<Grid/>
@@ -284,14 +289,6 @@
 
                                 <TextBlock Text="votes" Margin="0 16 0 0" />
                                 <chart:RadCartesianChart x:Name="VoteChart" Height="200" EmptyContent="No votes yet">
-                                    <chart:RadCartesianChart.Palette>
-                                        <chart:ChartPalette>
-                                            <chart:ChartPalette.GlobalEntries>
-                                                <chart:PaletteEntry Fill="Green" Stroke="Transparent" />
-                                                <chart:PaletteEntry Fill="Red" Stroke="Transparent"/>
-                                            </chart:ChartPalette.GlobalEntries>
-                                        </chart:ChartPalette>
-                                    </chart:RadCartesianChart.Palette>
                                     <chart:RadCartesianChart.HorizontalAxis>
                                     <chart:LinearAxis />
                                 </chart:RadCartesianChart.HorizontalAxis>

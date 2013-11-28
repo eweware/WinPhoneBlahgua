@@ -58,7 +58,9 @@ namespace WinPhoneBlahgua
         {
             get 
             {
-                return "Images\\The Now Network.png";
+                string baseURL = "https://s3-us-west-2.amazonaws.com/beta.blahgua.com/images/groups/";
+                return baseURL + ChannelName + ".png";
+                return "https://";
             }
         }
     }

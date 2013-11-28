@@ -16,6 +16,8 @@ using Telerik.Windows.Controls;
 using Telerik.Charting;
 using System.Windows.Data;
 using System.Reflection;
+using System.Windows.Data;
+using System.ComponentModel;
 
 namespace WinPhoneBlahgua
 {
@@ -27,17 +29,24 @@ namespace WinPhoneBlahgua
         ApplicationBarIconButton shareBtn;
         ApplicationBarIconButton commentBtn;
         ApplicationBarMenuItem reportItem;
-        ApplicationBarMenuItem deleteItem;
+
+        SortMenu sortByDateAsc;
+        SortMenu sortByDateDesc;
+        SortMenu sortByUpVote;
+        SortMenu sortByDownVote;
+        SortMenu sortByStrength;
+
+
         string currentPage;
         bool commentsLoaded = false;
-        CommentList blahComments = null;
         bool statsLoaded = false;
+        private string curCommentSort = "byDateDesc";
+        private CollectionViewSource commentDataView;
 
 
         public BlahDetails()
         {
             commentsLoaded = false;
-            blahComments = null;
             statsLoaded = false;
             currentPage = "summary";
             InitializeComponent();
@@ -74,10 +83,37 @@ namespace WinPhoneBlahgua
             reportItem = new ApplicationBarMenuItem("flag post as inappropriate");
             reportItem.Click += HandleReportItem;
 
-            deleteItem = new ApplicationBarMenuItem("remove post");
-            deleteItem.Click += HandleDeleteItem;
+            sortByDateAsc = new SortMenu("oldest first", "byDateAsc");
+            sortByDateAsc.Click += sortMenuItem_Click;
+
+            sortByDateDesc = new SortMenu("newest first", "byDateDesc");
+            sortByDateDesc.Click += sortMenuItem_Click;
+
+            sortByUpVote = new SortMenu("most promoted first", "byPositive");
+            sortByUpVote.Click += sortMenuItem_Click;
+
+            sortByDownVote = new SortMenu("most demoted first", "byNegative");
+            sortByDownVote.Click += sortMenuItem_Click;
+
+            sortByStrength = new SortMenu("most popular first", "byPopular");
+            sortByStrength.Click += sortMenuItem_Click;
+
 
             StatsArea.DataContext = null;
+        }
+
+        void sortMenuItem_Click(object sender, EventArgs e)
+        {
+            string newSort = ((SortMenu)sender).SortKey;
+
+            if (currentPage == "comments")
+            {
+                if (curCommentSort != newSort)
+                {
+                    curCommentSort = newSort;
+                    SortAndFilterComments();
+                }
+            }
         }
 
 
@@ -114,6 +150,31 @@ namespace WinPhoneBlahgua
                 }
             }
         }
+
+        private void SortAndFilterComments()
+        {
+            commentDataView.SortDescriptions.Clear();
+
+            switch (curCommentSort)
+            {
+                case "byDateAsc":
+                    commentDataView.SortDescriptions.Add(new SortDescription("c", ListSortDirection.Ascending));
+                    break;
+                case "byDateDesc":
+                    commentDataView.SortDescriptions.Add(new SortDescription("c", ListSortDirection.Descending));
+                    break;
+                case "byPositive":
+                    commentDataView.SortDescriptions.Add(new SortDescription("U", ListSortDirection.Descending));
+                    break;
+                case "byNegative":
+                    commentDataView.SortDescriptions.Add(new SortDescription("D", ListSortDirection.Descending));
+                    break;
+                case "byPopular":
+                    commentDataView.SortDescriptions.Add(new SortDescription("S", ListSortDirection.Descending));
+                    break;
+            }
+        }
+
 
         void UpdateStatsPage()
         {
@@ -383,10 +444,12 @@ namespace WinPhoneBlahgua
         {
             App.BlahguaAPI.LoadBlahComments((theList) =>
                 {
+                    commentDataView = new CollectionViewSource();
+                    commentDataView.Source = theList;
+                    SortAndFilterComments();
                     commentsLoaded = true;
-                    blahComments = theList;
+                    AllCommentList.ItemsSource = commentDataView.View;
                     NoCommentBox.Visibility = Visibility.Collapsed;
-                    AllCommentList.ItemsSource = blahComments;
                 });
             
         }
@@ -427,7 +490,12 @@ namespace WinPhoneBlahgua
             if ((curBlah.P > 0) || (curBlah.D > 0))
             {
                 maxVal = 2 + Math.Max(curBlah.P, curBlah.D);
+                if (maxVal < 5)
+                    maxVal = 5;
+
                 newSeries = new BarSeries();
+                newSeries.PointTemplates.Add((DataTemplate)Resources["GreenPalette"]);
+                newSeries.PointTemplates.Add((DataTemplate)Resources["RedPalette"]);
                 newPoint = new CategoricalDataPoint();
                 newPoint.Value = curBlah.P;
                 newPoint.Category = "promotes";
@@ -436,7 +504,10 @@ namespace WinPhoneBlahgua
                 newPoint.Value = curBlah.D;
                 newPoint.Category = "demotes";
                 newSeries.DataPoints.Add(newPoint);
-                ((LinearAxis)VoteChart.HorizontalAxis).Maximum = maxVal;
+                ((LinearAxis)VoteChart.HorizontalAxis).Maximum = (int)maxVal;
+
+                double step = (double)maxVal / 5;
+                ((LinearAxis)VoteChart.HorizontalAxis).MajorStep = (int)Math.Round(step);
                 VoteChart.Series.Add(newSeries);
             }
             
@@ -769,7 +840,6 @@ namespace WinPhoneBlahgua
                         ApplicationBar.Buttons.Add(shareBtn);
 
                         ApplicationBar.MenuItems.Add(reportItem);
-                        ApplicationBar.MenuItems.Add(deleteItem);
                         ApplicationBar.IsVisible = true;
                         UpdateSummaryButtons();
                         break;
@@ -778,8 +848,12 @@ namespace WinPhoneBlahgua
                         ApplicationBar.Buttons.Add(promoteBtn);
                         ApplicationBar.Buttons.Add(demoteBtn);
                         ApplicationBar.Buttons.Add(commentBtn);
+                        ApplicationBar.MenuItems.Add(sortByDateDesc);
+                        ApplicationBar.MenuItems.Add(sortByDateAsc);
+                        ApplicationBar.MenuItems.Add(sortByStrength);
+                        ApplicationBar.MenuItems.Add(sortByUpVote);
+                        ApplicationBar.MenuItems.Add(sortByDownVote);
                         ApplicationBar.MenuItems.Add(reportItem);
-                        ApplicationBar.MenuItems.Add(deleteItem);
                         ApplicationBar.IsVisible = true;
                         UpdateCommentButtons();
                         break;
@@ -843,7 +917,8 @@ namespace WinPhoneBlahgua
             foreach (Comment newComment in e.AddedItems)
             {
                 curItem = (ListBoxItem)AllCommentList.ItemContainerGenerator.ContainerFromItem(newComment);
-                curItem.Background = new SolidColorBrush(Color.FromArgb(128,0,0,0));
+                if (curItem != null)
+                    curItem.Background = new SolidColorBrush(Color.FromArgb(128,0,0,0));
             }
             UpdateCommentButtons();
         }
