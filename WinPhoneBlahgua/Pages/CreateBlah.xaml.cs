@@ -102,7 +102,7 @@ namespace WinPhoneBlahgua
 
                     foreach (PollItem curItem in curBlah.I)
                     {
-                        if (curItem.T.Length == 0)
+                        if ((curItem.T == null) || (curItem.T.Length == 0))
                             return "Each poll response requires a title.";
                     }
                     break;
