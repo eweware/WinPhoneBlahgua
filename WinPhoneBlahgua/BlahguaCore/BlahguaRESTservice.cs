@@ -57,7 +57,7 @@ namespace WinPhoneBlahgua
             if (usingQA)
             {
                 System.Console.WriteLine("Using QA Server");
-                apiClient = new RestClient("http://192.168.0.27:8080/v2");
+                apiClient = new RestClient("http://qa.rest.blahgua.com:8080/v2");  // "http://192.168.0.27:8080/v2"
                 BaseShareURL = "http://qa.rest.blahgua.com:8080/";
                 imageBaseURL = "https://s3-us-west-2.amazonaws.com/qa.blahguaimages/image/";
             }

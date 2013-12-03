@@ -88,16 +88,16 @@ namespace WinPhoneBlahgua
 
             if (dateTicks > nowTicks)
             {
-                timeSpan = (long)Math.Floor((dateTicks - nowTicks) / TimeSpan.TicksPerSecond);
+                timeSpan = (dateTicks - nowTicks) / TimeSpan.TicksPerSecond; 
                 tailStr = " from now";
             }
             else
             {
-                timeSpan = (long)Math.Floor((nowTicks - dateTicks) / TimeSpan.TicksPerSecond);
+                timeSpan = (nowTicks - dateTicks) / TimeSpan.TicksPerSecond;
                 tailStr = " ago";
             }
 
-            var curYears = Math.Floor(timeSpan / 31536000);
+            long curYears = timeSpan / 31536000;
             if (curYears > 0)
             {
                 if (curYears > 2)
@@ -106,11 +106,11 @@ namespace WinPhoneBlahgua
                 }
                 else
                 {
-                    return Math.Floor(timeSpan / 2592000) + " months" + tailStr;
+                    return timeSpan / 2592000 + " months" + tailStr;
                 }
             }
 
-            var curMonths = Math.Floor(timeSpan / 2592000); // average 30 days
+            long curMonths = timeSpan / 2592000; // average 30 days
             if (curMonths > 0)
             {
                 if (curMonths >= 2)
@@ -119,11 +119,11 @@ namespace WinPhoneBlahgua
                 }
                 else
                 {
-                    return Math.Floor(timeSpan / 604800) + " weeks" + tailStr;
+                    return timeSpan / 604800 + " weeks" + tailStr;
                 }
             }
 
-            var curDays = Math.Floor(timeSpan / 86400);
+            long curDays = timeSpan / 86400;
             if (curDays > 0)
             {
                 if (curDays >= 2)
@@ -132,11 +132,11 @@ namespace WinPhoneBlahgua
                 }
                 else
                 {
-                    return Math.Floor(timeSpan / 3600) + " hours" + tailStr;
+                    return timeSpan / 3600 + " hours" + tailStr;
                 }
             }
 
-            var curHours = Math.Floor(timeSpan / 3600);
+            long curHours = timeSpan / 3600;
             if (curHours > 0)
             {
                 if (curHours >= 2)
@@ -145,11 +145,11 @@ namespace WinPhoneBlahgua
                 }
                 else
                 {
-                    return Math.Floor(timeSpan / 60) + " minutes" + tailStr;
+                    return timeSpan / 60 + " minutes" + tailStr;
                 }
             }
 
-            var curMinutes = Math.Floor(timeSpan / 60);
+            long curMinutes = timeSpan / 60;
             if (curMinutes >= 2)
             {
                 return curMinutes + " minutes" + tailStr;
