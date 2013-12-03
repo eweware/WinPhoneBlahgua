@@ -10,26 +10,274 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
+        xmlns:local="clr-namespace:WinPhoneBlahgua" 
+        xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     mc:Ignorable="d"
+        d:DataContext="{d:DesignData /SampleData/BlahguaAPIObjectSampleData.xaml}"
+    local:TiltEffect.IsTiltEnabled="True"
     shell:SystemTray.IsVisible="True">
 
+    <phone:PhoneApplicationPage.Resources>
+
+        <Storyboard x:Key="ShowPredictionAnimation">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PredictionOptionArea" Storyboard.TargetProperty="(UIElement.Visibility)">
+                <DiscreteObjectKeyFrame   Value="Visible" KeyTime="0:0:0" />
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimation  Storyboard.TargetName="PredictYScale" Storyboard.TargetProperty="ScaleY" To="1" Duration="0:0:0.5" />
+            <DoubleAnimation Storyboard.TargetName="PredictionOptionArea" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.5"/>
+
+            <DoubleAnimation  Storyboard.TargetName="PollYScale" Storyboard.TargetProperty="ScaleY" To="0" Duration="0:0:0.5" />
+            <DoubleAnimation Storyboard.TargetName="PollOptionArea" Storyboard.TargetProperty="Opacity" To="0.0"  Duration="0:0:0.5"/>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PollOptionArea" Storyboard.TargetProperty="(UIElement.Visibility)">
+                <DiscreteObjectKeyFrame   Value="Collapsed" KeyTime="0:0:0.5" />
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <Storyboard x:Key="ShowPollAnimation">
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PollOptionArea" Storyboard.TargetProperty="(UIElement.Visibility)">
+                <DiscreteObjectKeyFrame   Value="Visible" KeyTime="0:0:0" />
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimation  Storyboard.TargetName="PollYScale" Storyboard.TargetProperty="ScaleY" To="1" Duration="0:0:0.5" />
+            <DoubleAnimation Storyboard.TargetName="PollOptionArea" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.5"/>
+
+            <DoubleAnimation  Storyboard.TargetName="PredictYScale" Storyboard.TargetProperty="ScaleY" To="0" Duration="0:0:0.5" />
+            <DoubleAnimation Storyboard.TargetName="PredictionOptionArea" Storyboard.TargetProperty="Opacity" To="0.0"  Duration="0:0:0.5"/>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PredictionOptionArea" Storyboard.TargetProperty="(UIElement.Visibility)">
+                <DiscreteObjectKeyFrame   Value="Collapsed" KeyTime="0:0:0.5" />
+            </ObjectAnimationUsingKeyFrames>
+
+        </Storyboard>
+        <Storyboard x:Key="HideAllSectionsAnimation">
+            <DoubleAnimation  Storyboard.TargetName="PredictYScale" Storyboard.TargetProperty="ScaleY" To="0" Duration="0:0:0.5" />
+            <DoubleAnimation Storyboard.TargetName="PredictionOptionArea" Storyboard.TargetProperty="Opacity" To="0.0"  Duration="0:0:0.5"/>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PredictionOptionArea" Storyboard.TargetProperty="(UIElement.Visibility)">
+                <DiscreteObjectKeyFrame   Value="Collapsed" KeyTime="0:0:0.5" />
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimation  Storyboard.TargetName="PollYScale" Storyboard.TargetProperty="ScaleY" To="0" Duration="0:0:0.5" />
+            <DoubleAnimation Storyboard.TargetName="PollOptionArea" Storyboard.TargetProperty="Opacity" To="0.0"  Duration="0:0:0.5"/>
+            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PollOptionArea" Storyboard.TargetProperty="(UIElement.Visibility)">
+                <DiscreteObjectKeyFrame   Value="Collapsed" KeyTime="0:0:0.5" />
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <DataTemplate x:Name="BlahTypeTemplate">
+            <TextBlock Text="{Binding N}" Margin="0 0 0 0" Padding="0 0 0 0">
+                <TextBlock.Projection>
+                    <PlaneProjection GlobalOffsetY="-4"/>
+                </TextBlock.Projection>
+            </TextBlock>
+        </DataTemplate>
+        <DataTemplate x:Name="BadgeListTemplate">
+            <TextBlock Text="{Binding BadgeName}" Margin="0" Padding="0"/>
+        </DataTemplate>
+        <DataTemplate x:Name="EmptyTemplate">
+            <Grid Height="0" />
+        </DataTemplate>
+
+        <DataTemplate x:Name="PollChoiceTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBox MaxLength="64" Text="{Binding G, Mode=TwoWay}" InputScope="Text" />
+                <TextBlock Grid.Column="1" FontFamily="/Resources/fontawesome-webfont.ttf#FontAwesome" Text="&#xf057;" FontSize="36" 
+                           VerticalAlignment="Top" Margin="0,14,0,0" Tap="PollItem_Tap"></TextBlock>
+            </Grid>
+        </DataTemplate>
+
+        <Style x:Key="WrapSummaryStyle" 
+               TargetType="toolkit:ListPicker">
+            <Setter Property="Background" Value="{StaticResource PhoneTextBoxBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource PhoneTextBoxForegroundBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource PhoneTextBoxBrush}"/>
+            <Setter Property="BorderThickness" Value="{StaticResource PhoneBorderThickness}"/>
+            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMediumLarge}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="{StaticResource PhoneTouchTargetOverhang}"/>
+            <Setter Property="PickerPageUri" Value="/Microsoft.Phone.Controls.Toolkit;component/ListPicker/ListPickerPage.xaml"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="toolkit:ListPicker">
+                        <StackPanel>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="PickerStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="Highlighted">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetProperty="Background" Storyboard.TargetName="Border">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneTextBoxEditBackgroundColor}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="Border">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneTextBoxEditBorderBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetProperty="Background" Storyboard.TargetName="Border">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource TransparentBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="Border">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneDisabledBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetProperty="Foreground" Storyboard.TargetName="UserControl">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneDisabledBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <ContentControl ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" Foreground="{StaticResource PhoneSubtleBrush}" FontSize="{StaticResource PhoneFontSizeNormal}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="0 0 0 8"/>
+                            <Grid>
+                                <Border x:Name="Border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+                                    <UserControl x:Name="UserControl" Foreground="{TemplateBinding Foreground}">
+                                        <StackPanel>
+                                            <TextBlock x:Name="MultipleSelectionModeSummary" Margin="8 8 0 8" TextWrapping="Wrap"/>
+                                            <Canvas x:Name="ItemsPresenterHost" MinHeight="46">
+                                                <ItemsPresenter x:Name="ItemsPresenter">
+                                                    <ItemsPresenter.RenderTransform>
+                                                        <TranslateTransform x:Name="ItemsPresenterTranslateTransform"/>
+                                                    </ItemsPresenter.RenderTransform>
+                                                </ItemsPresenter>
+                                            </Canvas>
+                                        </StackPanel>
+                                    </UserControl>
+                                </Border>
+                            </Grid>
+                        </StackPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <DataTemplate x:Key="ChannelItemTemplate">
+            <TextBlock Text="{Binding ChannelName}" Margin="0 0 0 0" Padding="0 0 0 0"/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="ChannelFullModeItemTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Image Source="{Binding ChannelImageUrl}" Width="64" VerticalAlignment="Top" Margin="0 0 12 0" Stretch="Uniform"/>
+                <StackPanel Grid.Column="1" Margin="0,0,0,16">
+                    <TextBlock FontSize="36" TextWrapping="NoWrap" Text="{Binding N}"/>
+                    <TextBlock FontSize="18" TextWrapping="Wrap" Text="{Binding D}"/>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+
+    </phone:PhoneApplicationPage.Resources>
+
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        <Canvas Grid.RowSpan="2" Width="480" Height="800" VerticalAlignment="Top" IsHitTestVisible="False" >
+            <Image  Width="480" Height="800"  x:Name="BackgroundImage" Canvas.Top="0"  Canvas.Left="0"   Stretch="UniformToFill" >
 
-        <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="blahgua" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Text="share photo" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
-        </StackPanel>
+            </Image>
+            <Rectangle x:Name="BackgroundScreen" Width="480" Height="800" Canvas.Top="0" Canvas.Left="0"></Rectangle>
+
+        </Canvas>
+
+        <local:BlahAuthorHeader x:Name="AuthorHeader" Grid.Row="0"  Margin="0 0 0 0"
+                          DataContext="{Binding CreateRecord}">
+        </local:BlahAuthorHeader>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <Image x:Name="PreviewImage" />
-        </Grid>
+        <ScrollViewer Grid.Row="1" Margin="12 0 12 64">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <toolkit:ListPicker ItemsSource="{Binding CurrentBlahTypes}" Width="150"
+                                    HeaderTemplate="{StaticResource EmptyTemplate}"
+                                    SelectedItem="{Binding CreateRecord.BlahType, Mode=TwoWay}"
+                                    FullModeItemTemplate="{StaticResource BlahTypeTemplate}"
+                                    ItemTemplate="{StaticResource BlahTypeTemplate}" 
+                                            SelectionChanged="BlahTypeChanged"/>
+                    <TextBlock Text=" to " VerticalAlignment="Center" />
+                    <toolkit:ListPicker x:Name="ChannelListPicker" ItemsSource="{Binding CurrentChannelList}"  Width="240"
+                                         ExpansionMode="FullScreenOnly"
+                                    HeaderTemplate="{StaticResource EmptyTemplate}"
+                                    ItemTemplate="{StaticResource ChannelItemTemplate}"  
+                                    SelectedItem="{Binding CurrentChannel, Mode=TwoWay}"
+                                    FullModeItemTemplate="{StaticResource ChannelFullModeItemTemplate}"  
+                                FullModeHeader="Choose a channel:" 
+                                            SelectionChanged="BlahChannelChanged"/>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Orientation="Vertical">
+                    <TextBlock Text="headline (64 chars max)"/>
+                    <TextBox x:Name="BlahHeadlineBox" InputScope="Text" Text="{Binding CreateRecord.T, Mode=TwoWay}" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" MaxLength="64" FontSize="36" AcceptsReturn="True"></TextBox>
+                </StackPanel>
+                <StackPanel Grid.Row="2" Orientation="Vertical" Visibility="Visible">
+                    <TextBlock Text="Images"/>
+                    <Image x:Name="PreviewImage" />
+                </StackPanel>
+                <StackPanel Grid.Row="3" Orientation="Vertical" Visibility="Visible">
+                    <TextBlock Text="body"/>
+                    <TextBox MinHeight="128" InputScope="Text" Text="{Binding CreateRecord.F, Mode=TwoWay}" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" MaxLength="1022" AcceptsReturn="True"></TextBox>
+
+                </StackPanel>
+                <StackPanel Grid.Row="4" x:Name="PollOptionArea" Orientation="Vertical" Opacity="0">
+                    <StackPanel.RenderTransform>
+                        <ScaleTransform x:Name="PollYScale" ScaleY="0"></ScaleTransform>
+                    </StackPanel.RenderTransform>
+                    <TextBlock Text="poll options (2 minimum)"/>
+                    <ItemsControl x:Name="PollChoiceList"  ItemsSource="{Binding CreateRecord.I, Mode=TwoWay}"
+                                      ItemTemplate="{StaticResource PollChoiceTemplate}"
+                                       >
+
+                    </ItemsControl>
+                    <Button x:Name="AddPollChoiceBtn" Tap="DoAddPollChoice">Add Poll Choice</Button>
+                </StackPanel>
+                <StackPanel Grid.Row="4" x:Name="PredictionOptionArea" Opacity="0" Orientation="Vertical">
+                    <StackPanel.RenderTransform>
+                        <ScaleTransform x:Name="PredictYScale" ScaleY="0"/>
+                    </StackPanel.RenderTransform>
+                    <TextBlock Text="prediction expiration date"/>
+                    <toolkit:DatePicker Value="{Binding CreateRecord.ExpirationDate, Mode=TwoWay}" />
+
+                </StackPanel>
+                <StackPanel Grid.Row="5" Orientation="Vertical">
+                    <TextBlock Text="Signature"/>
+                    <CheckBox IsChecked="{Binding CreateRecord.UseProfile, Mode=TwoWay}" Unchecked="UseProfile_Checked" Checked="UseProfile_Checked"  >use profile</CheckBox>
+                    <toolkit:ListPicker x:Name="SelectedBadgesList" Header="Badges" SelectionMode="Multiple" 
+                                            SelectedItems="{Binding CreateRecord.Badges, Mode=OneWay}"
+                                            FullModeItemTemplate="{StaticResource BadgeListTemplate}"
+                                            ItemsSource="{Binding CurrentUser.Badges}"
+                                            ItemTemplate="{StaticResource BadgeListTemplate}"
+                                            Style="{StaticResource WrapSummaryStyle}"
+                                            SelectionChanged="SelectedBadgesList_SelectionChanged">
+                    </toolkit:ListPicker>
+
+                </StackPanel>
+            </Grid>
+
+
+        </ScrollViewer>
+        <Border Grid.Row="1" x:Name="LoadingBox"  Margin="0 200 0 0" Padding="24 24" BorderBrush="#80FFFFFF" BorderThickness="1" CornerRadius="8" Background="#80000000" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <StackPanel Orientation="Vertical">
+                <TextBlock x:Name="LoadingPrompt"  Text="loading" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Foreground="{StaticResource BrushBlahguaWhite}" />
+                <ProgressBar Width="200" Height="15" IsIndeterminate="True" />
+            </StackPanel>
+        </Border>
     </Grid>
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="False" Opacity=".8">
+            <shell:ApplicationBarIconButton IconUri="/Images/Icons/appbar.add.rest.png" Click="DoCreateClick" Text="create"/>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
 
 </phone:PhoneApplicationPage>

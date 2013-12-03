@@ -50,7 +50,10 @@ namespace WinPhoneBlahgua
         {
             get
             {
-                return App.BlahguaAPI.CurrentChannelTypeList.ChannelTypeName(Y);
+                if (Y != null)
+                    return App.BlahguaAPI.CurrentChannelTypeList.ChannelTypeName(Y);
+                else
+                    return null;
             }
         }
 
@@ -71,6 +74,7 @@ namespace WinPhoneBlahgua
         {
             return this.Where(i => i._id == channelId).FirstOrDefault().N;
         }
+
     }
 
     public class ChannelType

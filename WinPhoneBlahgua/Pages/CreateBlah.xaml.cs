@@ -52,7 +52,7 @@ namespace WinPhoneBlahgua
             }
             else
             {
-                MessageBox.Show("Unable to create the blah.  Please try again.  If the problem persists, go ahead and try at a different time.");
+                MessageBox.Show("Unable to create the blah.  Please try again.  If the problem persists, try at a different time.");
 
             }
 
