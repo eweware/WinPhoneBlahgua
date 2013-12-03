@@ -44,7 +44,6 @@ namespace WinPhoneBlahgua
         public string AuthorityDisplayName { get; set; }
 
         private string badgeId = "";
-        private DateTime _expDate;
 
         public BadgeReference()
         {

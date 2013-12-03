@@ -36,6 +36,8 @@ namespace WinPhoneBlahgua
         
 
         ApplicationBarIconButton deletePostBtn;
+        ApplicationBarIconButton openPostBtn;
+        ApplicationBarIconButton openCommentBtn;
         ApplicationBarIconButton deleteCommentBtn;
         ApplicationBarIconButton addBadgeBtn;
         ApplicationBarIconButton signOutBtn;
@@ -55,6 +57,9 @@ namespace WinPhoneBlahgua
         private string curBlahSort = "byDateDesc";
         private CollectionViewSource commentDataView;
         private CollectionViewSource blahDataView;
+
+        private Comment curComment = null;
+        private Blah curBlah = null;
 
         public ProfileViewer()
         {
@@ -78,6 +83,14 @@ namespace WinPhoneBlahgua
             deleteCommentBtn = new ApplicationBarIconButton(new Uri("/Images/Icons/appbar.delete.rest.png", UriKind.Relative));
             deleteCommentBtn.Text = "delete";
             deleteCommentBtn.Click += HandleDeleteComment;
+
+            openPostBtn = new ApplicationBarIconButton(new Uri("/Images/Icons/open.png", UriKind.Relative));
+            openPostBtn.Text = "open";
+            openPostBtn.Click += HandleOpenPost;
+
+            openCommentBtn = new ApplicationBarIconButton(new Uri("/Images/Icons/open.png", UriKind.Relative));
+            openCommentBtn.Text = "open";
+            openCommentBtn.Click += HandleOpenComment;
 
 
             addBadgeBtn = new ApplicationBarIconButton(new Uri("/Images/Icons/appbar.add.rest.png", UriKind.Relative));
@@ -138,7 +151,39 @@ namespace WinPhoneBlahgua
         {
             if (MessageBox.Show("Are you sure you want to delete this post?", "confirm delete", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
             {
+                App.BlahguaAPI.DeleteBlah(curBlah._id, (theStr) =>
+                    {
+                        LoadUserPosts();   
+                    }
+                );
+            }
+        }
 
+        private void HandleOpenPost(object target, EventArgs theArgs)
+        {
+            if (curBlah != null)
+            {
+                App.BlahguaAPI.SetCurrentBlahFromId(curBlah._id, OpenFullBlah);
+            }
+        }
+
+        private void HandleOpenComment(object target, EventArgs theArgs)
+        {
+            if (curComment != null)
+            {
+                App.BlahguaAPI.SetCurrentBlahFromId(curComment.B, OpenFullBlah);
+            }    
+        }
+
+        void OpenFullBlah(Blah theBlah)
+        {
+            if (theBlah != null)
+            {
+                NavigationService.Navigate(new Uri("/Pages/BlahDetails.xaml", UriKind.Relative));
+            }
+            else
+            {
+               // MessageBox.Show("Blah failed to load");
             }
         }
 
@@ -244,6 +289,7 @@ namespace WinPhoneBlahgua
 
                     break;
             }
+            
 
 
         }
@@ -252,7 +298,7 @@ namespace WinPhoneBlahgua
             App.BlahguaAPI.LoadUserPosts((theBlahs) =>
                 {
                     blahDataView = new CollectionViewSource();
-                    blahDataView.Source = theBlahs;
+                    blahDataView.Source = theBlahs.Where(blah => blah.S > 0);
                     postsLoaded = true;
                     SortAndFilterBlahs();
                     UserPostList.ItemsSource = blahDataView.View;
@@ -765,6 +811,7 @@ namespace WinPhoneBlahgua
                     break;
 
                 case "posts":
+                    ApplicationBar.Buttons.Add(openPostBtn);
                     ApplicationBar.Buttons.Add(deletePostBtn);
                     ApplicationBar.MenuItems.Add(sortByDateDesc);
                     ApplicationBar.MenuItems.Add(sortByDateAsc);
@@ -776,6 +823,7 @@ namespace WinPhoneBlahgua
                     break;
 
                 case "comments":
+                    ApplicationBar.Buttons.Add(openCommentBtn);
                     ApplicationBar.Buttons.Add(deleteCommentBtn);
                     ApplicationBar.MenuItems.Add(sortByDateDesc);
                     ApplicationBar.MenuItems.Add(sortByDateAsc);
@@ -1156,11 +1204,28 @@ namespace WinPhoneBlahgua
                     curItem.Background = new SolidColorBrush(Colors.Transparent);
             }
 
-            foreach (Comment newComment in e.AddedItems)
+            if ((e.AddedItems == null) || (e.AddedItems.Count == 0))
             {
-                curItem = (ListBoxItem)UserCommentList.ItemContainerGenerator.ContainerFromItem(newComment);
-                if (curItem != null)
-                    curItem.Background = new SolidColorBrush(Color.FromArgb(128, 0, 0, 0));
+                curComment = null;
+                openCommentBtn.IsEnabled = false;
+            }
+            else
+            {
+                foreach (Comment newComment in e.AddedItems)
+                {
+                    curItem = (ListBoxItem)UserCommentList.ItemContainerGenerator.ContainerFromItem(newComment);
+                    if (curItem != null)
+                    {
+                        curItem.Background = new SolidColorBrush(Color.FromArgb(128, 0, 0, 0));
+                        curComment = newComment;
+                        openCommentBtn.IsEnabled = true;
+                    }
+                    else
+                    {
+                        curComment = null;
+                        openCommentBtn.IsEnabled = false;
+                    }
+                }
             }
         }
 
@@ -1175,11 +1240,31 @@ namespace WinPhoneBlahgua
                     curItem.Background = new SolidColorBrush(Colors.Transparent);
             }
 
-            foreach (Blah newBlah in e.AddedItems)
+            if ((e.AddedItems == null) || (e.AddedItems.Count == 0))
             {
-                curItem = (ListBoxItem)UserPostList.ItemContainerGenerator.ContainerFromItem(newBlah);
-                if (curItem != null)
-                    curItem.Background = new SolidColorBrush(Color.FromArgb(128, 0, 0, 0));
+                curBlah = null;
+                openPostBtn.IsEnabled = false;
+                deletePostBtn.IsEnabled = false;
+            }
+            else
+            {
+                foreach (Blah newBlah in e.AddedItems)
+                {
+                    curItem = (ListBoxItem)UserPostList.ItemContainerGenerator.ContainerFromItem(newBlah);
+                    if (curItem != null)
+                    {
+                        curItem.Background = new SolidColorBrush(Color.FromArgb(128, 0, 0, 0));
+                        curBlah = newBlah;
+                        openPostBtn.IsEnabled = true;
+                        deletePostBtn.IsEnabled = true;
+                    }
+                    else
+                    {
+                        curBlah = null;
+                        openPostBtn.IsEnabled = false;
+                        deletePostBtn.IsEnabled = false;
+                    }
+                }
             }
 
         }
@@ -1217,6 +1302,7 @@ namespace WinPhoneBlahgua
             }
             );
         }
+
 
        
     }
