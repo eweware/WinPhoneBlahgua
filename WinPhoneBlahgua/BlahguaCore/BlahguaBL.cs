@@ -478,6 +478,15 @@ namespace WinPhoneBlahgua
             );
         }
 
+        public void DeleteBlah(string blahId, string_callback callback)
+        {
+            BlahguaRest.DeleteBlah(blahId, (theString) =>
+            {
+                callback(theString);
+            }
+            );
+        }
+
         public void GetBadgeInfo(string badgeId, BadgeRecord_callback callback)
         {
             if (intBadgeMap.ContainsKey(badgeId))

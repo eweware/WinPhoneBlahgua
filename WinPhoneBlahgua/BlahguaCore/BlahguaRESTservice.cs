@@ -347,6 +347,18 @@ namespace WinPhoneBlahgua
 
         }
 
+        public void DeleteBlah(string blahId, string_callback callback)
+        {
+            RestRequest request = new RestRequest("blahs/" + blahId, Method.DELETE);
+
+
+            apiClient.ExecuteAsync(request, (response) =>
+            {
+                callback("ok");
+            });
+
+        }
+
 
 
         public void UpdateUserProfile(UserProfile theProfile, string_callback callback)

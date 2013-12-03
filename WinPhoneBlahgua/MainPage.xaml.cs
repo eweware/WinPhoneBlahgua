@@ -406,7 +406,7 @@ namespace WinPhoneBlahgua
                 MessageBox.Show("Blah failed to load");
             }
         }
-
+        
        
 
         void DoServiceInited(bool didIt)

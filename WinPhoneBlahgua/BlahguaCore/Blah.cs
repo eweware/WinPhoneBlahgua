@@ -298,6 +298,7 @@ namespace WinPhoneBlahgua
         {
             XX = true;
             Y = App.BlahguaAPI.CurrentBlahTypes.First<BlahType>(n => n.N == "says")._id;
+            G = App.BlahguaAPI.CurrentChannelList.First(c => c.N == "Public")._id;
             ExpirationDate = DateTime.Now + new TimeSpan(30, 0, 0, 0);
 
             I = new PollItemList();
@@ -315,7 +316,7 @@ namespace WinPhoneBlahgua
             }
         }
 
-
+      
         public BlahType BlahType
         {
             get 
