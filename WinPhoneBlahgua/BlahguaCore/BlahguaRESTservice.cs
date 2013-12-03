@@ -57,7 +57,7 @@ namespace WinPhoneBlahgua
             if (usingQA)
             {
                 System.Console.WriteLine("Using QA Server");
-                apiClient = new RestClient("http://qa.rest.blahgua.com:8080/v2");
+                apiClient = new RestClient("http://192.168.0.27:8080/v2");
                 BaseShareURL = "http://qa.rest.blahgua.com:8080/";
                 imageBaseURL = "https://s3-us-west-2.amazonaws.com/qa.blahguaimages/image/";
             }
@@ -449,7 +449,7 @@ namespace WinPhoneBlahgua
         public void CreateBlah(BlahCreateRecord theBlah , Blah_callback callback)
         {
             RestRequest request = new RestRequest("blahs", Method.POST);
-            theBlah.E = theBlah.E.Date;
+            theBlah.E = theBlah.ExpirationDate.ToString("yyy-MM-dd") + "T00:00:00";
             request.RequestFormat = DataFormat.Json;
             request.AddBody(theBlah);
             apiClient.ExecuteAsync(request, (response) =>

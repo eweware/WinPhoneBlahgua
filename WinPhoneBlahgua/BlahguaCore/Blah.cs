@@ -283,7 +283,8 @@ namespace WinPhoneBlahgua
     {
         public List<string> B { get; set; }
         public string F { get; set; }
-        public DateTime E { get; set; } // expiration date
+        public string E { get; set; } // expiration date
+        public DateTime ExpirationDate { get; set; }
         public string G { get; set; } // group ID
         public List<string> M { get; set; } // image IDs
         public int H { get; set; } // poll option count
@@ -297,12 +298,13 @@ namespace WinPhoneBlahgua
         {
             XX = true;
             Y = App.BlahguaAPI.CurrentBlahTypes.First<BlahType>(n => n.N == "says")._id;
-            E = DateTime.Now + new TimeSpan(30, 0, 0, 0);
+            ExpirationDate = DateTime.Now + new TimeSpan(30, 0, 0, 0);
 
             I = new PollItemList();
             I.Add(new PollItem("first choice"));
             I.Add(new PollItem("second choice"));
         }
+
 
         public bool UseProfile
         {

@@ -250,7 +250,7 @@
                             <ScaleTransform x:Name="PredictYScale" ScaleY="0"/>
                         </StackPanel.RenderTransform>
                         <TextBlock Text="prediction expiration date"/>
-                    <toolkit:DatePicker Value="{Binding CreateRecord.E, Mode=TwoWay}" />
+                    <toolkit:DatePicker Value="{Binding CreateRecord.ExpirationDate, Mode=TwoWay}" />
 
                     </StackPanel>
                     <StackPanel Grid.Row="5" Orientation="Vertical">

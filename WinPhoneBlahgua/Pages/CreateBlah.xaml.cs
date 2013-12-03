@@ -108,7 +108,7 @@ namespace WinPhoneBlahgua
                     break;
 
                 case "predicts":
-                    if ((curBlah.E == null) || (curBlah.E <= DateTime.Now.AddDays(1)))
+                    if ((curBlah.ExpirationDate == null) || (curBlah.ExpirationDate <= DateTime.Now.AddDays(1)))
                         return "Predictions must be at least a day in the future.";
 
                     break;
