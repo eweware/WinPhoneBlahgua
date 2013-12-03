@@ -84,7 +84,7 @@ namespace WinPhoneBlahgua
             addBadgeBtn.Text = "get badged";
             addBadgeBtn.Click += HandleAddBadge;
 
-            signOutBtn = new ApplicationBarIconButton(new Uri("/Images/Icons/appbar.add.rest.png", UriKind.Relative));
+            signOutBtn = new ApplicationBarIconButton(new Uri("/Images/Icons/signout.png", UriKind.Relative));
             signOutBtn.Text = "sign out";
             signOutBtn.Click += HandleSignOut;
 

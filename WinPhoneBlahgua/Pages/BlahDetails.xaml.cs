@@ -16,8 +16,8 @@ using Telerik.Windows.Controls;
 using Telerik.Charting;
 using System.Windows.Data;
 using System.Reflection;
-using System.Windows.Data;
 using System.ComponentModel;
+using Microsoft.Phone.Tasks;
 
 namespace WinPhoneBlahgua
 {
@@ -398,7 +398,24 @@ namespace WinPhoneBlahgua
 
         private void HandleShareBlah(object target, EventArgs theArgs)
         {
+            ShareLinkTask shareLinkTask = new ShareLinkTask();
+            Blah curBlah = App.BlahguaAPI.CurrentBlah;
+            string blahURL = App.BlahguaAPI.GetCurrentShareURL();
+            string msgStr = curBlah.T;
+            if ((msgStr == null) || (msgStr == ""))
+            {
+                msgStr = curBlah.F;
+                if ((msgStr == null) || (msgStr == ""))
+                {
+                    msgStr = "a post from the " + curBlah.ChannelName + " channel";
+                }
+            }
+            
+            shareLinkTask.Title = "Shared from Blahgua";
+            shareLinkTask.LinkUri = new Uri(blahURL, UriKind.Absolute);
+            shareLinkTask.Message = msgStr; ;
 
+            shareLinkTask.Show();
         }
 
         private void HandleAddComment(object target, EventArgs theArgs)
@@ -872,9 +889,18 @@ namespace WinPhoneBlahgua
             else
             {
                 ApplicationBar.Buttons.Add(signInBtn);
-                ApplicationBar.IsVisible = true;
-                if (currentPage == "stats")
-                    UpdateStatsPage();
+                switch (currentPage)
+                {
+                    case "summary":
+                        ApplicationBar.Buttons.Add(shareBtn);
+                        break;
+
+                    case "stats":
+                        UpdateStatsPage();
+                        break;
+                }
+                    
+                ApplicationBar.IsVisible = true;    
             }
         }
 

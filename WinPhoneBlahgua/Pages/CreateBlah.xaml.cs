@@ -60,6 +60,66 @@ namespace WinPhoneBlahgua
 
         }
 
+        private string IsBlahValid()
+        {
+            BlahCreateRecord curBlah = App.BlahguaAPI.CreateRecord;
+
+            bool hasImage = ((curBlah.M != null) && (curBlah.M.Count > 0));
+
+            if (curBlah.T == null)
+            {
+                if (!hasImage)
+                    return "Headline is too short for a post with no image (< 3 characters)";
+            }
+            else
+            {
+                if ((curBlah.T.Length < 3) && (!hasImage))
+                    return "Headline is too short for a post with no image (< 3 characters)";
+             
+                if (curBlah.T.Length > 64)
+                    return "Headline is too long (> 64 characters)";
+            }
+
+            if ((curBlah.F != null) && (curBlah.F.Length > 2000))
+                return "Body text is too long (> 2000 characters)";
+
+            // type restrictions
+            switch (curBlah.BlahType.N)
+            {
+                case "leaks":
+                    if ((curBlah.B == null) || (curBlah.B.Count == 0))
+                        return "Leaks must be badged.";
+                    break;
+
+                case "asks":
+                    if (curBlah.T.IndexOf("?") == -1)
+                        return "Asks must contain a question mark.";
+                    break;
+
+                case "polls":
+                    if ((curBlah.I == null) || (curBlah.I.Count < 2))
+                        return "Polls require at least two chouices.";
+
+                    foreach (PollItem curItem in curBlah.I)
+                    {
+                        if (curItem.T.Length == 0)
+                            return "Each poll response requires a title.";
+                    }
+                    break;
+
+                case "predicts":
+                    if ((curBlah.E == null) || (curBlah.E <= DateTime.Now.AddDays(1)))
+                        return "Predictions must be at least a day in the future.";
+
+                    break;
+            }
+            
+
+            return "";
+        }
+
+
+
         private string SummarizeItems(System.Collections.IList theItems)
         {
             if ((theItems == null) || (theItems.Count == 0))
@@ -282,7 +342,16 @@ namespace WinPhoneBlahgua
         private void DoCreateClick(object sender, EventArgs e)
         {
             SelectedBadgesList.Focus();
-            App.BlahguaAPI.CreateBlah(OnCreateBlahOK);
+            App.BlahguaAPI.CreateRecord.T = BlahHeadlineBox.Text;
+            string valStr = IsBlahValid();
+            if (valStr == "")
+            {
+                App.BlahguaAPI.CreateBlah(OnCreateBlahOK);
+            }
+            else
+            {
+                MessageBox.Show(valStr);
+            }
         }
 
     }

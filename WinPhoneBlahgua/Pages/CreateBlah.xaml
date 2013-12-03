@@ -219,7 +219,7 @@
                     </StackPanel>
                     <StackPanel Grid.Row="1" Orientation="Vertical">
                         <TextBlock Text="headline (64 chars max)"/>
-                        <TextBox InputScope="Text" Text="{Binding CreateRecord.T, Mode=TwoWay}" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" MaxLength="64" FontSize="36" AcceptsReturn="True"></TextBox>
+                        <TextBox x:Name="BlahHeadlineBox" InputScope="Text" Text="{Binding CreateRecord.T, Mode=TwoWay}" VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" MaxLength="64" FontSize="36" AcceptsReturn="True"></TextBox>
                     </StackPanel>
                     <StackPanel Grid.Row="2" Orientation="Vertical" Visibility="Visible">
                         <TextBlock Text="Images"/>
@@ -238,7 +238,7 @@
                             <ScaleTransform x:Name="PollYScale" ScaleY="0"></ScaleTransform>
                         </StackPanel.RenderTransform>
                         <TextBlock Text="poll options (2 minimum)"/>
-                        <ItemsControl x:Name="PollChoiceList"  ItemsSource="{Binding CreateRecord.I}"
+                        <ItemsControl x:Name="PollChoiceList"  ItemsSource="{Binding CreateRecord.I, Mode=TwoWay}"
                                       ItemTemplate="{StaticResource PollChoiceTemplate}"
                                        >
 
@@ -250,7 +250,7 @@
                             <ScaleTransform x:Name="PredictYScale" ScaleY="0"/>
                         </StackPanel.RenderTransform>
                         <TextBlock Text="prediction expiration date"/>
-                        <toolkit:DatePicker Value="{Binding CreateRecord.E}" />
+                    <toolkit:DatePicker Value="{Binding CreateRecord.E, Mode=TwoWay}" />
 
                     </StackPanel>
                     <StackPanel Grid.Row="5" Orientation="Vertical">

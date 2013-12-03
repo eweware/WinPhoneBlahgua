@@ -44,7 +44,7 @@ namespace WinPhoneBlahgua
         public bool NewAccount { get; set; }
         bool inited = false;
         public Blah NewBlahToInsert { get; set; }
-        private Dictionary<string, string> intBadgeMap = new Dictionary<string,string>();
+        private Dictionary<string, BadgeRecord> intBadgeMap = new Dictionary<string, BadgeRecord>();
         private ProfileSchema _profileSchema = null;
         private bool _filterProfanity = true;
         private bool _filterFlaggedContent = true;
@@ -78,6 +78,11 @@ namespace WinPhoneBlahgua
             }
         }
 
+
+        public string GetCurrentShareURL()
+        {
+            return BlahguaRest.BaseShareURL + "?blahId=" + CurrentBlah._id;
+        }
 
 
         public bool FilterFlaggedContent
@@ -473,7 +478,7 @@ namespace WinPhoneBlahgua
             );
         }
 
-        public void GetBadgeName(string badgeId, string_callback callback)
+        public void GetBadgeInfo(string badgeId, BadgeRecord_callback callback)
         {
             if (intBadgeMap.ContainsKey(badgeId))
                 callback(intBadgeMap[badgeId]);
@@ -481,9 +486,9 @@ namespace WinPhoneBlahgua
             {
                 BlahguaRest.GetBadgeInfo(badgeId, (theBadge) =>
                     {
-                        string badgeName = theBadge.N;
-                        intBadgeMap[badgeId] = badgeName;
-                        callback(badgeName);
+                        
+                        intBadgeMap[badgeId] = theBadge;
+                        callback(theBadge);
                     }
                 );
             }
@@ -535,7 +540,8 @@ namespace WinPhoneBlahgua
 
             BlahguaRest.CreateBlah(CreateRecord, (theBlah) =>
                 {
-                    CreateRecord = new BlahCreateRecord();
+                    if (theBlah != null)
+                        CreateRecord = new BlahCreateRecord(); // erase the old record
                     callback(theBlah);
                 }
                 );

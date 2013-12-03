@@ -116,7 +116,7 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <TextBlock Text="{Binding T}" FontSize="20" TextWrapping="Wrap" Foreground="{StaticResource BrushBlahguaWhite}" />
-                    <Image Source="{Binding ImageURL}" Grid.Column="1" Grid.Row="0" Width="64" />
+                    <Image Source="{Binding ImageURL}" Grid.Column="1" Grid.Row="0" Width="64" Margin="0 8 0 0"/>
 
                     <Grid Grid.Row="1" Grid.ColumnSpan="2">
                         <Grid.ColumnDefinitions>

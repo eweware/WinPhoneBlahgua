@@ -43,6 +43,7 @@ namespace WinPhoneBlahgua
         public Dictionary<string, string> groupNames = null;
         public Dictionary<string, string> userGroupNames = null;
         public Dictionary<string, string> blahTypes = null;
+        public string BaseShareURL { get; set; }
         private bool usingQA = false;
         private RestClient apiClient;
         private string imageBaseURL = "";
@@ -57,12 +58,14 @@ namespace WinPhoneBlahgua
             {
                 System.Console.WriteLine("Using QA Server");
                 apiClient = new RestClient("http://qa.rest.blahgua.com:8080/v2");
+                BaseShareURL = "http://qa.rest.blahgua.com:8080/";
                 imageBaseURL = "https://s3-us-west-2.amazonaws.com/qa.blahguaimages/image/";
             }
             else
             {
                 System.Console.WriteLine("Using Production Server");
                 apiClient = new RestClient("https://beta.blahgua.com/v2");
+                BaseShareURL = "https://beta.blahgua.com/";
                 imageBaseURL = "https://s3-us-west-2.amazonaws.com/blahguaimages/image/";
             }
 
@@ -446,18 +449,22 @@ namespace WinPhoneBlahgua
         public void CreateBlah(BlahCreateRecord theBlah , Blah_callback callback)
         {
             RestRequest request = new RestRequest("blahs", Method.POST);
+            theBlah.E = theBlah.E.Date;
             request.RequestFormat = DataFormat.Json;
             request.AddBody(theBlah);
             apiClient.ExecuteAsync(request, (response) =>
             {
                 Blah newBlah = null;
-                DataContractJsonSerializer des = new DataContractJsonSerializer(typeof(Blah));
-                var stream = new MemoryStream(Encoding.UTF8.GetBytes(response.Content));
-                object theObj = des.ReadObject(stream);
-                stream.Close();
+                if (response.StatusCode == HttpStatusCode.Created)
+                {
+                    DataContractJsonSerializer des = new DataContractJsonSerializer(typeof(Blah));
+                    var stream = new MemoryStream(Encoding.UTF8.GetBytes(response.Content));
+                    object theObj = des.ReadObject(stream);
+                    stream.Close();
 
-                if (theObj != null)
-                    newBlah = (Blah)theObj;
+                    if (theObj != null)
+                        newBlah = (Blah)theObj;
+                }
 
                 callback(newBlah);
             });
