@@ -209,6 +209,7 @@ namespace WinPhoneBlahgua
         {
             inboxCounter = 0;
             BlahContainer.Children.Clear();
+            BlahScroller.ScrollToVerticalOffset(0);
         }
 
         private void InsertAdditionalBlahs()
