@@ -1,13 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
-  <DefaultLanguage xmlns="" code="" />
-  <App xmlns="" ProductID="{8e4e0754-6c6f-4b89-8ca7-5034da6d0bf5}" Title="blahgua" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="eweware" Description="The next-generation social sharing network.  Be herd!" Publisher="eweware, inc." PublisherID="{86fed1af-9df7-4a7a-be9d-c5dd7803a71f}">
+  <DefaultLanguage xmlns="" code="en-US" />
+  <Languages xmlns="">
+    <Language code="en-US" />
+  </Languages>
+  <App xmlns="" ProductID="{8e4e0754-6c6f-4b89-8ca7-5034da6d0bf5}" Title="blahgua" RuntimeType="Silverlight" Version="1.0.0.1" Genre="apps.normal" Author="eweware" Description="The next-generation content sharing network.  Be herd!" Publisher="eweware, inc." PublisherID="{86fed1af-9df7-4a7a-be9d-c5dd7803a71f}">
     <IconPath IsRelative="true" IsResource="false">ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_LOCATION" />
       <Capability Name="ID_CAP_MICROPHONE" />
       <Capability Name="ID_CAP_NETWORKING" />
-      <Capability Name="ID_CAP_PUSH_NOTIFICATION" />
       <Capability Name="ID_CAP_SENSORS" />
       <Capability Name="ID_CAP_WEBBROWSERCOMPONENT" />
       <Capability Name="ID_CAP_ISV_CAMERA" />
@@ -43,8 +45,6 @@
     </Extensions>
     <ScreenResolutions>
       <ScreenResolution Name="ID_RESOLUTION_WVGA" />
-      <ScreenResolution Name="ID_RESOLUTION_WXGA" />
-      <ScreenResolution Name="ID_RESOLUTION_HD720P" />
     </ScreenResolutions>
   </App>
 </Deployment>
