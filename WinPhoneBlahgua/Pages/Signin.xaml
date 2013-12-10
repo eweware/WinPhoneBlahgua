@@ -49,10 +49,6 @@
                 <GradientStop Color="#FF7AD000" Offset="0.734"/>
             </LinearGradientBrush>
         </Grid.Background>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
         <controls:Pivot x:Name="SignInPivot" Title="blahgua" >
@@ -87,7 +83,7 @@
             </controls:PivotItem>
             <controls:PivotItem Header="about">
                 <!--ContentPanel - place additional content here-->
-                <ScrollViewer Height="640">
+                <ScrollViewer >
                 <StackPanel >
                     <TextBlock Text="Why should I use Blahgua?" FontSize="30" HorizontalAlignment="Center"/>
                     <TextBlock TextWrapping="Wrap">
@@ -131,15 +127,24 @@
             </controls:PivotItem>
             <controls:PivotItem Header="help">
                 <!--ContentPanel - place additional content here-->
+                <ScrollViewer>
                 <StackPanel>
-                    <TextBlock Text="Questions, comments, feedback?  Use the feedback channel in blahgua itself, or send us an email." TextWrapping="Wrap" />
+                    <TextBlock Text="Questions, comments, feedback?  Use the feedback channel in blahgua itself, or send us an email.  We are making this for YOU so let us know what we can do better." TextWrapping="Wrap" />
                     <TextBlock Margin="0 20 0 0" FontSize="24" HorizontalAlignment="Center" TextDecorations="Underline" Text="admin@blahgua.com" Tap="HyperlinkButton_Tap" />
                     <TextBlock Margin="0 40 0 0" FontSize="24" HorizontalAlignment="Left">
                         <TextBlock.Text>Forgot Password?</TextBlock.Text>
                     </TextBlock>
                     <TextBlock Text="Tap the 'recover account' button below to request a recovery email.  You will be sent an email with a link to log on to the web client.  You can then change your password there on the web client, and use that same password in the app." TextWrapping="Wrap" />
                     <Button Margin="0 20" HorizontalAlignment="Center" Content="Recover Account" Tap="Recover_Tap"/>
+                    <TextBlock Margin="0 40 0 0" FontSize="24" HorizontalAlignment="Left">
+                        <TextBlock.Text>Rate and Review</TextBlock.Text>
+                    </TextBlock>
+                    <TextBlock Text="Help us make blahgua better by spreading the word.  Share the app with friends and give it a review on the app store.  Your support is much appreciated!" TextWrapping="Wrap" />
+                    <Button Margin="0 20" HorizontalAlignment="Center" Content="Rate and Review" Tap="RateReview_Tap"/>
+
+
                 </StackPanel>
+                </ScrollViewer>
             </controls:PivotItem>
         </controls:Pivot>
     </Grid>

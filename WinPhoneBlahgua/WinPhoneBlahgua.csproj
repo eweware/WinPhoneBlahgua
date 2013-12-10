@@ -121,7 +121,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlahguaCore\AppManifest.cs" />
     <Compile Include="BlahguaCore\Badge.cs" />
+    <Compile Include="BlahguaCore\GoogleAnalytics.cs" />
     <Compile Include="BlahguaCore\HelperClasses.cs" />
     <Compile Include="BlahguaCore\ProfileSchema.cs" />
     <Compile Include="BlahguaCore\UserProfile.cs" />
@@ -160,6 +162,9 @@
     </Compile>
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ImageViewer.xaml.cs">
+      <DependentUpon>ImageViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\PhotoShare.xaml.cs">
       <DependentUpon>PhotoShare.xaml</DependentUpon>
@@ -241,6 +246,10 @@
       <Generator>MSBuild:Compile</Generator>
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\ImageViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\PhotoShare.xaml">
       <SubType>Designer</SubType>
@@ -372,6 +381,7 @@
     <Content Include="Images\unknown-user.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="WinPhoneBlahgua_2013_12_09_16_59_48.sap" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ApplicationIcon.png">

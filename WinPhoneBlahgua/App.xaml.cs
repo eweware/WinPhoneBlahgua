@@ -13,10 +13,10 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System.Windows.Data;
+using System.IO.IsolatedStorage;
 
 namespace WinPhoneBlahgua
 {
-
     class CustomUriMapper : UriMapperBase
     {
         public override Uri MapUri(Uri uri)
@@ -62,6 +62,7 @@ namespace WinPhoneBlahgua
         public TransitionFrame RootFrame { get; private set; }
         
         public static BlahguaAPIObject BlahguaAPI = null;
+        public static GoogleAnalytics analytics = null;
 
 
         /// <summary>
@@ -89,9 +90,6 @@ namespace WinPhoneBlahgua
             
             BlahguaAPI = new BlahguaAPIObject();
 
-            
-           
-
         }
 
 
@@ -99,6 +97,20 @@ namespace WinPhoneBlahgua
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
+            string uniqueId;
+
+            IsolatedStorageSettings settings = IsolatedStorageSettings.ApplicationSettings;
+            if (settings.Contains("uniqueId"))
+                uniqueId = settings["uniqueId"].ToString();
+            else
+            {
+                uniqueId = Guid.NewGuid().ToString();
+                settings.Add("uniqueId", uniqueId);
+                settings.Save();
+                
+            }
+            analytics = new GoogleAnalytics(uniqueId);
+            analytics.StartSession();
         }
 
         // Code to execute when the application is activated (brought to foreground)
@@ -124,6 +136,7 @@ namespace WinPhoneBlahgua
                 {
                 }
             );
+            analytics.EndSession();
         }
 
         // Code to execute if a navigation fails

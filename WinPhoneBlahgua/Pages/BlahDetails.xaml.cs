@@ -252,6 +252,7 @@ namespace WinPhoneBlahgua
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+            App.analytics.PostPageView("/blah");
             if (currentPage == "comments")
             {
                 AllCommentList.ItemsSource = App.BlahguaAPI.CurrentBlah.Comments;
@@ -846,6 +847,7 @@ namespace WinPhoneBlahgua
         {
             ApplicationBar.Buttons.Clear();
             ApplicationBar.MenuItems.Clear();
+            App.analytics.PostPageView("/blah/" + currentPage);
             if (App.BlahguaAPI.CurrentUser != null)
             {
                 switch (currentPage)
@@ -979,6 +981,16 @@ namespace WinPhoneBlahgua
 
                 }
             );
+        }
+
+        private void BlahImage_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            string urlString = App.BlahguaAPI.CurrentBlah.ImageURL;
+            if (urlString != null)
+            {
+                App.analytics.PostPageView("/ImageViewer");
+                NavigationService.Navigate(new Uri("/Pages/ImageViewer.xaml", UriKind.Relative));    
+            }
         }
 
         

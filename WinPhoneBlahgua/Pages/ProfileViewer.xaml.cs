@@ -638,6 +638,7 @@ namespace WinPhoneBlahgua
         private void OnPivotLoading(object sender, PivotItemEventArgs e)
         {
             string newItem = e.Item.Header.ToString();
+            App.analytics.PostPageView("/self/" + newItem);
 
             if (newItem == "posts")
             {
@@ -1193,6 +1194,12 @@ namespace WinPhoneBlahgua
             }
         }
 
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            App.analytics.PostPageView("/self");
+        }
+
         private void UserCommentList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ListBoxItem curItem;
@@ -1301,6 +1308,24 @@ namespace WinPhoneBlahgua
                 );
             }
             );
+        }
+
+        private void RateReview_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            MarketplaceReviewTask rev = new MarketplaceReviewTask();
+            rev.Show();
+
+        }
+
+        private void HyperlinkButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            EmailComposeTask emailComposeTask = new EmailComposeTask();
+
+            emailComposeTask.Subject = "feedback on blahgua";
+            emailComposeTask.Body = "";
+            emailComposeTask.To = "admin@blahgua.com";
+
+            emailComposeTask.Show();
         }
 
 

@@ -229,6 +229,7 @@ namespace WinPhoneBlahgua
             else
             {
                 settings.Add(setting, val);
+                settings.Save();
             }
         }
 
@@ -236,7 +237,10 @@ namespace WinPhoneBlahgua
         {
             IsolatedStorageSettings settings = IsolatedStorageSettings.ApplicationSettings;
             if (settings.Contains(setting))
+            {
                 settings.Remove(setting);
+                settings.Save();
+            }
         }
 
         public string UnprocessText(string originalString)

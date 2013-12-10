@@ -148,6 +148,7 @@ namespace WinPhoneBlahgua
                     inboxCounter--;
 
                 }
+                App.analytics.PostPageView("/channel/" + App.BlahguaAPI.CurrentChannel.ChannelName);
 
             });
         }
@@ -442,6 +443,7 @@ namespace WinPhoneBlahgua
             StopTimers();
             ClearBlahs();
             FetchInitialBlahList();
+            App.analytics.PostPageView("/channel/" + App.BlahguaAPI.CurrentChannel.ChannelName);
 
 
         }

@@ -79,6 +79,8 @@ namespace WinPhoneBlahgua
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            base.OnNavigatedTo(e);
+            App.analytics.PostPageView("/PhotoShare");
             // Get a dictionary of query string keys and values.
             IDictionary<string, string> queryStrings = this.NavigationContext.QueryString;
 

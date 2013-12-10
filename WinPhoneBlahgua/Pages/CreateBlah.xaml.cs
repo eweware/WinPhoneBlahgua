@@ -39,25 +39,27 @@ namespace WinPhoneBlahgua
 
         }
 
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            App.analytics.PostPageView("/CreateBlah");
+        }
+
        
 
         private void OnCreateBlahOK(Blah newBlah)
         {
             if (newBlah != null)
             {
-
                 App.BlahguaAPI.NewBlahToInsert = newBlah;
 
                 NavigationService.GoBack();
             }
             else
             {
-                MessageBox.Show("Unable to create the blah.  Please try again.  If the problem persists, try at a different time.");
+                MessageBox.Show("Unable to create the blah.  Please try again.  If the problem persists, please try at a different time.");
 
             }
-
-
-
         }
 
         private string IsBlahValid()

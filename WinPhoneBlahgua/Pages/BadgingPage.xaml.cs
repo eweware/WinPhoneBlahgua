@@ -22,6 +22,11 @@ namespace WinPhoneBlahgua
 
         }
 
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            App.analytics.PostPageView("/AddBadge");
+        }
 
         private void DoSubmitEmail(object sender, System.Windows.Input.GestureEventArgs e)
         {

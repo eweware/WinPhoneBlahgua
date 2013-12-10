@@ -75,6 +75,12 @@ namespace WinPhoneBlahgua
             }
         }
 
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            App.analytics.PostPageView("/signup");
+        }
+
 
 
         private void HandleUserSignIn()
@@ -99,14 +105,21 @@ namespace WinPhoneBlahgua
             settings.Field1Mode = InputMode.Text;
             settings.Field2Mode = InputMode.Text;
             RadInputPrompt.Show(settings, "Please enter username and email address", closedHandler: (args) =>
-            {
+                {
                     App.BlahguaAPI.UpdatePassword(args.Text, (theResult) =>
-                    {
-                        MessageBox.Show("Check the email for a recovery link.");
-                    }
-                );
-            }
+                        {
+                            MessageBox.Show("Check the email for a recovery link.");
+                        }
+                    );
+                }
             );
+        }
+
+        private void RateReview_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            MarketplaceReviewTask rev = new MarketplaceReviewTask();
+            rev.Show();
+            
         }
     }
 }

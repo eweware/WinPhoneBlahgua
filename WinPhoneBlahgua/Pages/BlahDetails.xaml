@@ -205,8 +205,7 @@
                         <local:UrlTextBlock Content="{Binding CurrentBlah.T}" FontFamily="Segoe WP Semibold" FontSize="36" TextWrapping="Wrap" IsReadOnly="True"/>
                             
                         <Image x:Name="BlahImage" Source="{Binding CurrentBlah.ImageURL}" Margin="8" 
-                          
-                          HorizontalAlignment="Center" ImageOpened="HandleImageOpened" />
+                          Tap="BlahImage_Tap" HorizontalAlignment="Center" ImageOpened="HandleImageOpened" />
                         <local:UrlTextBlock Content="{Binding CurrentBlah.F}" TextWrapping="Wrap" />
                         <Border x:Name="PollOptionArea"  Margin="0 12 0 0" Padding="8" BorderBrush="#80FFFFFF"  Visibility="Collapsed" BorderThickness="1" CornerRadius="8" Background="#80000000">
                             <Border.RenderTransform>

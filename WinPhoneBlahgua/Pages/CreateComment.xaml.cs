@@ -34,6 +34,12 @@ namespace WinPhoneBlahgua
             Loaded += CreateComment_Loaded;
         }
 
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            App.analytics.PostPageView("/CreateComment");
+        }
+
         void CreateComment_Loaded(object sender, RoutedEventArgs e)
         {
             if ((App.BlahguaAPI.CurrentUser.Badges != null) && (App.BlahguaAPI.CurrentUser.Badges.Count  >  0))

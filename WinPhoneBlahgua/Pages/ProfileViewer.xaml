@@ -653,16 +653,25 @@
                 <!--ContentPanel - place additional content here-->
                 <ScrollViewer>
                     <StackPanel>
-                        <TextBlock Text="user name" />
-                        <TextBlock x:Name="UserName" Text="{Binding CurrentUser.AccountName}" FontSize="24" Margin="8 0 0 15"/>
-                        <TextBlock Text="password" />
-                        <Button HorizontalAlignment="Center"  Margin="16" Tap="ChangePassword_Tap">change password</Button>
-                        <TextBlock Text="recovery email address (optional)" VerticalAlignment="Center" />
+
+                        <TextBlock Text="Help us make blahgua better by spreading the word.  Share the app with friends and give it a review on the app store.  Your support is much appreciated!" TextWrapping="Wrap" />
+                        <Button Margin="0" HorizontalAlignment="Center" Content="Rate and Review" Tap="RateReview_Tap"/>
+                        <TextBlock Text="Questions, comments, feedback?  Use the feedback channel in blahgua itself, or send us an email.  We are making this for YOU so let us know what we can do better." TextWrapping="Wrap" />
+                        <TextBlock Margin="0 0 0 16" FontSize="24" HorizontalAlignment="Center" TextDecorations="Underline" Text="admin@blahgua.com" Tap="HyperlinkButton_Tap" />
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="user name:  " />
+                            <TextBlock x:Name="UserName" Text="{Binding CurrentUser.AccountName}" FontSize="24" Margin="8 0 0 15"/>
+                        </StackPanel>
+                        <TextBlock Text="password:" />
+                        <Button HorizontalAlignment="Center"  Margin="0 0 0 8" Tap="ChangePassword_Tap">change password</Button>
+                        <TextBlock Text="recovery email address (optional):" VerticalAlignment="Center" />
                         <TextBlock x:Name="recover" Text="{Binding CurrentUser.RecoveryEmail}" FontSize="24" />
-                        <Button HorizontalAlignment="Center"  Margin="16" Tap="RecoveryInfo_Tap">set recovery email</Button>
+                        <Button HorizontalAlignment="Center"  Margin="0 0 0 8" Tap="RecoveryInfo_Tap">set recovery email</Button>
 
                         <toolkit:ToggleSwitch Header="profanity filter" IsChecked="{Binding FilterProfanity, Mode=TwoWay}" />
                         <toolkit:ToggleSwitch Header="flagged content filter" IsChecked="{Binding FilterFlaggedContent, Mode=TwoWay}" />
+
                     </StackPanel>
                 </ScrollViewer>
 
