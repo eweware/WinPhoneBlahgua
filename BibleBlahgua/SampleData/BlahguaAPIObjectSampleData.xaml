@@ -1,0 +1,228 @@
+<BibleBlahgua:BlahguaAPIObject xmlns:BibleBlahgua="clr-namespace:BibleBlahgua" 
+                                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                                  xmlns:System="clr-namespace:System;assembly=mscorlib">
+    <BibleBlahgua:BlahguaAPIObject.CurrentBlahTypes>
+        <BibleBlahgua:BlahTypeList Capacity="89">
+            <BibleBlahgua:BlahType N="Says" />
+            <BibleBlahgua:BlahType C="55" N="Leaks" _id="Potenti parturient vestibulum lorem vestibulum" c="Sem eleifend facilisi duis adipiscing"/>
+            <BibleBlahgua:BlahType C="60" N="Polls" _id="Nunc sodales" c="Massa malesuada parturient"/>
+            <BibleBlahgua:BlahType C="90" N="Asks" _id="Vel amet" c="Mauris ante arcu aliquam"/>
+            <BibleBlahgua:BlahType C="61" N="predicts" _id="Integer quisque morbi" c="Vestibulum mollis neque porttitor sed"/>
+        </BibleBlahgua:BlahTypeList>
+    </BibleBlahgua:BlahguaAPIObject.CurrentBlahTypes>
+    <BibleBlahgua:BlahguaAPIObject.CurrentBlah>
+		<BibleBlahgua:Blah A="Vestibulum cras class curabitur aenean" 
+                              ChannelName="The Testing Channel" 
+                              F="One girlfriend became a http://www.sexworker.com sex worker a while after we www.broke.com up and though we had a bit of ex sex, our friendship was affectionate but generally nonsexual during her sex work period. I got to know a lot about sex work by talking to her and saw it in a more complex way than I had before. She stopped a few years ago but is considering starting again for the money. This is in a US state where it is illegal. " G="Conubia eros" 
+                              ImageURL="Images\Large_Green.png" 
+                              O="85" S="897.18" 
+                              TypeName="Mumbles" T="This is the http://www.blagua.com headline of the test.com blah!" 
+                              DescriptionString="A cool guy from a cool place" 
+                              UserImage="Images\unknown-user.png" 
+                              UserName="Blahgua User" V="62" Y="Quis leo mus nec" 
+                              ElapsedTimeString="17 minutes ago"
+                              _id="Adipiscing lacinia" 
+                              c="12/10/2013" 
+                              u="12/10/2013">
+			<BibleBlahgua:Blah.B>
+				<System:String>Some Badge</System:String>
+            </BibleBlahgua:Blah.B>
+
+            <BibleBlahgua:Blah.Comments>
+                <BibleBlahgua:CommentList>
+                    <BibleBlahgua:Comment
+                        AuthorImage="Images\unknown-user.png"
+                        AuthorName="Comment Author"
+                        ElapsedTimeString="47 days ago"
+                        UpVoteCount="10"
+                        DownVoteCount="4"
+                        DescriptionString="A helpful test user from CA"
+                        T="This is a comment.  It is not the world's most exciting comment, but it is the only comment I know...  Bare with me and I will try to make it more cool."
+                        ImageURL="Images\unknown-user.png"
+                        />
+                    <BibleBlahgua:Comment
+                        T="This is a comment"
+                        />
+                    <BibleBlahgua:Comment
+                        T="This is a comment"
+                        />
+                    <BibleBlahgua:Comment
+                        T="This is a comment"
+                        />
+                    <BibleBlahgua:Comment
+                        T="This is a comment"
+                        />
+                    <BibleBlahgua:Comment
+                        T="This is a comment"
+                        />
+                </BibleBlahgua:CommentList>
+            </BibleBlahgua:Blah.Comments>
+			<BibleBlahgua:Blah.Description>
+				<BibleBlahgua:UserDescription K="Dignissim morbi mus" d="Nulla nec" i="Enim commodo" m="Parturient nullam"/>
+			</BibleBlahgua:Blah.Description>
+			<BibleBlahgua:Blah.M>
+				<System:String>Nisi proin</System:String>
+			</BibleBlahgua:Blah.M>
+            <BibleBlahgua:Blah.L>
+                <BibleBlahgua:Stats>
+                    <BibleBlahgua:Stats.Impressions>
+                        <System:Int32>5</System:Int32>
+                        <System:Int32>3</System:Int32>
+                        <System:Int32>1</System:Int32>
+                        <System:Int32>6</System:Int32>
+                    </BibleBlahgua:Stats.Impressions>
+                    <BibleBlahgua:Stats.Opens>
+                        <System:Int32>5</System:Int32>
+                        <System:Int32>3</System:Int32>
+                        <System:Int32>1</System:Int32>
+                        <System:Int32>6</System:Int32>
+                    </BibleBlahgua:Stats.Opens>
+                    <BibleBlahgua:Stats.Comments>
+                        <System:Int32>5</System:Int32>
+                        <System:Int32>3</System:Int32>
+                        <System:Int32>1</System:Int32>
+                        <System:Int32>6</System:Int32>
+                    </BibleBlahgua:Stats.Comments>
+                </BibleBlahgua:Stats>
+            </BibleBlahgua:Blah.L>
+		</BibleBlahgua:Blah>
+	</BibleBlahgua:BlahguaAPIObject.CurrentBlah>
+    <BibleBlahgua:BlahguaAPIObject.CreateRecord>
+        <BibleBlahgua:BlahCreateRecord  T="Some Headling Text" F="Some Body Text" E="9/28/2103" 
+                                           UserImage="\Images\unknown-user.png"
+                                           UserName="Ultradad" DescriptionString="A white male from Beverly Hills, CA">
+            <BibleBlahgua:BlahCreateRecord.BlahType>
+                <BibleBlahgua:BlahType N="Says" />
+            </BibleBlahgua:BlahCreateRecord.BlahType>
+           
+
+            <BibleBlahgua:BlahCreateRecord.Badges>
+                <BibleBlahgua:BadgeList>
+                    <BibleBlahgua:BadgeReference BadgeName="Microsoft"/>
+                    <BibleBlahgua:BadgeReference BadgeName="eweware"/>
+                </BibleBlahgua:BadgeList>
+            </BibleBlahgua:BlahCreateRecord.Badges>
+        </BibleBlahgua:BlahCreateRecord>
+    </BibleBlahgua:BlahguaAPIObject.CreateRecord>
+    <BibleBlahgua:BlahguaAPIObject.CurrentUser >
+        <BibleBlahgua:User N="Ultradad" UserName="Ultradad" AccountName="Ultradad" DescriptionString="A male from Beverly Hills, CA"
+            UserImage="Images\unknown-user.png"
+            >
+            <BibleBlahgua:User.Badges>
+                <BibleBlahgua:BadgeList>
+                    <BibleBlahgua:BadgeReference BadgeName="Microsoft"  ExpirationDate="9/28/2014" BadgeImage="/Images/badge_standalone_30x31.png"/>
+                    <BibleBlahgua:BadgeReference BadgeName="eweware" ExpirationDate="9/28/2014" BadgeImage="/Images/badge_standalone_30x31.png"/>
+                </BibleBlahgua:BadgeList>
+            </BibleBlahgua:User.Badges>
+            
+            <BibleBlahgua:User.CommentHistory>
+                <BibleBlahgua:CommentList>
+                    <BibleBlahgua:Comment
+                        AuthorImage="Images\unknown-user.png"
+                        AuthorName="Comment Author"
+                        ElapsedTimeString="47 days ago"
+                        UpVoteCount="10"
+                        DownVoteCount="4"
+                        DescriptionString="A helpful test user from CA"
+                        T="This is a comment.  It is not the world's most exciting comment, but it is the only comment I know...  Bare with me and I will try to make it more cool."
+                        ImageURL="Images\unknown-user.png"
+                        />
+                    <BibleBlahgua:Comment
+                        AuthorImage="Images\unknown-user.png"
+                        AuthorName="Comment Author"
+                        ElapsedTimeString="47 days ago"
+                        UpVoteCount="10"
+                        DownVoteCount="4"
+                        DescriptionString="A helpful test user from CA"
+                        T="This is a comment.  It is not the world's most exciting comment, but it is the only comment I know...  Bare with me and I will try to make it more cool."
+                        />
+                </BibleBlahgua:CommentList>
+            </BibleBlahgua:User.CommentHistory>
+            
+            <BibleBlahgua:User.PostHistory>
+                <BibleBlahgua:BlahList>
+                    <BibleBlahgua:Blah A="Vestibulum cras class curabitur aenean" 
+                              ChannelName="The Testing Channel" 
+                              ImageURL="Images/The Now Network.png" 
+                              O="85" S="897.18" P="25" D="12"
+                              TypeName="Mumbles" T="This is the http://www.blagua.com headline of the test.com blah!" 
+                              DescriptionString="A cool guy from a cool place" 
+                              UserImage="Images\unknown-user.png" 
+                              ConversionString="24%"
+                              UserName="Blahgua User" V="62" Y="Quis leo mus nec" 
+                              ElapsedTimeString="17 minutes ago" C="13"
+                              _id="Adipiscing lacinia" 
+                              c="12/10/2013" 
+                              u="12/10/2013">
+                     </BibleBlahgua:Blah>
+                    <BibleBlahgua:Blah A="Vestibulum cras class curabitur aenean" 
+                              ChannelName="The Testing Channel" 
+                              ImageURL="" 
+                              O="85" S="897.18" P="25" D="12"
+                              TypeName="Mumbles" T="This is the http://www.blagua.com headline of the test.com blah!" 
+                              DescriptionString="A cool guy from a cool place" 
+                              UserImage="Images\unknown-user.png" 
+                              ConversionString="24%"
+                              UserName="Blahgua User" V="62" Y="Quis leo mus nec" 
+                              ElapsedTimeString="17 minutes ago" C="13"
+                              _id="Adipiscing lacinia" 
+                              c="12/10/2013" 
+                              u="12/10/2013">
+                    </BibleBlahgua:Blah>
+                    <BibleBlahgua:Blah A="Vestibulum cras class curabitur aenean" 
+                              ChannelName="The Testing Channel" 
+                              ImageURL="Images/The Now Network.png" 
+                              O="85" S="897.18" P="25" D="12"
+                              TypeName="Mumbles" T="This is the http://www.blagua.com headline of the test.com blah!" 
+                              DescriptionString="A cool guy from a cool place" 
+                              UserImage="Images\unknown-user.png" 
+                              ConversionString="24%"
+                              UserName="Blahgua User" V="62" Y="Quis leo mus nec" 
+                              ElapsedTimeString="17 minutes ago" C="13"
+                              _id="Adipiscing lacinia" 
+                              c="12/10/2013" 
+                              u="12/10/2013">
+                    </BibleBlahgua:Blah>
+                </BibleBlahgua:BlahList>
+            </BibleBlahgua:User.PostHistory>
+   
+        </BibleBlahgua:User>
+    </BibleBlahgua:BlahguaAPIObject.CurrentUser>
+
+	
+	<BibleBlahgua:BlahguaAPIObject.CurrentChannelList>
+		<BibleBlahgua:ChannelList Capacity="20">
+            <BibleBlahgua:Channel B="78" ChannelImageUrl="Images\The Now Network.png" ChannelTypeName="Consequat sagittis sem commodo convallis" ChannelTypeId="Adipiscing blandit" ChannelName="Vestibulum pulvinar" ChannelId="Phasellus placerat ornare" D="Senectus nisi" F="96" G="Sit vitae" I="26" L="88" M="Parturient conubia vestibulum vel" N="Nam platea" R="93" S="Nisl class vestibulum sociosqu nunc" U="36" V="43" X="Suscipit adipiscing odio" Y="Orci torquent parturient ultrices sed" _id="Curae pede donec cubilia quam" c="Primis quis urna dapibus cras" u="Egestas dignissim"/>
+            <BibleBlahgua:Channel B="28" ChannelImageUrl="Images\The Now Network.png" ChannelTypeName="Mus vestibulum vehicula" ChannelTypeId="Amet rutrum sapien leo" ChannelName="Nunc est hac facilisis" ChannelId="Duis dis elementum" D="Vestibulum fermentum semper adipiscing" F="91" G="Parturient fringilla nec non habitasse" I="54" L="78" M="Per volutpat vestibulum" N="Maecenas euismod hendrerit" R="12" S="Ante feugiat" U="47" V="37" X="Arcu etiam vestibulum sed gravida" Y="Sem adipiscing" _id="Diam iaculis" c="Eget sociis lacinia himenaeos" u="Sit fusce"/>
+            <BibleBlahgua:Channel B="74" ChannelImageUrl="Images\The Now Network.png" ChannelTypeName="Natoque nam tellus enim" ChannelTypeId="Imperdiet malesuada vel elit dictumst" ChannelName="Taciti lorem accumsan bibendum morbi" ChannelId="Praesent laoreet" D="Tempor erat" F="90" G="Parturient vestibulum penatibus sed posuere" I="11" L="99" M="Nulla porttitor potenti tincidunt" N="Proin pretium" R="39" S="Rhoncus sodales vestibulum" U="89" V="99" X="Adipiscing augue dolor eros nibh" Y="Tempus viverra parturient" _id="Tristique aliquam dis est" c="Tortor turpis fames hac" u="Nisi leo mus"/>
+            <BibleBlahgua:Channel B="97" ChannelImageUrl="Images\The Now Network.png" ChannelTypeName="Nec ultricies" ChannelTypeId="Nunc integer" ChannelName="Aenean eleifend vestibulum" ChannelId="Varius vestibulum nisl" D="Adipiscing odio" F="40" G="Felis quisque" I="74" L="79" M="Orci facilisi pede venenatis quam" N="Non parturient vivamus vestibulum" R="69" S="Per ipsum vestibulum mauris" U="93" V="97" X="Adipiscing justo quis" Y="Vulputate urna" _id="Aliquam nullam" c="Sed sem" u="Curabitur parturient aliquet cras vestibulum"/>
+            <BibleBlahgua:Channel B="77" ChannelImageUrl="Images\The Now Network.png" ChannelTypeName="Amet consequat parturient sed ante" ChannelTypeId="Habitant vel nunc adipiscing nam" ChannelName="Faucibus blandit duis" ChannelId="Phasellus aptent sit vestibulum lacus" D="Inceptos commodo arcu diam" F="59" G="Convallis dis interdum" I="33" L="41" M="Conubia dignissim auctor eget elementum" N="Lorem elit" R="68" S="Est hac leo" U="11" V="99" X="Enim vestibulum erat" Y="Vestibulum eros adipiscing lobortis nascetur" _id="Nibh cubilia" c="Magna dapibus massa metus" u="Nisi facilisis pharetra"/>
+            <BibleBlahgua:Channel B="37" ChannelImageUrl="Images\The Now Network.png" ChannelTypeName="Sagittis adipiscing parturient vestibulum nec" ChannelTypeId="Pulvinar vestibulum nunc mus fringilla" ChannelName="Egestas euismod vestibulum nisl" ChannelId="Parturient placerat fermentum" D="Senectus vestibulum adipiscing" F="74" G="Odio congue feugiat gravida iaculis" I="54" L="50" M="Sociosqu lacinia" N="Cursus non laoreet per" R="81" S="Sed sem natoque morbi" U="23" V="67" X="Neque netus" Y="Dictum posuere sit parturient orci" _id="Nulla habitasse potenti hendrerit" c="Lectus pretium porta" u="Rhoncus purus suscipit pede"/>
+            <BibleBlahgua:Channel B="71" ChannelImageUrl="Images\The Now Network.png" ChannelTypeName="Ultrices risus sed dis vehicula" ChannelTypeId="Vestibulum ligula torquent" ChannelName="Libero vel quam nam" ChannelId="Himenaeos sodales" D="Quis volutpat viverra maecenas aliquam" F="45" G="Est vestibulum adipiscing parturient" I="69" L="52" M="Hac imperdiet" N="Vestibulum malesuada" R="23" S="Velit vestibulum" U="63" V="87" X="Urna integer vitae" Y="Litora penatibus" _id="Class leo" c="Adipiscing curae mus luctus" u="Praesent quisque cras"/>
+            <BibleBlahgua:Channel B="52" ChannelImageUrl="Images\The Now Network.png" ChannelTypeName="Tristique blandit" ChannelTypeId="Aliquet duis" ChannelName="Donec vestibulum porttitor tincidunt bibendum" ChannelId="Vivamus parturient accumsan aliquam nec" D="Etiam nunc amet ante" F="81" G="Commodo magnis conubia arcu" I="87" L="40" M="Non cubilia diam" N="Mattis per ultricies fusce dictumst" R="17" S="Sed mauris lorem" U="21" V="81" X="Venenatis mollis sem" Y="Eget montes vulputate sit vel" _id="Morbi eleifend" c="Dapibus curabitur facilisi nostra ornare" u="Egestas nam vestibulum"/>
+            <BibleBlahgua:Channel B="65" ChannelImageUrl="Images\The Now Network.png" ChannelTypeName="Eros gravida" ChannelTypeId="Feugiat erat" ChannelName="Platea adipiscing dis nulla" ChannelId="Elit sed enim euismod" D="Nibh faucibus" F="52" G="Est phasellus hac" I="19" L="33" M="Nisi nisl leo consequat primis" N="Iaculis rutrum proin sapien lacinia" R="42" S="Convallis laoreet" U="46" V="51" X="Parturient habitant nunc odio inceptos" Y="Dignissim semper" _id="Orci pede vestibulum quam mus" c="Nec quis" u="Elementum facilisis fermentum"/>
+            <BibleBlahgua:Channel B="41" ChannelImageUrl="Images\The Now Network.png" ChannelTypeName="Hendrerit fames" ChannelTypeId="Non per habitasse tellus" ChannelName="Fringilla taciti augue dolor" ChannelId="Sociis vestibulum interdum" D="Adipiscing felis ipsum" F="30" G="Himenaeos natoque posuere parturient" I="46" L="44" M="Justo tempor imperdiet lobortis" N="Nascetur vestibulum lacus sed sem" R="45" S="Pharetra lorem placerat potenti tempus" U="37" V="46" X="Vestibulum pulvinar sit sagittis pretium" Y="Magna malesuada urna senectus vel" _id="Adipiscing massa penatibus parturient" c="Porttitor sociosqu cras" u="Rhoncus metus"/>
+		</BibleBlahgua:ChannelList>
+	</BibleBlahgua:BlahguaAPIObject.CurrentChannelList>
+	<BibleBlahgua:BlahguaAPIObject.CurrentChannelTypeList>
+		<BibleBlahgua:ChannelTypeList Capacity="26">
+			<BibleBlahgua:ChannelType N="Tincidunt tortor" _id="Nam sed" c="Dis est sodales hac morbi"/>
+			<BibleBlahgua:ChannelType N="Vestibulum turpis varius suscipit duis" _id="Vestibulum adipiscing torquent neque" c="Leo mus nunc amet ante"/>
+			<BibleBlahgua:ChannelType N="Tristique ultrices ultricies" _id="Netus nec nulla arcu" c="Aenean mauris vehicula"/>
+			<BibleBlahgua:ChannelType N="Nullam venenatis" _id="Non parturient" c="Viverra per"/>
+			<BibleBlahgua:ChannelType N="Volutpat sed porta aliquam" _id="Diam purus" c="Integer eget elit vestibulum vestibulum"/>
+			<BibleBlahgua:ChannelType N="Enim risus" _id="Erat quisque eros maecenas nibh" c="Nisi aptent nisl praesent"/>
+			<BibleBlahgua:ChannelType N="Auctor accumsan nunc" _id="Vivamus adipiscing vulputate velit congue" c="Curabitur sem odio vitae"/>
+			<BibleBlahgua:ChannelType N="Cursus parturient phasellus bibendum vestibulum" _id="Aliquam sit aliquet orci" c="Pede class vel nam curae"/>
+			<BibleBlahgua:ChannelType N="Sed donec dis consequat" _id="Convallis est" c="Dignissim vestibulum dictumst blandit"/>
+			<BibleBlahgua:ChannelType N="Etiam eleifend fusce elementum adipiscing" _id="Facilisis hac parturient vestibulum" c="Leo facilisi"/>
+		</BibleBlahgua:ChannelTypeList>
+	</BibleBlahgua:BlahguaAPIObject.CurrentChannelTypeList>
+    <BibleBlahgua:BlahguaAPIObject.CurrentChannel>
+        <BibleBlahgua:Channel B="78" 
+                                 ChannelTypeName="A General Channel" 
+                                 ChannelName="The Blahgua Channel"
+                                 ChannelImageUrl="Images\The Now Network.png"
+                                 />
+    </BibleBlahgua:BlahguaAPIObject.CurrentChannel>
+</BibleBlahgua:BlahguaAPIObject>

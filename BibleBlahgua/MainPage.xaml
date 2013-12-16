@@ -1,0 +1,148 @@
+﻿<phone:PhoneApplicationPage
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:BibleBlahgua" 
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    x:Class="BibleBlahgua.MainPage"
+    d:DataContext="{d:DesignData SampleData/BlahguaAPIObjectSampleData.xaml}"
+    local:TiltEffect.IsTiltEnabled="True"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="#202020"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    shell:SystemTray.IsVisible="False">
+
+    <toolkit:TransitionService.NavigationInTransition>
+        <toolkit:NavigationInTransition>
+            <toolkit:NavigationInTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardIn"/>
+            </toolkit:NavigationInTransition.Backward>
+            <toolkit:NavigationInTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardIn"/>
+            </toolkit:NavigationInTransition.Forward>
+        </toolkit:NavigationInTransition>
+    </toolkit:TransitionService.NavigationInTransition>
+
+    <toolkit:TransitionService.NavigationOutTransition>
+        <toolkit:NavigationOutTransition>
+            <toolkit:NavigationOutTransition.Backward>
+                <toolkit:TurnstileTransition Mode="BackwardOut"/>
+            </toolkit:NavigationOutTransition.Backward>
+            <toolkit:NavigationOutTransition.Forward>
+                <toolkit:TurnstileTransition Mode="ForwardOut"/>
+            </toolkit:NavigationOutTransition.Forward>
+        </toolkit:NavigationOutTransition>
+    </toolkit:TransitionService.NavigationOutTransition>
+
+    <phone:PhoneApplicationPage.Resources>
+        
+
+        <Storyboard x:Name="AnimateTextFadeIn" Completed="FadeIn_Completed" >
+            <ObjectAnimationUsingKeyFrames BeginTime="0:0:0" Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Visible</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimation BeginTime="0:0:0.0" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.5"/>
+            <ObjectAnimationUsingKeyFrames BeginTime="0:0:0" Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Visible</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimation BeginTime="0:0:0.0" Storyboard.TargetProperty="Opacity" From="0" To=".8" Duration="0:0:0.5"/>
+        </Storyboard>
+
+        <Storyboard x:Name="AnimateTextFadeOut" Completed="FadeOut_Completed" >
+            <DoubleAnimation BeginTime="0:0:0.0" Storyboard.TargetProperty="Opacity" From="1" To="0" Duration="0:0:1.0"/>
+            <ObjectAnimationUsingKeyFrames BeginTime="0:0:1.0" Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Collapsed</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+            <DoubleAnimation BeginTime="0:0:0.0" Storyboard.TargetProperty="Opacity" From=".8" To="0" Duration="0:0:1.0"/>
+            <ObjectAnimationUsingKeyFrames BeginTime="0:0:1.0" Storyboard.TargetProperty="Visibility">
+                <DiscreteObjectKeyFrame KeyTime="0">
+                    <DiscreteObjectKeyFrame.Value>
+                        <Visibility>Collapsed</Visibility>
+                    </DiscreteObjectKeyFrame.Value>
+                </DiscreteObjectKeyFrame>
+            </ObjectAnimationUsingKeyFrames>
+        </Storyboard>
+
+
+    </phone:PhoneApplicationPage.Resources>
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot">
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FFC9CCD0" Offset="0"/>
+                <GradientStop Color="#FFE5E4EA" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Rectangle Canvas.ZIndex="1" Height="8" Margin="0,56,0,0" VerticalAlignment="Top">
+            <Rectangle.Fill>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#20000000" Offset="1"/>
+                    <GradientStop Color="#80000000"/>
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Grid Height="48" VerticalAlignment="Top" Margin="0,8,0,0" Canvas.ZIndex="2">
+            <Grid.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF7DBFE3" Offset="0.55"/>
+                    <GradientStop Color="#FF7AD000" Offset="0.734"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="48"/>
+                <ColumnDefinition Width="48"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Foreground="White" Text="The Gospels" Margin="12 0" FontSize="32" Padding="0"/>
+            <Button x:Name="SignInBtn"  Grid.Column="1" Visibility="Visible" BorderThickness="0" Grid.ColumnSpan="2" Style="{StaticResource SquareBtn}" Background="#FF9E9E9E" Foreground="White" FontSize="20" Content="Sign In" Click="DoSignIn"/>
+           
+            <Image x:Name="UserInfoBtn" Width="48" Height="48" Grid.Column="2"  Visibility="Collapsed" Source="{Binding CurrentUser.UserImage}" Tap="UserInfoBtn_Tap" ImageFailed="UserImageLoadFailed">
+
+            </Image>
+
+
+        </Grid>
+        <ScrollViewer x:Name="BlahScroller" ManipulationStarted="HandleScrollStart">
+            <Canvas x:Name="BlahContainer">
+            </Canvas>
+        </ScrollViewer>
+        <Border x:Name="LoadingBox"  Margin="0 200 0 0" Padding="24 24" BorderBrush="#80FFFFFF" BorderThickness="1" CornerRadius="8" Background="#80000000" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <StackPanel Orientation="Vertical">
+                <TextBlock  Text="loading" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" Foreground="{StaticResource BrushBlahguaWhite}" />
+                <ProgressBar Width="200" Height="15" IsIndeterminate="True" />
+            </StackPanel>
+        </Border>
+        <Grid x:Name="ConnectFailure" Canvas.ZIndex="1000" Visibility="Collapsed">
+            <Rectangle Fill="#80000000"  />
+            <Border  Margin="16 8 8 8" Padding="24 16" BorderBrush="#80FFFFFF" BorderThickness="1" CornerRadius="8" Background="#80000000" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Sorry, we were unable to connect to the blahgua servers." Foreground="{StaticResource BrushBlahguaWhite}" TextWrapping="Wrap" />
+                    <TextBlock Margin="0 24" Text="Please exit the application and try again later." Foreground="{StaticResource BrushBlahguaWhite}" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+        </Grid>
+           
+    </Grid>
+
+</phone:PhoneApplicationPage>
