@@ -445,7 +445,7 @@ namespace BibleBlahgua
             BlahguaRest.GetPublicChannels((chanList) =>
                            {
                                curChannelList = chanList;
-                               CurrentChannel = curChannelList.FindNamedChannel("bible verses")
+                               CurrentChannel = curChannelList.FindNamedChannel("bible verses");
                                inited = true;
                                callback(true);
                            });
@@ -1212,7 +1212,7 @@ namespace BibleBlahgua
             GetOrAddUserChannels((chanList) =>
                 {
                     CurrentChannelList = chanList;
-                    CurrentChannel = curChannelList[0];
+                    CurrentChannel = curChannelList.FindNamedChannel("bible verses");
 
                     BlahguaRest.GetUserInfo((newUser) =>
                         {

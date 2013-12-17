@@ -8,17 +8,16 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:chart="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Chart"
     xmlns:chartEngine="clr-namespace:Telerik.Charting;assembly=Telerik.Windows.Controls.Chart"
-    xmlns:local="clr-namespace:BibleBlahgua" 
+    xmlns:local="clr-namespace:BibleBlahgua"
     x:Class="BibleBlahgua.BlahDetails"
     local:TiltEffect.IsTiltEnabled="True"
-    d:DataContext="{d:DesignData ../SampleData/BlahguaAPIObjectSampleData.xaml}"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
-
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
+
     shell:SystemTray.IsVisible="False">
 
     <toolkit:TransitionService.NavigationInTransition>
@@ -191,22 +190,14 @@
                             <Image Source="{Binding CurrentBlah.UserImage}" Width="64" Height="64" VerticalAlignment="Top" Margin="0,0,8,0" />
                             <StackPanel Orientation="Vertical">
                                 <TextBlock Text="{Binding CurrentBlah.UserName}" FontFamily="Segoe WP Semibold" FontSize="24" />
-                                <TextBlock Text="{Binding CurrentBlah.DescriptionString}" FontSize="16" />
-                                <TextBlock Text="{Binding CurrentBlah.ElapsedTimeString}" FontSize="16" FontStyle="Italic" />
                             </StackPanel>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Foreground="LightGray"  FontSize="24" Text="{Binding CurrentBlah.TypeName}" />
-                            <TextBlock Foreground="LightGray"  FontSize="24" Text="to" Margin="8,0" />
-                            <TextBlock Foreground="LightGray"  FontSize="24" Text="{Binding CurrentBlah.ChannelName}" />
-                            <TextBlock Foreground="LightGray"  FontSize="24" Text=":" />
-                        </StackPanel>
 
-                        <local:UrlTextBlock Content="{Binding CurrentBlah.T}" FontFamily="Segoe WP Semibold" FontSize="36" TextWrapping="Wrap" IsReadOnly="True"/>
+
+                        <local:UrlTextBlock Content="{Binding CurrentBlah.F}" FontFamily="Segoe WP Semibold" FontSize="36" TextWrapping="Wrap" IsReadOnly="True"/>
                             
                         <Image x:Name="BlahImage" Source="{Binding CurrentBlah.ImageURL}" Margin="8" 
                           Tap="BlahImage_Tap" HorizontalAlignment="Center" ImageOpened="HandleImageOpened" />
-                        <local:UrlTextBlock Content="{Binding CurrentBlah.F}" TextWrapping="Wrap" />
                         <Border x:Name="PollOptionArea"  Margin="0 12 0 0" Padding="8" BorderBrush="#80FFFFFF"  Visibility="Collapsed" BorderThickness="1" CornerRadius="8" Background="#80000000">
                             <Border.RenderTransform>
                                 <ScaleTransform x:Name="PollYScale" ScaleY="0"/>

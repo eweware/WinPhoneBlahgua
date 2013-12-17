@@ -269,7 +269,7 @@ namespace BibleBlahgua
             BlahScroller.MouseMove += BlahScroller_MouseMove;
 
             BlahContainer.Tap += BlahContainer_Tap;
-            BlahContainer.ManipulationCompleted += BlahContainer_ManipulationCompleted;
+            //BlahContainer.ManipulationCompleted += BlahContainer_ManipulationCompleted;
             App.BlahguaAPI.PropertyChanged += new PropertyChangedEventHandler(On_API_PropertyChanged);
 
             InitService();
@@ -277,6 +277,7 @@ namespace BibleBlahgua
             
         }
 
+        /*
         void BlahContainer_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
         {
             Point finalVel = e.FinalVelocities.LinearVelocity;
@@ -296,6 +297,7 @@ namespace BibleBlahgua
                 
             }
         }
+         */
 
 
 

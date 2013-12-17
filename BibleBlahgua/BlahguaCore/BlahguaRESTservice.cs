@@ -275,7 +275,6 @@ namespace BibleBlahgua
                     ChannelList newList = new ChannelList();
                     foreach (Channel curChan in response.Data)
                     {
-                        if (curChan.R > 0)
                             newList.Add(curChan);
                     }
 
