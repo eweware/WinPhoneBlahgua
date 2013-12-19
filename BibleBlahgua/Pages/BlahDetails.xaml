@@ -17,6 +17,7 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
+    d:DataContext="{d:DesignData ../SampleData/BlahguaAPIObjectSampleData.xaml}"
 
     shell:SystemTray.IsVisible="False">
 
@@ -194,8 +195,8 @@
                         </StackPanel>
 
 
-                        <local:UrlTextBlock Content="{Binding CurrentBlah.F}" FontFamily="Segoe WP Semibold" FontSize="36" TextWrapping="Wrap" IsReadOnly="True"/>
-                            
+                        <local:UrlTextBlock Content="{Binding CurrentBlah.F}" FontFamily="Georgia" FontSize="36" TextWrapping="Wrap" IsReadOnly="True"/>
+
                         <Image x:Name="BlahImage" Source="{Binding CurrentBlah.ImageURL}" Margin="8" 
                           Tap="BlahImage_Tap" HorizontalAlignment="Center" ImageOpened="HandleImageOpened" />
                         <Border x:Name="PollOptionArea"  Margin="0 12 0 0" Padding="8" BorderBrush="#80FFFFFF"  Visibility="Collapsed" BorderThickness="1" CornerRadius="8" Background="#80000000">
@@ -206,7 +207,7 @@
                                 <TextBlock x:Name="PollPrompt" Text="choices" HorizontalAlignment="Center" />
                                 <ItemsControl x:Name="PollItemList" ItemTemplate="{StaticResource PollNotVotedTemplate}" Margin="0 8 0 0"
                                       ItemsSource="{Binding CurrentBlah.I}">
-                                    
+
                                 </ItemsControl>
                             </StackPanel>
                         </Border>
@@ -224,7 +225,7 @@
                                                />
 
                             </StackPanel>
-                            </Border>
+                        </Border>
                     </StackPanel>
                 </ScrollViewer>
             </controls:PivotItem>
@@ -256,17 +257,17 @@
             <controls:PivotItem Header="stats">
                 <Grid>
                     <ScrollViewer>
-                    <StackPanel Margin="0 0 0 72" x:Name="StatsArea" DataContext="null">
-                        <toolkit:ExpanderView Header="audience response" Margin="0 0 0 16" IsExpanded="True"
+                        <StackPanel Margin="0 0 0 72" x:Name="StatsArea" DataContext="null">
+                            <toolkit:ExpanderView Header="audience response" Margin="0 0 0 16" IsExpanded="True"
                                               HeaderTemplate="{StaticResource LargeHeaderTemplate}">
 
-                            <TextBlock FontSize="11" TextWrapping="Wrap" Text="Key statistical data for this post.  The blahgua score is an overall rating computed by assigning different weights to different data metrics." />
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Conversion Ratio: " FontSize="26" />
-                                <TextBlock Text="{Binding ConversionString}" FontSize="26" />
-                            </StackPanel>
-                            <TextBlock Text="{Binding ImpressionString}" FontSize="16" FontStyle="Italic"/>
-                            
+                                <TextBlock FontSize="11" TextWrapping="Wrap" Text="Key statistical data for this post.  The blahgua score is an overall rating computed by assigning different weights to different data metrics." />
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Conversion Ratio: " FontSize="26" />
+                                    <TextBlock Text="{Binding ConversionString}" FontSize="26" />
+                                </StackPanel>
+                                <TextBlock Text="{Binding ImpressionString}" FontSize="16" FontStyle="Italic"/>
+
                                 <TextBlock Text="blahgua score" Margin="0 16 0 0"/>
                                 <chart:RadCartesianChart x:Name="ScoreChart" Height="150">
                                     <chart:RadCartesianChart.HorizontalAxis>
@@ -275,19 +276,19 @@
                                     <chart:RadCartesianChart.VerticalAxis>
                                         <chart:CategoricalAxis ShowLabels="False"/>
                                     </chart:RadCartesianChart.VerticalAxis>
-                            </chart:RadCartesianChart>
+                                </chart:RadCartesianChart>
 
                                 <TextBlock Text="votes" Margin="0 16 0 0" />
                                 <chart:RadCartesianChart x:Name="VoteChart" Height="200" EmptyContent="No votes yet">
                                     <chart:RadCartesianChart.HorizontalAxis>
-                                    <chart:LinearAxis />
-                                </chart:RadCartesianChart.HorizontalAxis>
-                                <chart:RadCartesianChart.VerticalAxis>
+                                        <chart:LinearAxis />
+                                    </chart:RadCartesianChart.HorizontalAxis>
+                                    <chart:RadCartesianChart.VerticalAxis>
                                         <chart:CategoricalAxis>
-                                             
+
                                         </chart:CategoricalAxis>
                                     </chart:RadCartesianChart.VerticalAxis>
-                            </chart:RadCartesianChart>
+                                </chart:RadCartesianChart>
                                 <TextBlock Text="impressions" Margin="0 16 0 0" />
                                 <chart:RadCartesianChart x:Name="ViewChart" Height="200" EmptyContent="No impressions in the last week">
                                     <chart:RadCartesianChart.HorizontalAxis>
@@ -319,10 +320,10 @@
                                 </chart:RadCartesianChart>
 
                             </toolkit:ExpanderView>
-                        <toolkit:ExpanderView Header="about the audience" IsExpanded="True" Margin="0 0 0 16"
+                            <toolkit:ExpanderView Header="about the audience" IsExpanded="True" Margin="0 0 0 16"
                                               HeaderTemplate="{StaticResource LargeHeaderTemplate}" >
-                            <TextBlock FontSize="11" TextWrapping="Wrap" Text="How various demographics responded to this post." />
-                            <StackPanel x:Name="DemoCharts">
+                                <TextBlock FontSize="11" TextWrapping="Wrap" Text="How various demographics responded to this post." />
+                                <StackPanel x:Name="DemoCharts">
                                     <TextBlock Text="gender" Margin="0 16 0 0" />
                                     <chart:RadCartesianChart x:Name="GenderChart" Height="300" 
                                                              EmptyContent="No votes in the last week">
@@ -414,14 +415,14 @@
                                         </chart:RadCartesianChart.VerticalAxis>
                                     </chart:RadCartesianChart>
                                 </StackPanel>
-                                
+
                                 <Border x:Name="SignInStatPromp"  Margin="8 24" Padding="24 16" BorderBrush="#80FFFFFF" BorderThickness="1" CornerRadius="8" Background="#80000000" HorizontalAlignment="Center" VerticalAlignment="Top">
-                                <StackPanel Orientation="Vertical">
-                                    <TextBlock Text="Sign in and set up your profile to see demographic stats" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" />
-                                </StackPanel>
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Text="Sign in and set up your profile to see demographic stats" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="Wrap" />
+                                    </StackPanel>
                                 </Border>
-                        </toolkit:ExpanderView>
-                    </StackPanel>
+                            </toolkit:ExpanderView>
+                        </StackPanel>
                     </ScrollViewer>
                     <Border x:Name="NoStatsBox"  Margin="8" Padding="24 16" BorderBrush="#80FFFFFF" BorderThickness="1" CornerRadius="8" Background="#80000000" HorizontalAlignment="Center" VerticalAlignment="Top">
                         <StackPanel Orientation="Vertical">

@@ -654,8 +654,14 @@ namespace BibleBlahgua
                 CategoricalSeries promoteSeries = new BarSeries();
                 CategoricalSeries demoteSeries = new BarSeries();
                 Blah curBlah = App.BlahguaAPI.CurrentBlah;
-                DemoProfileSummaryRecord upVotes = curBlah._d._u;
-                DemoProfileSummaryRecord downVotes = curBlah._d._d;
+                DemoProfileSummaryRecord upVotes = null;
+                DemoProfileSummaryRecord downVotes = null;
+
+                if (curBlah._d != null)
+                {
+                    upVotes = curBlah._d._u;
+                    downVotes = curBlah._d._d;
+                }
 
                 promoteSeries.CombineMode = ChartSeriesCombineMode.Stack;
                 demoteSeries.CombineMode = ChartSeriesCombineMode.Stack;
@@ -664,13 +670,20 @@ namespace BibleBlahgua
                 {
                     promotePoint = new CategoricalDataPoint();
                     promotePoint.Category = curDict[curVal];
-                    promotePoint.Value = upVotes.GetPropertyValue(demoProp, curVal);// curBlah._d._u.B.GetValue(curVal);
+                    if (upVotes != null)
+                        promotePoint.Value = upVotes.GetPropertyValue(demoProp, curVal);// curBlah._d._u.B.GetValue(curVal);
+                    else
+                        promotePoint.Value = 0;
                     promoteSeries.DataPoints.Add(promotePoint);
 
 
                     demotePoint = new CategoricalDataPoint();
                     demotePoint.Category = curDict[curVal];
-                    demotePoint.Value = downVotes.GetPropertyValue(demoProp, curVal);
+                    if (downVotes != null)
+                        demotePoint.Value = downVotes.GetPropertyValue(demoProp, curVal);
+                    else
+                        demotePoint.Value = 0;
+
                     demoteSeries.DataPoints.Add(demotePoint);
 
                     if ((promotePoint.Value + demotePoint.Value) > maxVal)
@@ -749,7 +762,7 @@ namespace BibleBlahgua
                 db1.EasingFunction = ease;
                 db1.BeginTime = TimeSpan.FromSeconds(0);
                 db1.Duration = TimeSpan.FromSeconds(.5);
-                db1.To = -800;
+                db1.To = -1200;
                 Storyboard.SetTarget(db1, BackgroundImage);
                 Storyboard.SetTargetProperty(db1, new PropertyPath("(Canvas.Left)"));
                 sb.Children.Add(db1);
@@ -781,8 +794,8 @@ namespace BibleBlahgua
                 db1.EasingFunction = ease;
                 db1.BeginTime = TimeSpan.FromSeconds(0);
                 db1.Duration = TimeSpan.FromSeconds(.5);
-                db1.From = -800;
-                db1.To = -320;
+                db1.From = -1200;
+                db1.To = -720;
                 Storyboard.SetTarget(db1, BackgroundImage);
                 Storyboard.SetTargetProperty(db1, new PropertyPath("(Canvas.Left)"));
                 sb.Children.Add(db1);
@@ -806,7 +819,7 @@ namespace BibleBlahgua
                 Storyboard sb = new Storyboard();
                 DoubleAnimation db = new DoubleAnimation();
                 double targetVal = 0;
-                double maxScroll = -320;
+                double maxScroll = -720;
                 double offset;
 
                 if (BlahDetailsPivot.Items.Count() > 1)
@@ -840,7 +853,7 @@ namespace BibleBlahgua
         {
             BackgroundImage2.Visibility = Visibility.Collapsed;
             Canvas.SetLeft(BackgroundImage2, 480);
-            Canvas.SetLeft(BackgroundImage, -320);
+            Canvas.SetLeft(BackgroundImage, -720);
         }
 
         private void UpdateButtonsForPage()

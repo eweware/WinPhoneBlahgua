@@ -21,7 +21,6 @@ namespace BibleBlahgua
             InitializeComponent();
             if (CreateBtn == null)
                 CreateBtn = (ApplicationBarIconButton)this.ApplicationBar.Buttons[0];
-            SelectedBadgesList.SummaryForSelectedItemsDelegate = SummarizeItems;
             CreateBtn.IsEnabled = false;
 
             App.BlahguaAPI.EnsureUserDescription((desc) =>
@@ -42,10 +41,7 @@ namespace BibleBlahgua
 
         void CreateComment_Loaded(object sender, RoutedEventArgs e)
         {
-            if ((App.BlahguaAPI.CurrentUser.Badges != null) && (App.BlahguaAPI.CurrentUser.Badges.Count  >  0))
-                SelectedBadgesList.Visibility = Visibility.Visible;
-            else
-                SelectedBadgesList.Visibility = Visibility.Collapsed;
+
         }
 
 
@@ -117,27 +113,6 @@ namespace BibleBlahgua
             }
         }
 
-        private void SelectedBadgesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            AuthorHeader.DataContext = null;
-            System.Collections.IList curSelection = SelectedBadgesList.SelectedItems;
-
-            if ((curSelection != null) && (curSelection.Count > 0))
-            {
-                BadgeList newList = new BadgeList();
-                foreach (object curItem in curSelection)
-                {
-                    BadgeReference curBadge = (BadgeReference)curItem;
-                    newList.Add(curBadge);
-                }
-
-                App.BlahguaAPI.CreateCommentRecord.Badges = newList;
-            }
-            else
-                App.BlahguaAPI.CreateCommentRecord.Badges = null;
-
-            AuthorHeader.DataContext = App.BlahguaAPI.CreateCommentRecord;
-        }
 
         private void OnCreateCommentOK(Comment newComment)
         {
@@ -180,7 +155,6 @@ namespace BibleBlahgua
         {
             CommentTextField.IsEnabled = false;
             App.BlahguaAPI.CreateCommentRecord.T = CommentTextField.Text;
-            SelectedBadgesList.Focus();
             App.BlahguaAPI.CreateComment(OnCreateCommentOK);
         }
     }

@@ -21,7 +21,7 @@
                 <Image x:Name="BlahImage" Stretch="UniformToFill"/>
                 <Rectangle x:Name="BlahBackground"  Fill="{StaticResource BrushBlahguaWhite}"/>
                 <Line x:Name="OwnedBlahIndicator" X1="0" X2="100" Y1="1" Y2="1" Stroke="Green" Stretch="Fill" StrokeDashArray="1 1 1 1" StrokeThickness="8" VerticalAlignment="Bottom" />
-                <TextBlock  x:Name="TextArea" Padding="4 0 4 8" TextWrapping="Wrap" TextTrimming="WordEllipsis" VerticalAlignment="Top" FontFamily="Segoe WP SemiLight" Foreground="{StaticResource BrushBlahguaBlack}" Text="This is a  So that sucks!! " RenderTransformOrigin="0.5,0.5">
+                <TextBlock  x:Name="TextArea" Padding="4 0 4 8" TextWrapping="Wrap" TextTrimming="WordEllipsis" VerticalAlignment="Top" FontFamily="Georgia" Foreground="{StaticResource BrushBlahguaBlack}" Text="This is a  So that sucks!! " RenderTransformOrigin="0.5,0.5">
 
                 </TextBlock>
             </Grid>

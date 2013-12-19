@@ -43,15 +43,23 @@
     
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" >
-        <Grid.Background>
-            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                <GradientStop Color="#FF7DBFE3" Offset="0.55"/>
-                <GradientStop Color="#FF7AD000" Offset="0.734"/>
-            </LinearGradientBrush>
-        </Grid.Background>
+        <Canvas Width="480" Height="800" VerticalAlignment="Top" IsHitTestVisible="False">
+            <Image  Width="1000" Height="800"  x:Name="BackgroundImage" Canvas.Top="0"  Canvas.Left="0"  Source="/Images/bkgnds/openbible.jpg" Stretch="UniformToFill" />
+            <Image  Width="1000" Height="800"  x:Name="BackgroundImage2" Canvas.Top="0"  Canvas.Left="480"  Source="" Stretch="UniformToFill" Visibility="Collapsed" />
+            <Rectangle x:Name="BackgroundScreen" Width="480" Height="800" Canvas.Top="0" Canvas.Left="0">
+                <Rectangle.Fill>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#7F000000" Offset="0"/>
+                        <GradientStop Color="#7F6F3E96" Offset="1"/>
+                    </LinearGradientBrush>
+                </Rectangle.Fill>
+            </Rectangle>
+
+        </Canvas>
+
 
         <!--TitlePanel contains the name of the application and page title-->
-        <controls:Pivot x:Name="SignInPivot" Title="blahgua" >
+        <controls:Pivot x:Name="SignInPivot" Title="daily bread"  LoadedPivotItem="HandlePivotLoaded"  LoadingPivotItem="OnPivotLoading" >
             <!--Pivot item one-->
             <controls:PivotItem Header="sign in">
                 <!--ContentPanel - place additional content here-->
@@ -85,52 +93,47 @@
                 <!--ContentPanel - place additional content here-->
                 <ScrollViewer >
                 <StackPanel >
-                    <TextBlock Text="Why should I use Blahgua?" FontSize="30" HorizontalAlignment="Center"/>
+                    <TextBlock Text="About Daily Bread" FontSize="30" HorizontalAlignment="Center"/>
                     <TextBlock TextWrapping="Wrap">
                         <TextBlock.Text>
-                            Given all of the other content sharing networks, we know what you are thinking... But you are here so you must be at least open to something new. Here's our case:
+                            Daily Bread is intended to be a new way to incorporate scripture into our daily lives.  In the world of Twitter and Facebook and Instagram, where does one find time to study and meditate on matters of the spirit?  Our hope is to provide such a space.   Use it how you wish, but here is our intent:
                         </TextBlock.Text>
                     </TextBlock>
                     <TextBlock Text="Extremely Simple" Margin="10 10 0 0" TextDecorations="Underline" />
                     <TextBlock TextWrapping="Wrap" Margin="10 0 0 0">
                         <TextBlock.Text>
-                            No friends, no followers, no searching. Just tune in and see personalized, relevant content. Interact as much as you want, or sit back and watch.
+                            No friends, no followers, no lessons, no searching. Just tune in and see personalized, relevant content. Interact as much as you want, or sit back and watch.  Daily Bread is sits on the powerful blahgua recommendation engine, so over time relevant scriptures will be promoted to you automatically.  The more you use the system, the better this becomes.
                         </TextBlock.Text>
                     </TextBlock>
                     <TextBlock Text="Gives you a voice" Margin="10 10 0 0" TextDecorations="Underline" />
                     <TextBlock TextWrapping="Wrap" Margin="10 0 0 0">
                         <TextBlock.Text>
-                            When you post something, it is automatically spread to other users who are interested, they spread it to others, and so on.</TextBlock.Text>
+                            Share your thoughts and feelings on the verses that inspire you.  Your interactions will cause those verses to be automatically sent to others.  It is like a daily pulse of what people are thinking and feeling in the here and now.</TextBlock.Text>
                     </TextBlock>
                     <TextBlock Text="Respects your privacy" Margin="10 10 0 0" TextDecorations="Underline" />
-                    <TextBlock TextWrapping="Wrap" Margin="10 0 0 0">
-                        <TextBlock.Text>
-                            Unlike other sites, blahgua doesn't require personal information to function. You dont have to worry about crazy sharing permissions or changing privacy policies.
+                        <TextBlock TextWrapping="Wrap" Margin="10 0 0 0">
+                            <TextBlock.Text>
+                                Daily Bread doesn't require personal information to function. You dont have to worry about crazy sharing permissions or changing privacy policies.  No email address required.   You control how you are identified on the site and what you share.
 
-                        </TextBlock.Text>
-                    </TextBlock>
-                    <TextBlock Text="How is this different?" Margin="0 16 0 0" FontSize="30" HorizontalAlignment="Center"/>
-                    <TextBlock TextWrapping="Wrap">
-                        <TextBlock.Text>
-                            Our unique, patent-pending badging service provides you with a way to add credibility to your posts while remaining unidentified. For example, you can use badges to verify that you work at a specific company or attend a particular school. However, no one (not even us!) can tell what employee or student you are. This type of semi-anonymous identity allows for authentic communication and makes it easier to make trust decisions. We call it "verified, but not identified."
-                        </TextBlock.Text>
-                    </TextBlock>
-                    <TextBlock TextWrapping="Wrap" Margin="0 10 0 0">
-                        <TextBlock.Text>
-                            In addition, and unlike anonymous sites, users in blahgua have a reputation in the system. This enables those with compelling content to find a large audience, while those with uninteresting or disruptive behavior soon find themselves talking to no one.
+                            </TextBlock.Text>
+                        </TextBlock>
 
-                        </TextBlock.Text>
-                    </TextBlock>
-                    
-                </StackPanel>
+                        <TextBlock Text="Thanks" FontSize="30" HorizontalAlignment="Center"/>
+                        <TextBlock TextWrapping="Wrap">
+                            <TextBlock.Text>
+                                Special thanks to the good people at ChristImages.org for curating such a wonderful library of inspirational images.
+                            </TextBlock.Text>
+                        </TextBlock>
+                        <TextBlock Margin="0 20 0 0" FontSize="24" HorizontalAlignment="Center" TextDecorations="Underline" Text="http://christimages.org" Tap="ChristImagesButton_Tap" />
+                    </StackPanel>
                 </ScrollViewer>
             </controls:PivotItem>
             <controls:PivotItem Header="help">
                 <!--ContentPanel - place additional content here-->
                 <ScrollViewer>
                 <StackPanel>
-                    <TextBlock Text="Questions, comments, feedback?  Use the feedback channel in blahgua itself, or send us an email.  We are making this for YOU so let us know what we can do better." TextWrapping="Wrap" />
-                    <TextBlock Margin="0 20 0 0" FontSize="24" HorizontalAlignment="Center" TextDecorations="Underline" Text="admin@blahgua.com" Tap="HyperlinkButton_Tap" />
+                    <TextBlock Text="Questions, comments, feedback?  Send us an email.  We are making this for YOU so let us know what we can do better." TextWrapping="Wrap" />
+                    <TextBlock Margin="0 20 0 0" FontSize="24" HorizontalAlignment="Center" TextDecorations="Underline" Text="dailybread@blahgua.com" Tap="HyperlinkButton_Tap" />
                     <TextBlock Margin="0 40 0 0" FontSize="24" HorizontalAlignment="Left">
                         <TextBlock.Text>Forgot Password?</TextBlock.Text>
                     </TextBlock>
@@ -139,11 +142,18 @@
                     <TextBlock Margin="0 40 0 0" FontSize="24" HorizontalAlignment="Left">
                         <TextBlock.Text>Rate and Review</TextBlock.Text>
                     </TextBlock>
-                    <TextBlock Text="Help us make blahgua better by spreading the word.  Share the app with friends and give it a review on the app store.  Your support is much appreciated!" TextWrapping="Wrap" />
+                    <TextBlock Text="Help us make Daily Bread better by spreading the word.  Share the app with friends and give it a review on the app store.  Your support is much appreciated!" TextWrapping="Wrap" />
                     <Button Margin="0 20" HorizontalAlignment="Center" Content="Rate and Review" Tap="RateReview_Tap"/>
 
+                        <TextBlock Margin="0 40 0 0" FontSize="24" HorizontalAlignment="Left">
+                            <TextBlock.Text>Donations</TextBlock.Text>
+                        </TextBlock>
+                        <TextBlock Text="The best way to help is to spread the word.  If you would like to help in other ways - adding images, more Bible chapters, more platforms - please contact us.  If you would like to contribute cash, feel free to use the paypal link below.  Please note that we are not a church or non-profit." TextWrapping="Wrap" />
+                        <Button Margin="0 20" HorizontalAlignment="Center" Content="Donate via PayPal" Tap="DonateButton_Tap"/>
 
-                </StackPanel>
+
+
+                    </StackPanel>
                 </ScrollViewer>
             </controls:PivotItem>
         </controls:Pivot>

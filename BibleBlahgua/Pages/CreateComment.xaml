@@ -160,14 +160,7 @@
                 <StackPanel Grid.Row="2" Orientation="Vertical">
                     <TextBlock Text="Signature"/>
                     <CheckBox IsChecked="{Binding CreateCommentRecord.UseProfile, Mode=TwoWay}" Unchecked="UseProfile_Checked" Checked="UseProfile_Checked"  >use profile</CheckBox>
-                    <toolkit:ListPicker x:Name="SelectedBadgesList" Header="Badges" SelectionMode="Multiple" 
-                                            SelectedItems="{Binding CreateCommentRecord.Badges, Mode=OneWay}"
-                                            FullModeItemTemplate="{StaticResource BadgeListTemplate}"
-                                            ItemsSource="{Binding CurrentUser.Badges}"
-                                            ItemTemplate="{StaticResource BadgeListTemplate}"
-                                            Style="{StaticResource WrapSummaryStyle}"
-                                            SelectionChanged="SelectedBadgesList_SelectionChanged">
-                    </toolkit:ListPicker>
+
 
                 </StackPanel>
             </Grid>

@@ -609,7 +609,7 @@ namespace BibleBlahgua
                 db1.EasingFunction = ease;
                 db1.BeginTime = TimeSpan.FromSeconds(0);
                 db1.Duration = TimeSpan.FromSeconds(.5);
-                db1.To = -800;
+                db1.To = -1600;
                 Storyboard.SetTarget(db1, BackgroundImage);
                 Storyboard.SetTargetProperty(db1, new PropertyPath("(Canvas.Left)"));
                 sb.Children.Add(db1);
@@ -641,8 +641,8 @@ namespace BibleBlahgua
                 db1.EasingFunction = ease;
                 db1.BeginTime = TimeSpan.FromSeconds(0);
                 db1.Duration = TimeSpan.FromSeconds(.5);
-                db1.From = -800;
-                db1.To = -320;
+                db1.From = -1600;
+                db1.To = -1120;
                 Storyboard.SetTarget(db1, BackgroundImage);
                 Storyboard.SetTargetProperty(db1, new PropertyPath("(Canvas.Left)"));
                 sb.Children.Add(db1);
@@ -666,7 +666,7 @@ namespace BibleBlahgua
                 Storyboard sb = new Storyboard();
                 DoubleAnimation db = new DoubleAnimation();
                 double targetVal = 0;
-                double maxScroll = -320;
+                double maxScroll = -1120;
                 double offset;
 
                 if (ProfilePivot.Items.Count() > 1)
@@ -700,7 +700,7 @@ namespace BibleBlahgua
         {
             BackgroundImage2.Visibility = Visibility.Collapsed;
             Canvas.SetLeft(BackgroundImage2, 480);
-            Canvas.SetLeft(BackgroundImage, -320);
+            Canvas.SetLeft(BackgroundImage, -1120);
         }
 
         private void HandlePivotLoaded(object sender, PivotItemEventArgs e)
@@ -1167,11 +1167,18 @@ namespace BibleBlahgua
         {
             EmailComposeTask emailComposeTask = new EmailComposeTask();
 
-            emailComposeTask.Subject = "feedback on blahgua";
+            emailComposeTask.Subject = "feedback on daily bread";
             emailComposeTask.Body = "";
-            emailComposeTask.To = "admin@blahgua.com";
+            emailComposeTask.To = "dailybread@blahgua.com";
 
             emailComposeTask.Show();
+        }
+
+        private void DonateButton_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            WebBrowserTask wbt = new WebBrowserTask();
+            wbt.URL = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=A827D4JMPL4X8";
+            wbt.Show();
         }
 
 

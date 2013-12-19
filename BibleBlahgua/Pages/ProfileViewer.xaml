@@ -161,8 +161,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Canvas Width="480" Height="800" VerticalAlignment="Top" IsHitTestVisible="False" Grid.RowSpan="2">
-            <Image  Width="800" Height="800"  x:Name="BackgroundImage" Canvas.Top="0"  Canvas.Left="0"   Stretch="UniformToFill"  Source="/Images/bkgnds/profile.jpg" />
-            <Image  Width="800" Height="800"  x:Name="BackgroundImage2" Canvas.Top="0"  Canvas.Left="480"  Stretch="UniformToFill" Visibility="Collapsed" Source="/Images/bkgnds/profile.jpg" />
+            <Image  Width="1600" Height="800"  x:Name="BackgroundImage" Canvas.Top="0"  Canvas.Left="0"   Stretch="UniformToFill"  Source="/Images/bkgnds/lastsupper.jpg" />
+            <Image  Width="1600" Height="800"  x:Name="BackgroundImage2" Canvas.Top="0"  Canvas.Left="480"  Stretch="UniformToFill" Visibility="Collapsed" Source="/Images/bkgnds/lastsupper.jpg" />
             <Rectangle x:Name="BackgroundScreen" Width="480" Height="800" Canvas.Top="0" Canvas.Left="0">
                 <Rectangle.Fill>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
@@ -623,7 +623,7 @@
                         <TextBlock Text="Help us make Daily Bread better by spreading the word.  Share the app with friends and give it a review on the app store.  Your support is much appreciated!" TextWrapping="Wrap" />
                         <Button Margin="0" HorizontalAlignment="Center" Content="Rate and Review" Tap="RateReview_Tap"/>
                         <TextBlock Text="Daily Bread is part of the blahgua network.  Questions, comments, feedback?  Please send us an email.  We are making this for YOU so let us know what we can do better." TextWrapping="Wrap" />
-                        <TextBlock Margin="0 0 0 16" FontSize="24" HorizontalAlignment="Center" TextDecorations="Underline" Text="admin@blahgua.com" Tap="HyperlinkButton_Tap" />
+                        <TextBlock Margin="0 0 0 16" FontSize="24" HorizontalAlignment="Center" TextDecorations="Underline" Text="dailybread@blahgua.com" Tap="HyperlinkButton_Tap" />
 
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="user name:  " />
@@ -634,6 +634,12 @@
                         <TextBlock Text="recovery email address (optional):" VerticalAlignment="Center" />
                         <TextBlock x:Name="recover" Text="{Binding CurrentUser.RecoveryEmail}" FontSize="24" />
                         <Button HorizontalAlignment="Center"  Margin="0 0 0 8" Tap="RecoveryInfo_Tap">set recovery email</Button>
+
+                        <TextBlock Margin="0 40 0 0" FontSize="24" HorizontalAlignment="Left">
+                            <TextBlock.Text>Donations</TextBlock.Text>
+                        </TextBlock>
+                        <TextBlock Text="The best way to help is to spread the word.  If you would like to help in other ways - adding images, more Bible chapters, more platforms - please contact us.  If you would like to contribute cash, feel free to use the paypal link below.  Note that we are not a church or non-profit." TextWrapping="Wrap" />
+                        <Button Margin="0 20" HorizontalAlignment="Center" Content="Donate via PayPal" Tap="DonateButton_Tap"/>
 
                     </StackPanel>
                 </ScrollViewer>

@@ -102,20 +102,15 @@
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <Grid Height="48" VerticalAlignment="Top" Margin="0,8,0,0" Canvas.ZIndex="2">
-            <Grid.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF7DBFE3" Offset="0.55"/>
-                    <GradientStop Color="#FF7AD000" Offset="0.734"/>
-                </LinearGradientBrush>
-            </Grid.Background>
+        <Grid Height="48" VerticalAlignment="Top" Margin="0,8,0,0" Canvas.ZIndex="2" Background="#FF6F3E96">
+
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="48"/>
                 <ColumnDefinition Width="48"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Foreground="White" Text="The Gospels" Margin="12 0" FontSize="32" Padding="0"/>
-            <Button x:Name="SignInBtn"  Grid.Column="1" Visibility="Visible" BorderThickness="0" Grid.ColumnSpan="2" Style="{StaticResource SquareBtn}" Background="#FF9E9E9E" Foreground="White" FontSize="20" Content="Sign In" Click="DoSignIn"/>
+            <TextBlock Foreground="White" Text="The Gospels" Margin="12 2" FontSize="36" Padding="0" FontFamily="Georgia"/>
+            <Button x:Name="SignInBtn"  Grid.Column="1" Visibility="Visible" BorderThickness="0" Grid.ColumnSpan="2" Style="{StaticResource SquareBtn}" Background="#FF9E9E9E" Foreground="White" FontSize="20" Content="Sign In" Click="DoSignIn" FontFamily="Georgia"/>
            
             <Image x:Name="UserInfoBtn" Width="48" Height="48" Grid.Column="2"  Visibility="Collapsed" Source="{Binding CurrentUser.UserImage}" Tap="UserInfoBtn_Tap" ImageFailed="UserImageLoadFailed">
 
